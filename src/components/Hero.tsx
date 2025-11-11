@@ -19,7 +19,7 @@ const Hero = () => {
       });
     }
   };
-  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden tech-grid">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden tech-grid pt-20 sm:pt-0">
       {/* Animated background elements */}
       <div className="absolute inset-0 z-0">
         <img src={heroImage} alt="Brand growth and creator collaborations" className="w-full h-full object-cover opacity-20" />
@@ -42,47 +42,47 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-20 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 animate-fade-in">
             <span className="block mb-2">Brands Grow Here.</span>
             
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-muted-foreground max-w-3xl mx-auto animate-fade-in" style={{
+          <p className="text-base sm:text-xl md:text-2xl mb-6 sm:mb-8 text-muted-foreground max-w-3xl mx-auto px-4 animate-fade-in" style={{
           animationDelay: "0.1s"
         }}>
             Leverage AI-powered creator matching and data-driven campaigns to build authentic communities and drive exponential brand growth.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in px-4" style={{
           animationDelay: "0.2s"
         }}>
-            <Link to="/get-started">
-              <Button size="lg" className="gradient-primary shadow-neon hover:scale-105 transition-smooth text-lg px-8 group">
+            <Link to="/get-started" className="w-full sm:w-auto">
+              <Button size="lg" className="gradient-primary shadow-neon hover:scale-105 transition-smooth text-base sm:text-lg px-6 sm:px-8 group w-full sm:w-auto">
                 Start Growing <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" onClick={scrollToAbout} className="glass border-primary/30 hover:bg-primary/10 text-lg px-8">
+            <Button size="lg" variant="outline" onClick={scrollToAbout} className="glass border-primary/30 hover:bg-primary/10 text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto">
               Explore Platform
             </Button>
           </div>
 
           {/* Stats bar */}
-          <div className="grid grid-cols-3 gap-8 mt-16 max-w-3xl mx-auto animate-fade-in" style={{
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 mt-12 sm:mt-16 max-w-3xl mx-auto px-4 animate-fade-in" style={{
           animationDelay: "0.3s"
         }}>
-            <div className="glass p-4 rounded-lg tech-border">
+            <div className="glass p-3 sm:p-4 rounded-lg tech-border">
               
-              <div className="text-sm text-muted-foreground">Creators</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Creators</div>
             </div>
-            <div className="glass p-4 rounded-lg tech-border">
+            <div className="glass p-3 sm:p-4 rounded-lg tech-border">
               
-              <div className="text-sm text-muted-foreground">Brands</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Brands</div>
             </div>
-            <div className="glass p-4 rounded-lg tech-border">
+            <div className="glass p-3 sm:p-4 rounded-lg tech-border">
               
-              <div className="text-sm text-muted-foreground">Reach</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Reach</div>
             </div>
           </div>
         </div>
