@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -42,8 +43,17 @@ const Contact = () => {
       // Validate form data
       contactSchema.parse(formData);
 
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Submit to database
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          brand_name: formData.brand,
+          message: formData.message,
+        });
+
+      if (error) throw error;
 
       toast({
         title: "Message sent!",
@@ -64,6 +74,12 @@ const Contact = () => {
         toast({
           title: "Validation Error",
           description: "Please check the form for errors.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to send message. Please try again.",
           variant: "destructive",
         });
       }
