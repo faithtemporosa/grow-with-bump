@@ -1,9 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Heart, Zap, Users } from "lucide-react";
-
 const About = () => {
-  return (
-    <section id="about" className="py-20 bg-secondary">
+  return <section id="about" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
@@ -16,8 +14,7 @@ const About = () => {
           </div>
 
           <Card className="p-8 md:p-12 mb-12">
-            <p className="text-lg text-foreground mb-6">
-              Founded by creators and brand strategists, <span className="font-semibold gradient-primary bg-clip-text text-transparent">Bump Syndicate</span> bridges the gap between ambitious brands and authentic creators. We believe in the power of genuine partnerships over paid advertisements.
+            <p className="text-lg text-foreground mb-6">Founded by creators and brand strategists, Bump Syndicate bridges the gap between ambitious brands and authentic creators. We believe in the power of genuine partnerships over paid advertisements. bridges the gap between ambitious brands and authentic creators. We believe in the power of genuine partnerships over paid advertisements.
             </p>
             <p className="text-lg text-foreground mb-6">
               Our approach is simple: connect brands with creators who genuinely believe in their products. The result? Organic growth, engaged communities, and sustainable brand loyalty that goes beyond vanity metrics.
@@ -60,8 +57,6 @@ const About = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
