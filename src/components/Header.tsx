@@ -35,7 +35,7 @@ const Header = () => {
             <img 
               src={logo} 
               alt="Bump Syndicate Logo" 
-              className="w-10 h-10 rounded-lg shadow-neon"
+              className="w-10 h-10 rounded-full shadow-neon"
             />
             <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
               Bump Syndicate
