@@ -50,22 +50,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/creator-partnerships" className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
                   Creator Partnerships
                 </Link>
               </li>
               <li>
-                <Link to="/brand-campaigns" className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
                   Brand Campaigns
                 </Link>
               </li>
               <li>
-                <Link to="/automations-support" className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
                   Automations Support
                 </Link>
               </li>
               <li>
-                <Link to="/growth-strategy" className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
                   Growth Strategy
                 </Link>
               </li>
