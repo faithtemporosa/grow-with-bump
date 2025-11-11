@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/bump-syndicate-logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,10 +31,12 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center shadow-neon">
-              <div className="w-4 h-4 border-2 border-white rounded" />
-            </div>
+          <div className="flex items-center gap-3">
+            <img 
+              src={logo} 
+              alt="Bump Syndicate Logo" 
+              className="w-10 h-10 rounded-lg shadow-neon"
+            />
             <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
               Bump Syndicate
             </span>
