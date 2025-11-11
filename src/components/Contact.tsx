@@ -58,20 +58,22 @@ const Contact = () => {
       const response = await fetch('https://faithtemporosa.app.n8n.cloud/webhook/e2f8707f-4fc1-47f8-9978-d5a5a316fde0', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
-        body: JSON.stringify({
+        mode: 'no-cors',
+        body: new URLSearchParams({
           name: formData.name,
           email: formData.email,
           brand: formData.brand,
           message: formData.message,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          origin: window.location.origin,
         }),
       });
 
       console.log('Webhook response status:', response.status);
 
-      if (!response.ok) throw new Error('Failed to submit form');
+      console.log('Webhook request sent (no-cors, opaque response).');
 
       toast({
         title: "Message sent!",
