@@ -28,6 +28,7 @@ const Contact = () => {
       name,
       value
     } = e.target;
+    console.log('Form field changed:', name, value);
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -44,9 +45,14 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrors({});
+    
+    console.log('Form submitted with data:', formData);
+    
     try {
       // Validate form data
       contactSchema.parse(formData);
+
+      console.log('Validation passed, sending to webhook...');
 
       // Submit to n8n webhook
       const response = await fetch('https://faithtemporosa.app.n8n.cloud/webhook/e2f8707f-4fc1-47f8-9978-d5a5a316fde0', {
@@ -63,6 +69,8 @@ const Contact = () => {
         }),
       });
 
+      console.log('Webhook response status:', response.status);
+
       if (!response.ok) throw new Error('Failed to submit form');
 
       toast({
@@ -78,6 +86,7 @@ const Contact = () => {
         message: ""
       });
     } catch (error) {
+      console.error('Form submission error:', error);
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
         error.errors.forEach(err => {
@@ -127,7 +136,15 @@ const Contact = () => {
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Your Name *
                   </label>
-                  <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" className={errors.name ? "border-destructive" : ""} />
+                  <Input 
+                    id="name" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange} 
+                    placeholder="John Doe" 
+                    className={errors.name ? "border-destructive" : ""}
+                    disabled={isSubmitting}
+                  />
                   {errors.name && <p className="text-sm text-destructive mt-1">{errors.name}</p>}
                 </div>
 
@@ -135,7 +152,16 @@ const Contact = () => {
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
                     Email Address *
                   </label>
-                  <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" className={errors.email ? "border-destructive" : ""} />
+                  <Input 
+                    id="email" 
+                    name="email" 
+                    type="email" 
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    placeholder="john@example.com" 
+                    className={errors.email ? "border-destructive" : ""}
+                    disabled={isSubmitting}
+                  />
                   {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
                 </div>
               </div>
@@ -144,7 +170,15 @@ const Contact = () => {
                 <label htmlFor="brand" className="block text-sm font-medium mb-2">
                   Brand Name *
                 </label>
-                <Input id="brand" name="brand" value={formData.brand} onChange={handleChange} placeholder="Your Brand" className={errors.brand ? "border-destructive" : ""} />
+                <Input 
+                  id="brand" 
+                  name="brand" 
+                  value={formData.brand} 
+                  onChange={handleChange} 
+                  placeholder="Your Brand" 
+                  className={errors.brand ? "border-destructive" : ""}
+                  disabled={isSubmitting}
+                />
                 {errors.brand && <p className="text-sm text-destructive mt-1">{errors.brand}</p>}
               </div>
 
@@ -152,7 +186,16 @@ const Contact = () => {
                 <label htmlFor="message" className="block text-sm font-medium mb-2">
                   Tell Us About Your Goals *
                 </label>
-                <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="What are your brand growth goals? What challenges are you facing?" rows={5} className={errors.message ? "border-destructive" : ""} />
+                <Textarea 
+                  id="message" 
+                  name="message" 
+                  value={formData.message} 
+                  onChange={handleChange} 
+                  placeholder="What are your brand growth goals? What challenges are you facing?" 
+                  rows={5} 
+                  className={errors.message ? "border-destructive" : ""}
+                  disabled={isSubmitting}
+                />
                 {errors.message && <p className="text-sm text-destructive mt-1">{errors.message}</p>}
               </div>
 
