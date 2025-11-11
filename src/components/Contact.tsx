@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -52,28 +53,24 @@ const Contact = () => {
       // Validate form data
       contactSchema.parse(formData);
 
-      console.log('Validation passed, sending to webhook...');
+      console.log('Validation passed, saving to database...');
 
-      // Submit to n8n webhook
-      const response = await fetch('https://faithtemporosa.app.n8n.cloud/webhook/e2f8707f-4fc1-47f8-9978-d5a5a316fde0', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
-        mode: 'no-cors',
-        body: new URLSearchParams({
+      // Submit to database
+      const { error: dbError } = await supabase
+        .from('contact_submissions')
+        .insert({
           name: formData.name,
           email: formData.email,
-          brand: formData.brand,
+          brand_name: formData.brand,
           message: formData.message,
-          timestamp: new Date().toISOString(),
-          origin: window.location.origin,
-        }),
-      });
+        });
 
-      console.log('Webhook response status:', response.status);
+      if (dbError) {
+        console.error('Database error:', dbError);
+        throw new Error('Failed to save submission');
+      }
 
-      console.log('Webhook request sent (no-cors, opaque response).');
+      console.log('Submission saved successfully');
 
       toast({
         title: "Message sent!",
