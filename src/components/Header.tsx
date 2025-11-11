@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -31,21 +34,29 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <button onClick={() => scrollToSection("features")} className="text-foreground hover:text-primary transition-smooth">
-              Features
-            </button>
-            <button onClick={() => scrollToSection("how-it-works")} className="text-foreground hover:text-primary transition-smooth">
-              How It Works
-            </button>
-            <button onClick={() => scrollToSection("services")} className="text-foreground hover:text-primary transition-smooth">
-              Services
-            </button>
-            <button onClick={() => scrollToSection("about")} className="text-foreground hover:text-primary transition-smooth">
-              About
-            </button>
-            <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow">
-              Get Started
-            </Button>
+            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth">
+              Creator Partnerships
+            </Link>
+            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth">
+              Brand Campaigns
+            </Link>
+            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth">
+              Automation
+            </Link>
+            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth">
+              Growth Strategy
+            </Link>
+            {isHomePage ? (
+              <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow">
+                Get Started
+              </Button>
+            ) : (
+              <Link to="/#contact">
+                <Button className="gradient-primary shadow-glow">
+                  Get Started
+                </Button>
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -56,21 +67,29 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && <nav className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
-            <button onClick={() => scrollToSection("features")} className="text-foreground hover:text-primary transition-smooth text-left">
-              Features
-            </button>
-            <button onClick={() => scrollToSection("how-it-works")} className="text-foreground hover:text-primary transition-smooth text-left">
-              How It Works
-            </button>
-            <button onClick={() => scrollToSection("services")} className="text-foreground hover:text-primary transition-smooth text-left">
-              Services
-            </button>
-            <button onClick={() => scrollToSection("about")} className="text-foreground hover:text-primary transition-smooth text-left">
-              About
-            </button>
-            <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow w-full">
-              Get Started
-            </Button>
+            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+              Creator Partnerships
+            </Link>
+            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+              Brand Campaigns
+            </Link>
+            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+              Automation
+            </Link>
+            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+              Growth Strategy
+            </Link>
+            {isHomePage ? (
+              <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow w-full">
+                Get Started
+              </Button>
+            ) : (
+              <Link to="/#contact">
+                <Button className="gradient-primary shadow-glow w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                  Get Started
+                </Button>
+              </Link>
+            )}
           </nav>}
       </div>
     </header>;
