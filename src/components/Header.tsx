@@ -27,7 +27,7 @@ const Header = () => {
   return <header className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${isScrolled ? "glass border-b border-primary/10 shadow-neon" : "bg-transparent"}`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-3">
             <img src={logo} alt="Bump Syndicate Logo" className="w-10 h-10 rounded-full shadow-neon cursor-pointer" />
           </Link>
 
@@ -45,7 +45,7 @@ const Header = () => {
             <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Growth Strategy
             </Link>
-            <Link to="/">
+            <Link to="/" onClick={() => window.scrollTo(0, 0)}>
               <Button className="gradient-primary shadow-glow">
                 Get Started
               </Button>
@@ -72,7 +72,7 @@ const Header = () => {
             <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Growth Strategy
             </Link>
-            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               <Button className="gradient-primary shadow-glow w-full">
                 Get Started
               </Button>
