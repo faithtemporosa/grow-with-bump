@@ -43,12 +43,6 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-6 animate-fade-in border border-primary/20">
-            <Sparkles className="text-primary" size={16} />
-            <span className="text-sm font-medium">Powered by Creator Intelligence</span>
-          </div>
-
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in">
             <span className="block mb-2">Grow Your Brand</span>
             <span className="block gradient-hero bg-clip-text text-transparent">
