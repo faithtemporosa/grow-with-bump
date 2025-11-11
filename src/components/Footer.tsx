@@ -1,4 +1,5 @@
-import { Instagram, Twitter, Linkedin, Mail } from "lucide-react";
+import { Instagram, Linkedin, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
 const Footer = () => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -47,11 +48,27 @@ const Footer = () => {
           {/* Services */}
           <div>
             <h4 className="font-semibold mb-4">Services</h4>
-            <ul className="space-y-2 text-background/80">
-              <li>Creator Partnerships</li>
-              <li>Brand Campaigns</li>
-              <li>Automations Support</li>
-              <li>Growth Strategy</li>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/creator-partnerships" className="text-background/80 hover:text-background transition-smooth">
+                  Creator Partnerships
+                </Link>
+              </li>
+              <li>
+                <Link to="/brand-campaigns" className="text-background/80 hover:text-background transition-smooth">
+                  Brand Campaigns
+                </Link>
+              </li>
+              <li>
+                <Link to="/automations-support" className="text-background/80 hover:text-background transition-smooth">
+                  Automations Support
+                </Link>
+              </li>
+              <li>
+                <Link to="/growth-strategy" className="text-background/80 hover:text-background transition-smooth">
+                  Growth Strategy
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -59,16 +76,13 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Connect With Us</h4>
             <div className="flex gap-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="https://www.instagram.com/bump_syndicate/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
                 <Instagram size={20} />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
-                <Twitter size={20} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="https://www.linkedin.com/showcase/bump-syndicate/about/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:hello@bumpsyndicate.com" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="mailto:seth@bumpsearch.com" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
                 <Mail size={20} />
               </a>
             </div>
