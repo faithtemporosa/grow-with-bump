@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,24 @@ const GetStarted = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Scroll to center the form on page load
+    const timer = setTimeout(() => {
+      const formElement = document.getElementById("contact-form");
+      if (formElement) {
+        const elementPosition = formElement.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - (window.innerHeight / 2) + (formElement.offsetHeight / 2);
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -119,7 +137,7 @@ const GetStarted = () => {
               </p>
             </div>
 
-            <Card className="p-8 md:p-12 glass tech-border-animate shadow-neon">
+            <Card id="contact-form" className="p-8 md:p-12 glass tech-border-animate shadow-neon">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>

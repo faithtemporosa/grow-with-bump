@@ -34,16 +34,16 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Creator Partnerships
             </Link>
-            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Brand Campaigns
             </Link>
-            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Automation
             </Link>
-            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Growth Strategy
             </Link>
             <Link to="/get-started">
@@ -61,16 +61,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && <nav className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
-            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Creator Partnerships
             </Link>
-            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Brand Campaigns
             </Link>
-            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Automation
             </Link>
-            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Growth Strategy
             </Link>
             <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)}>
