@@ -26,28 +26,37 @@ const features = [
 
 const Features = () => {
   return (
-    <section id="features" className="py-20 bg-secondary">
-      <div className="container mx-auto px-4">
+    <section id="features" className="py-20 bg-background tech-grid-dense relative overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-primary/5 blur-3xl" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
+          <div className="inline-block px-4 py-1 rounded-full border border-primary/20 bg-primary/5 text-sm font-medium text-primary mb-4">
+            Core Features
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Why Choose Bump Syndicate?
+            Tech-Powered Growth
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            We provide everything you need to grow your brand organically through strategic creator collaborations.
+            Advanced tools and analytics to supercharge your creator collaborations.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="p-6 hover:shadow-glow transition-smooth cursor-pointer group"
+              className="p-6 glass hover:shadow-neon transition-smooth cursor-pointer group tech-border-animate relative overflow-hidden"
             >
-              <div className="w-14 h-14 rounded-lg gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-smooth">
-                <feature.icon className="text-white" size={28} />
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full" />
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-neon">
+                  <feature.icon className="text-white" size={28} />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
             </Card>
           ))}
         </div>

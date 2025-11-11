@@ -114,6 +114,21 @@ All colors MUST be HSL.
   html {
     scroll-behavior: smooth;
   }
+
+  /* Tech grid background pattern */
+  .tech-grid {
+    background-image: 
+      linear-gradient(rgba(186, 230, 238, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(186, 230, 238, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .tech-grid-dense {
+    background-image: 
+      linear-gradient(rgba(186, 230, 238, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(186, 230, 238, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
 }
 
 @layer utilities {
@@ -123,6 +138,14 @@ All colors MUST be HSL.
 
   .animate-slide-up {
     animation: slide-up 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
   }
 
   @keyframes fade-in {
@@ -147,6 +170,24 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(56, 178, 172, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(56, 178, 172, 0.8);
+    }
+  }
+
   .gradient-primary {
     background: var(--gradient-primary);
   }
@@ -167,7 +208,63 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-card);
   }
 
+  .shadow-neon {
+    box-shadow: 0 0 20px rgba(56, 178, 172, 0.5), 0 0 40px rgba(56, 178, 172, 0.3);
+  }
+
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Tech border effect */
+  .tech-border {
+    position: relative;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                linear-gradient(135deg, hsl(186 85% 45%), hsl(16 90% 60%)) border-box;
+    border: 2px solid transparent;
+  }
+
+  .tech-border-animate {
+    position: relative;
+    background: var(--background);
+    overflow: hidden;
+  }
+
+  .tech-border-animate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(186 85% 45%), hsl(16 90% 60%));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate-border 3s linear infinite;
+  }
+
+  @keyframes rotate-border {
+    0% {
+      background: linear-gradient(0deg, hsl(186 85% 45%), hsl(16 90% 60%));
+    }
+    50% {
+      background: linear-gradient(180deg, hsl(186 85% 45%), hsl(16 90% 60%));
+    }
+    100% {
+      background: linear-gradient(360deg, hsl(186 85% 45%), hsl(16 90% 60%));
+    }
   }
 }

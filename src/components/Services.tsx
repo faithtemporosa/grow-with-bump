@@ -26,28 +26,47 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="services" className="py-20 bg-background tech-grid-dense relative overflow-hidden">
+      {/* Glowing background elements */}
+      <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
+          <div className="inline-block px-4 py-1 rounded-full border border-primary/20 bg-primary/5 text-sm font-medium text-primary mb-4">
+            What We Offer
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Our Services
+            Enterprise-Grade <span className="gradient-accent bg-clip-text text-transparent">Solutions</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            End-to-end solutions for brands looking to scale through authentic creator partnerships and organic growth strategies.
+            Cutting-edge technology meets authentic creator relationships.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <Card
               key={index}
-              className="p-8 hover:shadow-glow transition-smooth group cursor-pointer"
+              className="p-8 glass hover:shadow-neon transition-all group cursor-pointer tech-border-animate relative overflow-hidden"
             >
-              <div className="w-16 h-16 rounded-lg gradient-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
-                <service.icon className="text-white" size={32} />
+              {/* Corner accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/10 to-transparent rounded-tr-full" />
+              
+              <div className="relative">
+                <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-neon">
+                  <service.icon className="text-white" size={32} />
+                </div>
+                <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors">{service.title}</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">{service.description}</p>
+                
+                {/* Hover arrow indicator */}
+                <div className="mt-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                  <span className="text-sm font-medium">Explore</span>
+                  <div className="w-6 h-0.5 bg-primary rounded-full group-hover:w-12 transition-all" />
+                </div>
               </div>
-              <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-              <p className="text-muted-foreground text-lg">{service.description}</p>
             </Card>
           ))}
         </div>

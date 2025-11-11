@@ -25,13 +25,18 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${
-        isScrolled ? "bg-background/95 backdrop-blur-lg shadow-sm" : "bg-transparent"
+        isScrolled ? "glass border-b border-primary/10 shadow-neon" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-            Bump Syndicate
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center shadow-neon">
+              <div className="w-4 h-4 border-2 border-white rounded" />
+            </div>
+            <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
+              Bump Syndicate
+            </span>
           </div>
 
           {/* Desktop Navigation */}

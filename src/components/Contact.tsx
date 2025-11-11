@@ -73,19 +73,26 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="contact" className="py-20 bg-background tech-grid relative overflow-hidden">
+      {/* Decorative tech elements */}
+      <div className="absolute top-10 left-10 w-40 h-40 border-2 border-primary/20 rounded-lg rotate-12 animate-float" />
+      <div className="absolute bottom-10 right-10 w-32 h-32 border-2 border-accent/20 rounded-full animate-pulse-glow" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1 rounded-full border border-accent/20 bg-accent/5 text-sm font-medium text-accent mb-4">
+              Let's Connect
+            </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Ready to Grow Your Brand?
+              Ready to <span className="gradient-hero bg-clip-text text-transparent">Launch?</span>
             </h2>
             <p className="text-xl text-muted-foreground">
-              Let's discuss how we can help you achieve your growth goals through authentic creator partnerships.
+              Transform your brand with AI-powered creator partnerships.
             </p>
           </div>
 
-          <Card className="p-8 md:p-12 shadow-glow">
+          <Card className="p-8 md:p-12 glass tech-border-animate shadow-neon">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
