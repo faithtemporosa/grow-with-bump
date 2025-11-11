@@ -158,11 +158,8 @@ const Contact = () => {
 
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-4">
-              Or reach out directly:
-            </p>
-            <a href="mailto:hello@bumpsyndicate.com" className="text-primary hover:text-primary-glow font-semibold text-lg transition-smooth">
-              hello@bumpsyndicate.com
-            </a>
+          </p>
+            <a href="mailto:hello@bumpsyndicate.com" className="text-primary hover:text-primary-glow font-semibold text-lg transition-smooth"></a>
           </div>
         </div>
       </div>
