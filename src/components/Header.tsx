@@ -28,7 +28,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-3">
-            <img src={logo} alt="Bump Syndicate Logo" className="w-10 h-10 rounded-full shadow-neon cursor-pointer" />
+            <img src={logo} alt="Bump Syndicate Logo" className="w-14 h-14 rounded-full shadow-neon cursor-pointer" />
           </Link>
 
           {/* Desktop Navigation */}
