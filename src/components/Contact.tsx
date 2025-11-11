@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -49,16 +48,23 @@ const Contact = () => {
       // Validate form data
       contactSchema.parse(formData);
 
-      // Submit to database
-      const {
-        error
-      } = await supabase.from('contact_submissions').insert({
-        name: formData.name,
-        email: formData.email,
-        brand_name: formData.brand,
-        message: formData.message
+      // Submit to n8n webhook
+      const response = await fetch('https://faithtemporosa.app.n8n.cloud/webhook/e2f8707f-4fc1-47f8-9978-d5a5a316fde0', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          brand: formData.brand,
+          message: formData.message,
+          timestamp: new Date().toISOString()
+        }),
       });
-      if (error) throw error;
+
+      if (!response.ok) throw new Error('Failed to submit form');
+
       toast({
         title: "Message sent!",
         description: "We'll get back to you within 24 hours."
