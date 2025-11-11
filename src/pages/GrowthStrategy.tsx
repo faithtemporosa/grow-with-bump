@@ -2,12 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { TrendingUp, Target, BarChart, Lightbulb } from "lucide-react";
 
 const GrowthStrategy = () => {
-  const scrollToContact = () => {
-    window.location.href = "/#contact";
-  };
 
   return (
     <div className="min-h-screen">
@@ -27,9 +25,11 @@ const GrowthStrategy = () => {
             <p className="text-xl text-muted-foreground mb-8">
               Data-driven strategies designed to accelerate your brand's growth through creator partnerships.
             </p>
-            <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-              Plan Your Growth
-            </Button>
+            <Link to="/get-started">
+              <Button size="lg" className="gradient-primary shadow-glow text-lg">
+                Plan Your Growth
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -204,9 +204,11 @@ const GrowthStrategy = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Let's create a custom growth strategy that takes your brand to the next level.
           </p>
-          <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-            Start Growing Today
-          </Button>
+          <Link to="/get-started">
+            <Button size="lg" className="gradient-primary shadow-glow text-lg">
+              Start Growing Today
+            </Button>
+          </Link>
         </div>
       </section>
 

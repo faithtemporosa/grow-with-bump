@@ -2,12 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Users, TrendingUp, Target, Zap } from "lucide-react";
 
 const CreatorPartnerships = () => {
-  const scrollToContact = () => {
-    window.location.href = "/#contact";
-  };
 
   return (
     <div className="min-h-screen">
@@ -27,9 +25,11 @@ const CreatorPartnerships = () => {
             <p className="text-xl text-muted-foreground mb-8">
               Connect your brand with authentic creators who align with your values and drive real engagement.
             </p>
-            <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-              Start Partnering
-            </Button>
+            <Link to="/get-started">
+              <Button size="lg" className="gradient-primary shadow-glow text-lg">
+                Start Partnering
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -139,9 +139,11 @@ const CreatorPartnerships = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Start building authentic connections with creators who can amplify your brand message.
           </p>
-          <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-            Get Started Today
-          </Button>
+          <Link to="/get-started">
+            <Button size="lg" className="gradient-primary shadow-glow text-lg">
+              Get Started Today
+            </Button>
+          </Link>
         </div>
       </section>
 

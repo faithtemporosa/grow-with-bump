@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 const Hero = () => {
   const scrollToContact = () => {
@@ -57,9 +58,11 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{
           animationDelay: "0.2s"
         }}>
-            <Button size="lg" onClick={scrollToContact} className="gradient-primary shadow-neon hover:scale-105 transition-smooth text-lg px-8 group">
-              Start Growing <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-            </Button>
+            <Link to="/get-started">
+              <Button size="lg" className="gradient-primary shadow-neon hover:scale-105 transition-smooth text-lg px-8 group">
+                Start Growing <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" onClick={scrollToAbout} className="glass border-primary/30 hover:bg-primary/10 text-lg px-8">
               Explore Platform
             </Button>

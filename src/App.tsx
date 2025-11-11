@@ -9,6 +9,7 @@ import CreatorPartnerships from "./pages/CreatorPartnerships";
 import BrandCampaigns from "./pages/BrandCampaigns";
 import AutomationsSupport from "./pages/AutomationsSupport";
 import GrowthStrategy from "./pages/GrowthStrategy";
+import GetStarted from "./pages/GetStarted";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/brand-campaigns" element={<BrandCampaigns />} />
           <Route path="/automations-support" element={<AutomationsSupport />} />
           <Route path="/growth-strategy" element={<GrowthStrategy />} />
+          <Route path="/get-started" element={<GetStarted />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,21 +1,26 @@
 import { Card } from "@/components/ui/card";
 import { Sparkles, Megaphone, Users2, Target } from "lucide-react";
+import { Link } from "react-router-dom";
 const services = [{
   icon: Sparkles,
   title: "Creator Collaboration Hub (Kollabsy)",
-  description: "Our proprietary platform connects you with vetted creators across all major social platforms. Find, manage, and track creator partnerships all in one place."
+  description: "Our proprietary platform connects you with vetted creators across all major social platforms. Find, manage, and track creator partnerships all in one place.",
+  link: "/creator-partnerships"
 }, {
   icon: Megaphone,
   title: "Organic Brand Campaigns",
-  description: "We design and execute authentic campaigns that resonate with your target audience. From product launches to brand awareness, we create content that converts."
+  description: "We design and execute authentic campaigns that resonate with your target audience. From product launches to brand awareness, we create content that converts.",
+  link: "/brand-campaigns"
 }, {
   icon: Users2,
   title: "Audience & Community Insights",
-  description: "Get deep insights into your audience demographics, behavior, and preferences. We help you understand what makes your community tick and how to grow it."
+  description: "Get deep insights into your audience demographics, behavior, and preferences. We help you understand what makes your community tick and how to grow it.",
+  link: "/automations-support"
 }, {
   icon: Target,
   title: "Brand Strategy & Growth Management",
-  description: "From positioning to execution, we provide comprehensive brand strategy services. We help you define your unique voice and amplify it across all channels."
+  description: "From positioning to execution, we provide comprehensive brand strategy services. We help you define your unique voice and amplify it across all channels.",
+  link: "/growth-strategy"
 }];
 const Services = () => {
   return <section id="services" className="py-20 bg-background tech-grid-dense relative overflow-hidden">
@@ -34,25 +39,27 @@ const Services = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((service, index) => <Card key={index} className="p-8 glass hover:shadow-neon transition-all group cursor-pointer tech-border-animate relative overflow-hidden">
-              {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/10 to-transparent rounded-tr-full" />
-              
-              <div className="relative">
-                <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-neon">
-                  <service.icon className="text-white" size={32} />
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors">{service.title}</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">{service.description}</p>
+          {services.map((service, index) => <Link key={index} to={service.link}>
+              <Card className="p-8 glass hover:shadow-neon transition-all group cursor-pointer tech-border-animate relative overflow-hidden h-full">
+                {/* Corner accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/10 to-transparent rounded-tr-full" />
                 
-                {/* Hover arrow indicator */}
-                <div className="mt-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
-                  <span className="text-sm font-medium">Explore</span>
-                  <div className="w-6 h-0.5 bg-primary rounded-full group-hover:w-12 transition-all" />
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-neon">
+                    <service.icon className="text-white" size={32} />
+                  </div>
+                  <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors">{service.title}</h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed">{service.description}</p>
+                  
+                  {/* Hover arrow indicator */}
+                  <div className="mt-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                    <span className="text-sm font-medium">Explore</span>
+                    <div className="w-6 h-0.5 bg-primary rounded-full group-hover:w-12 transition-all" />
+                  </div>
                 </div>
-              </div>
-            </Card>)}
+              </Card>
+            </Link>)}
         </div>
       </div>
     </section>;

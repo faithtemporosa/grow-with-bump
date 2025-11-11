@@ -46,17 +46,11 @@ const Header = () => {
             <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth">
               Growth Strategy
             </Link>
-            {isHomePage ? (
-              <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow">
+            <Link to="/get-started">
+              <Button className="gradient-primary shadow-glow">
                 Get Started
               </Button>
-            ) : (
-              <Link to="/#contact">
-                <Button className="gradient-primary shadow-glow">
-                  Get Started
-                </Button>
-              </Link>
-            )}
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -79,17 +73,11 @@ const Header = () => {
             <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => setIsMobileMenuOpen(false)}>
               Growth Strategy
             </Link>
-            {isHomePage ? (
-              <Button onClick={() => scrollToSection("contact")} className="gradient-primary shadow-glow w-full">
+            <Link to="/get-started" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="gradient-primary shadow-glow w-full">
                 Get Started
               </Button>
-            ) : (
-              <Link to="/#contact">
-                <Button className="gradient-primary shadow-glow w-full" onClick={() => setIsMobileMenuOpen(false)}>
-                  Get Started
-                </Button>
-              </Link>
-            )}
+            </Link>
           </nav>}
       </div>
     </header>;

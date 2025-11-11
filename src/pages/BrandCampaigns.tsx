@@ -2,12 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Rocket, LineChart, Megaphone, CheckCircle, Target } from "lucide-react";
 
 const BrandCampaigns = () => {
-  const scrollToContact = () => {
-    window.location.href = "/#contact";
-  };
 
   return (
     <div className="min-h-screen">
@@ -27,9 +25,11 @@ const BrandCampaigns = () => {
             <p className="text-xl text-muted-foreground mb-8">
               Data-driven campaigns designed to maximize reach, engagement, and ROI for your brand.
             </p>
-            <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-              Launch Your Campaign
-            </Button>
+            <Link to="/get-started">
+              <Button size="lg" className="gradient-primary shadow-glow text-lg">
+                Launch Your Campaign
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -164,9 +164,11 @@ const BrandCampaigns = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Let's create a campaign that drives real results for your brand.
           </p>
-          <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-            Start Your Campaign
-          </Button>
+          <Link to="/get-started">
+            <Button size="lg" className="gradient-primary shadow-glow text-lg">
+              Start Your Campaign
+            </Button>
+          </Link>
         </div>
       </section>
 

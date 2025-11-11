@@ -2,12 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Bot, Cog, Zap, Clock } from "lucide-react";
 
 const AutomationsSupport = () => {
-  const scrollToContact = () => {
-    window.location.href = "/#contact";
-  };
 
   return (
     <div className="min-h-screen">
@@ -27,9 +25,11 @@ const AutomationsSupport = () => {
             <p className="text-xl text-muted-foreground mb-8">
               Free up your time and maximize efficiency with intelligent automation systems.
             </p>
-            <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-              Automate Your Growth
-            </Button>
+            <Link to="/get-started">
+              <Button size="lg" className="gradient-primary shadow-glow text-lg">
+                Automate Your Growth
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -149,9 +149,11 @@ const AutomationsSupport = () => {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Let AI handle the routine tasks while you focus on strategy and growth.
           </p>
-          <Button onClick={scrollToContact} size="lg" className="gradient-primary shadow-glow text-lg">
-            Get Started
-          </Button>
+          <Link to="/get-started">
+            <Button size="lg" className="gradient-primary shadow-glow text-lg">
+              Get Started
+            </Button>
+          </Link>
         </div>
       </section>
 
