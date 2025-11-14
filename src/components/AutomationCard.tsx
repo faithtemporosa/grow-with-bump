@@ -1,16 +1,44 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Clock, TrendingUp } from "lucide-react";
+import { Clock, TrendingUp, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Automation } from "@/data/automations";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface AutomationCardProps {
   automation: Automation;
-  onAddToCart?: (automation: Automation) => void;
 }
 
-export const AutomationCard = ({ automation, onAddToCart }: AutomationCardProps) => {
+export const AutomationCard = ({ automation }: AutomationCardProps) => {
+  const { addItem, items } = useCart();
+  const { toast } = useToast();
+  const isInCart = items.some((item) => item.id === automation.id);
+
+  const handleAddToCart = () => {
+    if (isInCart) {
+      toast({
+        title: "Already in Cart",
+        description: `${automation.name} is already in your cart.`,
+        variant: "default",
+      });
+      return;
+    }
+
+    addItem({
+      id: automation.id,
+      name: automation.name,
+      price: 500,
+      hoursSaved: automation.hoursSaved,
+    });
+
+    toast({
+      title: "Added to Cart! 🎉",
+      description: `${automation.name} has been added to your cart.`,
+    });
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="aspect-video bg-muted flex items-center justify-center">
@@ -53,10 +81,18 @@ export const AutomationCard = ({ automation, onAddToCart }: AutomationCardProps)
             <Link to={`/automation/${automation.id}`}>View Details</Link>
           </Button>
           <Button 
-            onClick={() => onAddToCart?.(automation)}
+            onClick={handleAddToCart}
             className="flex-1"
+            variant={isInCart ? "secondary" : "default"}
           >
-            Add to Cart
+            {isInCart ? (
+              <>
+                <Check className="w-4 h-4 mr-1" />
+                In Cart
+              </>
+            ) : (
+              "Add to Cart"
+            )}
           </Button>
         </div>
       </div>
