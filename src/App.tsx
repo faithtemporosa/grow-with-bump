@@ -15,6 +15,8 @@ import AutomationsCatalog from "./pages/AutomationsCatalog";
 import AutomationDetail from "./pages/AutomationDetail";
 import BuildMyStack from "./pages/BuildMyStack";
 import Cart from "./pages/Cart";
+import Auth from "./pages/Auth";
+import Wishlist from "./pages/Wishlist";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
             <Route path="/automation/:id" element={<AutomationDetail />} />
             <Route path="/build-my-stack" element={<BuildMyStack />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

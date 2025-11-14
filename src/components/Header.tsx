@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
@@ -13,6 +15,8 @@ const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { itemCount } = useCart();
+  const { user, signOut } = useAuth();
+  const { wishlistIds } = useWishlist();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -48,12 +52,24 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Automations
             </Link>
             <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Build My Stack
+            </Link>
+            <Link to="/wishlist" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth relative inline-flex items-center gap-2">
+              <Heart className="w-5 h-5" />
+              Wishlist
+              {wishlistIds.size > 0 && (
+                <Badge 
+                  variant="secondary" 
+                  className="absolute -top-2 -right-2 h-5 min-w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {wishlistIds.size}
+                </Badge>
+              )}
             </Link>
             <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth relative inline-flex items-center gap-2">
               <ShoppingCart className="w-5 h-5" />
@@ -67,6 +83,19 @@ const Header = () => {
                 </Badge>
               )}
             </Link>
+            {user ? (
+              <Button variant="ghost" size="sm" onClick={() => signOut()} className="gap-2">
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth" onClick={() => window.scrollTo(0, 0)}>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
             <Link to="/get-started" onClick={() => window.scrollTo(0, 0)}>
               <Button className="gradient-primary shadow-glow">
                 Get Started
@@ -88,18 +117,43 @@ const Header = () => {
             <Link to="/build-my-stack" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Build My Stack
             </Link>
+            <Link to="/wishlist" className="text-foreground hover:text-primary transition-smooth text-left flex items-center gap-2" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              <Heart className="w-5 h-5" />
+              Wishlist
+              {wishlistIds.size > 0 && (
+                <Badge 
+                  variant="secondary" 
+                  className="h-5 min-w-5 flex items-center justify-center p-0 text-xs ml-auto"
+                >
+                  {wishlistIds.size}
+                </Badge>
+              )}
+            </Link>
             <Link to="/cart" className="text-foreground hover:text-primary transition-smooth text-left flex items-center gap-2" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               <ShoppingCart className="w-5 h-5" />
               Cart
               {itemCount > 0 && (
                 <Badge 
                   variant="destructive" 
-                  className={`h-5 min-w-5 flex items-center justify-center p-0 text-xs ${badgeAnimate ? 'animate-bounce' : ''}`}
+                  className={`h-5 min-w-5 flex items-center justify-center p-0 text-xs ml-auto ${badgeAnimate ? 'animate-bounce' : ''}`}
                 >
                   {itemCount}
                 </Badge>
               )}
             </Link>
+            {user ? (
+              <Button variant="ghost" size="sm" onClick={() => { signOut(); setIsMobileMenuOpen(false); }} className="gap-2 justify-start">
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+                <Button variant="ghost" size="sm" className="gap-2 w-full justify-start">
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
             <Link to="/get-started" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               <Button className="gradient-primary shadow-glow w-full">
                 Get Started
