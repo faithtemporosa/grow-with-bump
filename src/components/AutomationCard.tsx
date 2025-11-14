@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import type { Automation } from "@/data/automations";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { useParticleTrail } from "@/hooks/use-particle-trail";
 
 interface AutomationCardProps {
   automation: Automation;
@@ -15,6 +16,12 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
   const { addItem, items } = useCart();
   const { toast } = useToast();
   const isInCart = items.some((item) => item.id === automation.id);
+  const addToCartRef = useParticleTrail({
+    color: isInCart ? "hsl(var(--secondary))" : "hsl(var(--primary))",
+    size: 5,
+    lifetime: 800,
+    particlesPerMove: 3,
+  });
 
   const handleAddToCart = () => {
     const cartItem = items.find((item) => item.id === automation.id);
@@ -78,6 +85,7 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
             <Link to={`/automation/${automation.id}`}>View Details</Link>
           </Button>
           <Button 
+            ref={addToCartRef as any}
             onClick={handleAddToCart}
             className="flex-1"
             variant={isInCart ? "secondary" : "default"}
