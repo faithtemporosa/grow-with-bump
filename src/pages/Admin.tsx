@@ -26,6 +26,7 @@ interface Automation {
 interface UserProfile {
   id: string;
   user_id: string;
+  email: string | null;
   created_at: string;
 }
 
@@ -47,6 +48,7 @@ export default function Admin() {
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [userRoles, setUserRoles] = useState<Record<string, string[]>>({});
   const [usersLoading, setUsersLoading] = useState(true);
+  const [emailSearch, setEmailSearch] = useState("");
 
   const [formData, setFormData] = useState({
     id: "",
@@ -505,6 +507,17 @@ export default function Admin() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-4">
+              <Label htmlFor="email-search">Search by Email</Label>
+              <Input
+                id="email-search"
+                type="text"
+                placeholder="Enter email address..."
+                value={emailSearch}
+                onChange={(e) => setEmailSearch(e.target.value)}
+                className="max-w-md"
+              />
+            </div>
             {usersLoading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -515,6 +528,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead>Email</TableHead>
                     <TableHead>User ID</TableHead>
                     <TableHead>Joined</TableHead>
                     <TableHead>Role</TableHead>
@@ -522,12 +536,18 @@ export default function Admin() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((profile) => {
+                  {users
+                    .filter((profile) => {
+                      if (!emailSearch) return true;
+                      return profile.email?.toLowerCase().includes(emailSearch.toLowerCase());
+                    })
+                    .map((profile) => {
                     const isUserAdmin = userRoles[profile.user_id]?.includes("admin");
                     const isCurrentUser = profile.user_id === user?.id;
                     return (
                       <TableRow key={profile.id}>
-                        <TableCell className="font-mono text-sm">{profile.user_id}</TableCell>
+                        <TableCell className="font-medium">{profile.email || "No email"}</TableCell>
+                        <TableCell className="font-mono text-sm text-muted-foreground">{profile.user_id}</TableCell>
                         <TableCell>{new Date(profile.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           {isUserAdmin ? (
