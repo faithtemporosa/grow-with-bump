@@ -23,6 +23,17 @@ interface Automation {
   last_updated: string;
 }
 
+interface UserProfile {
+  id: string;
+  user_id: string;
+  created_at: string;
+}
+
+interface UserRole {
+  user_id: string;
+  role: string;
+}
+
 export default function Admin() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
@@ -32,6 +43,10 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAutomation, setEditingAutomation] = useState<Automation | null>(null);
+  
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [userRoles, setUserRoles] = useState<Record<string, string[]>>({});
+  const [usersLoading, setUsersLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     id: "",
@@ -62,6 +77,7 @@ export default function Admin() {
   useEffect(() => {
     if (isAdmin) {
       fetchAutomations();
+      fetchUsers();
     }
   }, [isAdmin]);
 
@@ -193,6 +209,112 @@ export default function Admin() {
       description: "",
     });
     setEditingAutomation(null);
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const { data: profiles, error: profilesError } = await supabase
+        .from("profiles")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (profilesError) throw profilesError;
+
+      const { data: roles, error: rolesError } = await supabase
+        .from("user_roles")
+        .select("user_id, role");
+
+      if (rolesError) throw rolesError;
+
+      setUsers(profiles || []);
+
+      // Organize roles by user_id
+      const rolesMap: Record<string, string[]> = {};
+      roles?.forEach((role) => {
+        if (!rolesMap[role.user_id]) {
+          rolesMap[role.user_id] = [];
+        }
+        rolesMap[role.user_id].push(role.role);
+      });
+      setUserRoles(rolesMap);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load users.",
+        variant: "destructive",
+      });
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handlePromoteToAdmin = async (userId: string) => {
+    if (userRoles[userId]?.includes("admin")) {
+      toast({
+        title: "Already Admin",
+        description: "This user is already an admin.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .insert([{ user_id: userId, role: "admin" }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "User promoted to admin successfully!",
+      });
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error promoting user:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to promote user.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleRevokeAdmin = async (userId: string) => {
+    if (userId === user?.id) {
+      toast({
+        title: "Cannot Revoke",
+        description: "You cannot revoke your own admin privileges.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!confirm("Are you sure you want to revoke admin privileges from this user?")) return;
+
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .delete()
+        .eq("user_id", userId)
+        .eq("role", "admin");
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Admin privileges revoked successfully!",
+      });
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error revoking admin:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to revoke admin privileges.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (authLoading || adminLoading || (user && !isAdmin && adminLoading)) {
@@ -369,6 +491,77 @@ export default function Admin() {
                       </TableCell>
                     </TableRow>
                   ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>User Role Management</CardTitle>
+            <CardDescription>
+              Manage admin privileges for users in your application.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {usersLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : users.length === 0 ? (
+              <p className="text-center py-8 text-muted-foreground">No users found.</p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User ID</TableHead>
+                    <TableHead>Joined</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {users.map((profile) => {
+                    const isUserAdmin = userRoles[profile.user_id]?.includes("admin");
+                    const isCurrentUser = profile.user_id === user?.id;
+                    return (
+                      <TableRow key={profile.id}>
+                        <TableCell className="font-mono text-sm">{profile.user_id}</TableCell>
+                        <TableCell>{new Date(profile.created_at).toLocaleDateString()}</TableCell>
+                        <TableCell>
+                          {isUserAdmin ? (
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded text-sm font-medium">Admin</span>
+                          ) : (
+                            <span className="px-2 py-1 bg-muted text-muted-foreground rounded text-sm">User</span>
+                          )}
+                          {isCurrentUser && (
+                            <span className="ml-2 text-xs text-muted-foreground">(You)</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {isUserAdmin ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleRevokeAdmin(profile.user_id)}
+                              disabled={isCurrentUser}
+                            >
+                              Revoke Admin
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() => handlePromoteToAdmin(profile.user_id)}
+                            >
+                              Promote to Admin
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             )}
