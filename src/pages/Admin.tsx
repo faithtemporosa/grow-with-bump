@@ -9,9 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Automation {
   id: string;
@@ -51,6 +52,8 @@ export default function Admin() {
   const [emailSearch, setEmailSearch] = useState("");
   const [sortField, setSortField] = useState<"email" | "created_at" | "role">("created_at");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [formData, setFormData] = useState({
     id: "",
@@ -336,7 +339,7 @@ export default function Admin() {
       return profile.email?.toLowerCase().includes(emailSearch.toLowerCase());
     });
 
-    return filteredUsers.sort((a, b) => {
+    const sortedUsers = filteredUsers.sort((a, b) => {
       let comparison = 0;
 
       if (sortField === "email") {
@@ -353,6 +356,15 @@ export default function Admin() {
 
       return sortDirection === "asc" ? comparison : -comparison;
     });
+
+    // Pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return {
+      users: sortedUsers.slice(startIndex, endIndex),
+      totalUsers: sortedUsers.length,
+      totalPages: Math.ceil(sortedUsers.length / itemsPerPage)
+    };
   };
 
   if (authLoading || adminLoading || (user && !isAdmin && adminLoading)) {
@@ -560,67 +572,70 @@ export default function Admin() {
               </div>
             ) : users.length === 0 ? (
               <p className="text-center py-8 text-muted-foreground">No users found.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      <button
-                        onClick={() => handleSort("email")}
-                        className="flex items-center gap-1 hover:text-foreground transition-colors"
-                      >
-                        Email
-                        {sortField === "email" ? (
-                          sortDirection === "asc" ? (
-                            <ArrowUp className="h-4 w-4" />
-                          ) : (
-                            <ArrowDown className="h-4 w-4" />
-                          )
-                        ) : (
-                          <ArrowUpDown className="h-4 w-4 opacity-50" />
-                        )}
-                      </button>
-                    </TableHead>
-                    <TableHead>User ID</TableHead>
-                    <TableHead>
-                      <button
-                        onClick={() => handleSort("created_at")}
-                        className="flex items-center gap-1 hover:text-foreground transition-colors"
-                      >
-                        Joined
-                        {sortField === "created_at" ? (
-                          sortDirection === "asc" ? (
-                            <ArrowUp className="h-4 w-4" />
-                          ) : (
-                            <ArrowDown className="h-4 w-4" />
-                          )
-                        ) : (
-                          <ArrowUpDown className="h-4 w-4 opacity-50" />
-                        )}
-                      </button>
-                    </TableHead>
-                    <TableHead>
-                      <button
-                        onClick={() => handleSort("role")}
-                        className="flex items-center gap-1 hover:text-foreground transition-colors"
-                      >
-                        Role
-                        {sortField === "role" ? (
-                          sortDirection === "asc" ? (
-                            <ArrowUp className="h-4 w-4" />
-                          ) : (
-                            <ArrowDown className="h-4 w-4" />
-                          )
-                        ) : (
-                          <ArrowUpDown className="h-4 w-4 opacity-50" />
-                        )}
-                      </button>
-                    </TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {getSortedAndFilteredUsers().map((profile) => {
+            ) : (() => {
+              const { users: paginatedUsers, totalUsers, totalPages } = getSortedAndFilteredUsers();
+              return (
+                <>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>
+                          <button
+                            onClick={() => handleSort("email")}
+                            className="flex items-center gap-1 hover:text-foreground transition-colors"
+                          >
+                            Email
+                            {sortField === "email" ? (
+                              sortDirection === "asc" ? (
+                                <ArrowUp className="h-4 w-4" />
+                              ) : (
+                                <ArrowDown className="h-4 w-4" />
+                              )
+                            ) : (
+                              <ArrowUpDown className="h-4 w-4 opacity-50" />
+                            )}
+                          </button>
+                        </TableHead>
+                        <TableHead>User ID</TableHead>
+                        <TableHead>
+                          <button
+                            onClick={() => handleSort("created_at")}
+                            className="flex items-center gap-1 hover:text-foreground transition-colors"
+                          >
+                            Joined
+                            {sortField === "created_at" ? (
+                              sortDirection === "asc" ? (
+                                <ArrowUp className="h-4 w-4" />
+                              ) : (
+                                <ArrowDown className="h-4 w-4" />
+                              )
+                            ) : (
+                              <ArrowUpDown className="h-4 w-4 opacity-50" />
+                            )}
+                          </button>
+                        </TableHead>
+                        <TableHead>
+                          <button
+                            onClick={() => handleSort("role")}
+                            className="flex items-center gap-1 hover:text-foreground transition-colors"
+                          >
+                            Role
+                            {sortField === "role" ? (
+                              sortDirection === "asc" ? (
+                                <ArrowUp className="h-4 w-4" />
+                              ) : (
+                                <ArrowDown className="h-4 w-4" />
+                              )
+                            ) : (
+                              <ArrowUpDown className="h-4 w-4 opacity-50" />
+                            )}
+                          </button>
+                        </TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedUsers.map((profile) => {
                     const isUserAdmin = userRoles[profile.user_id]?.includes("admin");
                     const isCurrentUser = profile.user_id === user?.id;
                     return (
@@ -661,9 +676,79 @@ export default function Admin() {
                       </TableRow>
                     );
                   })}
-                </TableBody>
-              </Table>
-            )}
+                    </TableBody>
+                  </Table>
+
+                  <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        Showing {paginatedUsers.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalUsers)} of {totalUsers} users
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-2">
+                        <Label htmlFor="items-per-page" className="text-sm text-muted-foreground">Items per page</Label>
+                        <Select
+                          value={itemsPerPage.toString()}
+                          onValueChange={(value) => {
+                            setItemsPerPage(Number(value));
+                            setCurrentPage(1);
+                          }}
+                        >
+                          <SelectTrigger id="items-per-page" className="w-[70px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="25">25</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(1)}
+                          disabled={currentPage === 1}
+                        >
+                          <ChevronsLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <span className="text-sm text-muted-foreground">
+                          Page {currentPage} of {totalPages || 1}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages || totalPages === 0}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                          disabled={currentPage === totalPages || totalPages === 0}
+                        >
+                          <ChevronsRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
           </CardContent>
         </Card>
       </div>
