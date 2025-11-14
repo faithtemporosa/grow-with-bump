@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Edit, Trash2 } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -49,6 +49,8 @@ export default function Admin() {
   const [userRoles, setUserRoles] = useState<Record<string, string[]>>({});
   const [usersLoading, setUsersLoading] = useState(true);
   const [emailSearch, setEmailSearch] = useState("");
+  const [sortField, setSortField] = useState<"email" | "created_at" | "role">("created_at");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   const [formData, setFormData] = useState({
     id: "",
@@ -319,6 +321,40 @@ export default function Admin() {
     }
   };
 
+  const handleSort = (field: "email" | "created_at" | "role") => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortedAndFilteredUsers = () => {
+    let filteredUsers = users.filter((profile) => {
+      if (!emailSearch) return true;
+      return profile.email?.toLowerCase().includes(emailSearch.toLowerCase());
+    });
+
+    return filteredUsers.sort((a, b) => {
+      let comparison = 0;
+
+      if (sortField === "email") {
+        const emailA = a.email || "";
+        const emailB = b.email || "";
+        comparison = emailA.localeCompare(emailB);
+      } else if (sortField === "created_at") {
+        comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      } else if (sortField === "role") {
+        const roleA = userRoles[a.user_id]?.includes("admin") ? "admin" : "user";
+        const roleB = userRoles[b.user_id]?.includes("admin") ? "admin" : "user";
+        comparison = roleA.localeCompare(roleB);
+      }
+
+      return sortDirection === "asc" ? comparison : -comparison;
+    });
+  };
+
   if (authLoading || adminLoading || (user && !isAdmin && adminLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -528,20 +564,63 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Email</TableHead>
+                    <TableHead>
+                      <button
+                        onClick={() => handleSort("email")}
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        Email
+                        {sortField === "email" ? (
+                          sortDirection === "asc" ? (
+                            <ArrowUp className="h-4 w-4" />
+                          ) : (
+                            <ArrowDown className="h-4 w-4" />
+                          )
+                        ) : (
+                          <ArrowUpDown className="h-4 w-4 opacity-50" />
+                        )}
+                      </button>
+                    </TableHead>
                     <TableHead>User ID</TableHead>
-                    <TableHead>Joined</TableHead>
-                    <TableHead>Role</TableHead>
+                    <TableHead>
+                      <button
+                        onClick={() => handleSort("created_at")}
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        Joined
+                        {sortField === "created_at" ? (
+                          sortDirection === "asc" ? (
+                            <ArrowUp className="h-4 w-4" />
+                          ) : (
+                            <ArrowDown className="h-4 w-4" />
+                          )
+                        ) : (
+                          <ArrowUpDown className="h-4 w-4 opacity-50" />
+                        )}
+                      </button>
+                    </TableHead>
+                    <TableHead>
+                      <button
+                        onClick={() => handleSort("role")}
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        Role
+                        {sortField === "role" ? (
+                          sortDirection === "asc" ? (
+                            <ArrowUp className="h-4 w-4" />
+                          ) : (
+                            <ArrowDown className="h-4 w-4" />
+                          )
+                        ) : (
+                          <ArrowUpDown className="h-4 w-4 opacity-50" />
+                        )}
+                      </button>
+                    </TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users
-                    .filter((profile) => {
-                      if (!emailSearch) return true;
-                      return profile.email?.toLowerCase().includes(emailSearch.toLowerCase());
-                    })
-                    .map((profile) => {
+                  {getSortedAndFilteredUsers().map((profile) => {
                     const isUserAdmin = userRoles[profile.user_id]?.includes("admin");
                     const isCurrentUser = profile.user_id === user?.id;
                     return (
