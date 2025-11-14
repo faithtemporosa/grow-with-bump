@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
-import { X, Check, Plus, Minus } from "lucide-react";
+import { X, Check, Plus, Minus, TrendingDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
@@ -32,9 +32,18 @@ export default function Cart() {
   const [website, setWebsite] = useState("");
   const [additionalInfo, setAdditionalInfo] = useState("");
 
+  const DISCOUNT_TIERS = [
+    { min: 1, max: 1, rate: 0, label: "Standard" },
+    { min: 2, max: 3, rate: 0.05, label: "Volume Saver" },
+    { min: 4, max: 5, rate: 0.10, label: "Business Bundle" },
+    { min: 6, max: 9, rate: 0.15, label: "Enterprise Pack" },
+    { min: 10, max: Infinity, rate: 0.20, label: "Maximum Savings" }
+  ];
+
   const calculatePricing = () => {
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const discountRate = Math.min((totalQuantity - 1) * 0.05, 0.20);
+    const currentTier = DISCOUNT_TIERS.find(tier => totalQuantity >= tier.min && totalQuantity <= tier.max);
+    const discountRate = currentTier?.rate || 0;
     const basePrice = 500;
     const effectivePrice = basePrice * (1 - discountRate);
     const subtotal = totalQuantity * effectivePrice;
@@ -47,7 +56,22 @@ export default function Cart() {
     const total = subtotal + upsellsTotal;
     const totalHoursSaved = cartItems.reduce((sum, item) => sum + (item.hoursSaved * item.quantity), 0);
 
-    return { subtotal, discount, upsellsTotal, total, discountRate, totalHoursSaved };
+    const nextTier = DISCOUNT_TIERS.find(tier => tier.min > totalQuantity);
+    const automationsUntilNextTier = nextTier ? nextTier.min - totalQuantity : 0;
+
+    return { 
+      subtotal, 
+      discount, 
+      upsellsTotal, 
+      total, 
+      discountRate, 
+      totalHoursSaved,
+      currentTier,
+      nextTier,
+      automationsUntilNextTier,
+      totalQuantity,
+      basePrice
+    };
   };
 
   const handleRemoveItem = (id: string) => {
@@ -256,7 +280,60 @@ export default function Cart() {
                     ))}
                   </div>
 
-                  {/* Upsells */}
+                   {/* Volume Discount Tiers */}
+                  <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <TrendingDown className="w-5 h-5 text-primary" />
+                      Volume Discount Tiers
+                    </h3>
+                    <div className="space-y-2">
+                      {DISCOUNT_TIERS.map((tier, index) => {
+                        const isActive = pricing.totalQuantity >= tier.min && pricing.totalQuantity <= tier.max;
+                        const isPast = pricing.totalQuantity > tier.max;
+                        
+                        return (
+                          <div
+                            key={index}
+                            className={`flex items-center justify-between p-3 rounded-lg transition-all ${
+                              isActive 
+                                ? 'bg-primary/20 border-2 border-primary shadow-sm' 
+                                : isPast 
+                                ? 'bg-muted/30 opacity-60' 
+                                : 'bg-background/50 border border-border'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              {isActive && <Check className="w-4 h-4 text-primary" />}
+                              <div>
+                                <div className="font-medium flex items-center gap-2">
+                                  {tier.label}
+                                  {isActive && <Badge className="text-xs">Active</Badge>}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {tier.min === tier.max 
+                                    ? `${tier.min} automation${tier.min > 1 ? 's' : ''}`
+                                    : tier.max === Infinity
+                                    ? `${tier.min}+ automations`
+                                    : `${tier.min}-${tier.max} automations`
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-lg">
+                                {tier.rate === 0 ? '$500' : `$${(500 * (1 - tier.rate)).toFixed(0)}`}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {tier.rate > 0 ? `${Math.round(tier.rate * 100)}% off` : 'per month'}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Card>
+
+                   {/* Upsells */}
                   <Card className="p-6">
                     <h3 className="font-semibold text-lg mb-4">Enhance Your Stack</h3>
                     <div className="space-y-3">
@@ -300,15 +377,25 @@ export default function Cart() {
                     <span className="font-medium">${pricing.subtotal.toFixed(2)}</span>
                   </div>
                   
-                  {pricing.discount > 0 && (
+                   {pricing.discount > 0 && (
                     <div className="flex justify-between text-green-600">
-                      <span>
-                        Multi-automation discount
-                        <Badge variant="secondary" className="ml-2">
+                      <span className="flex items-center gap-2">
+                        <TrendingDown className="w-4 h-4" />
+                        {pricing.currentTier?.label} Discount
+                        <Badge variant="secondary" className="ml-1">
                           {Math.round(pricing.discountRate * 100)}% off
                         </Badge>
                       </span>
                       <span className="font-medium">-${pricing.discount.toFixed(2)}</span>
+                    </div>
+                  )}
+
+                  {pricing.nextTier && pricing.automationsUntilNextTier > 0 && (
+                    <div className="flex items-center justify-between text-xs text-muted-foreground bg-muted/30 px-3 py-2 rounded-md">
+                      <span>Add {pricing.automationsUntilNextTier} more to unlock {Math.round(pricing.nextTier.rate * 100)}% off</span>
+                      <Badge variant="outline" className="text-xs">
+                        Save ${((pricing.totalQuantity + pricing.automationsUntilNextTier) * pricing.basePrice * pricing.nextTier.rate - pricing.discount).toFixed(0)}
+                      </Badge>
                     </div>
                   )}
 
