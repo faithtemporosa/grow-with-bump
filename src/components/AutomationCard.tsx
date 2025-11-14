@@ -7,6 +7,7 @@ import type { Automation } from "@/data/automations";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useParticleTrail } from "@/hooks/use-particle-trail";
+import { useHapticFeedback } from "@/hooks/use-haptic-feedback";
 
 interface AutomationCardProps {
   automation: Automation;
@@ -23,7 +24,15 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
     particlesPerMove: 3,
   });
 
-  const handleAddToCart = () => {
+  const { elementRef: hapticRef, createRipple } = useHapticFeedback({
+    rippleColor: isInCart ? "hsl(var(--secondary) / 0.4)" : "hsl(var(--primary) / 0.4)",
+    rippleDuration: 600,
+    scaleAmount: 0.95,
+  });
+
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    createRipple(e);
+    
     const cartItem = items.find((item) => item.id === automation.id);
     
     addItem({
@@ -85,7 +94,10 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
             <Link to={`/automation/${automation.id}`}>View Details</Link>
           </Button>
           <Button 
-            ref={addToCartRef as any}
+            ref={(node) => {
+              (addToCartRef as any).current = node;
+              (hapticRef as any).current = node;
+            }}
             onClick={handleAddToCart}
             className="flex-1"
             variant={isInCart ? "secondary" : "default"}
