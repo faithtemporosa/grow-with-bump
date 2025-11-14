@@ -9,11 +9,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { UserStatistics } from "@/components/admin/UserStatistics";
+import { ActivityLogs } from "@/components/admin/ActivityLogs";
+import { exportUsersToCSV } from "@/utils/exportUsers";
 
 interface Automation {
   id: string;
@@ -475,6 +478,50 @@ export default function Admin() {
     }
   };
 
+  const handleExportUsers = () => {
+    const { users: filteredUsers } = getSortedAndFilteredUsers();
+    const exportData = filteredUsers.map(profile => ({
+      email: profile.email || "N/A",
+      user_id: profile.user_id,
+      role: userRoles[profile.user_id]?.includes("admin") ? "Admin" : "User",
+      joined_date: new Date(profile.created_at).toLocaleDateString()
+    }));
+
+    exportUsersToCSV(exportData);
+    
+    toast({
+      title: "Export Successful",
+      description: `Exported ${exportData.length} user(s) to CSV.`,
+    });
+  };
+
+  const handleExportSelected = () => {
+    if (selectedUsers.size === 0) {
+      toast({
+        title: "No Users Selected",
+        description: "Please select users to export.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const exportData = users
+      .filter(profile => selectedUsers.has(profile.user_id))
+      .map(profile => ({
+        email: profile.email || "N/A",
+        user_id: profile.user_id,
+        role: userRoles[profile.user_id]?.includes("admin") ? "Admin" : "User",
+        joined_date: new Date(profile.created_at).toLocaleDateString()
+      }));
+
+    exportUsersToCSV(exportData);
+    
+    toast({
+      title: "Export Successful",
+      description: `Exported ${exportData.length} selected user(s) to CSV.`,
+    });
+  };
+
   if (authLoading || adminLoading || (user && !isAdmin && adminLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -493,7 +540,7 @@ export default function Admin() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-bold text-foreground mb-2">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Manage automations and send notifications to users</p>
+            <p className="text-muted-foreground">Manage automations, users, and view analytics</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={(open) => {
             setDialogOpen(open);
@@ -595,7 +642,9 @@ export default function Admin() {
           </Dialog>
         </div>
 
-        <Card>
+        <UserStatistics />
+
+        <Card className="mt-8">
           <CardHeader>
             <CardTitle>Automations</CardTitle>
             <CardDescription>
@@ -655,6 +704,8 @@ export default function Admin() {
           </CardContent>
         </Card>
 
+        <ActivityLogs />
+
         <Card className="mt-8">
           <CardHeader>
             <CardTitle>User Role Management</CardTitle>
@@ -663,16 +714,26 @@ export default function Admin() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="mb-4">
-              <Label htmlFor="email-search">Search by Email</Label>
-              <Input
-                id="email-search"
-                type="text"
-                placeholder="Enter email address..."
-                value={emailSearch}
-                onChange={(e) => setEmailSearch(e.target.value)}
-                className="max-w-md"
-              />
+            <div className="flex gap-4 mb-4">
+              <div className="flex-1">
+                <Label htmlFor="email-search">Search by Email</Label>
+                <Input
+                  id="email-search"
+                  type="text"
+                  placeholder="Enter email address..."
+                  value={emailSearch}
+                  onChange={(e) => setEmailSearch(e.target.value)}
+                />
+              </div>
+              <div className="flex items-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={handleExportUsers}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Export All
+                </Button>
+              </div>
             </div>
             
             {selectedUsers.size > 0 && (
@@ -681,6 +742,14 @@ export default function Admin() {
                   {selectedUsers.size} user(s) selected
                 </span>
                 <div className="flex gap-2 ml-auto">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleExportSelected}
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Export Selected
+                  </Button>
                   <Button
                     variant="default"
                     size="sm"
