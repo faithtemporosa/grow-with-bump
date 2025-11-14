@@ -1,13 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Clock, TrendingUp, Check } from "lucide-react";
+import { Clock, TrendingUp, Check, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Automation } from "@/data/automations";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { useParticleTrail } from "@/hooks/use-particle-trail";
 import { useHapticFeedback } from "@/hooks/use-haptic-feedback";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 interface AutomationCardProps {
   automation: Automation;
@@ -16,7 +17,9 @@ interface AutomationCardProps {
 export const AutomationCard = ({ automation }: AutomationCardProps) => {
   const { addItem, items } = useCart();
   const { toast } = useToast();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const isInCart = items.some((item) => item.id === automation.id);
+  const isSaved = isInWishlist(automation.id);
   const addToCartRef = useParticleTrail({
     color: isInCart ? "hsl(var(--secondary))" : "hsl(var(--primary))",
     size: 5,
@@ -54,12 +57,20 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-video bg-muted flex items-center justify-center">
+      <div className="aspect-video bg-muted flex items-center justify-center relative group">
         <img 
           src={automation.thumbnail} 
           alt={automation.name}
           className="w-full h-full object-cover"
         />
+        <Button
+          variant="secondary"
+          size="icon"
+          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={() => toggleWishlist(automation.id)}
+        >
+          <Heart className={`w-4 h-4 ${isSaved ? "fill-current text-red-500" : ""}`} />
+        </Button>
       </div>
       <div className="p-6 space-y-4">
         <div className="space-y-2">
