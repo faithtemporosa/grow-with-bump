@@ -17,6 +17,7 @@ import BuildMyStack from "./pages/BuildMyStack";
 import Cart from "./pages/Cart";
 import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/cart" element={<Cart />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

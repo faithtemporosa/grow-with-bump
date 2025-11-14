@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User } from "lucide-react";
+import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -84,10 +84,18 @@ const Header = () => {
               )}
             </Link>
             {user ? (
-              <Button variant="ghost" size="sm" onClick={() => signOut()} className="gap-2">
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
+              <>
+                <Link to="/settings" onClick={() => window.scrollTo(0, 0)}>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="sm" onClick={() => signOut()} className="gap-2">
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <Link to="/auth" onClick={() => window.scrollTo(0, 0)}>
                 <Button variant="ghost" size="sm" className="gap-2">
@@ -142,10 +150,18 @@ const Header = () => {
               )}
             </Link>
             {user ? (
-              <Button variant="ghost" size="sm" onClick={() => { signOut(); setIsMobileMenuOpen(false); }} className="gap-2 justify-start">
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
+              <>
+                <Link to="/settings" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+                  <Button variant="ghost" size="sm" className="gap-2 w-full justify-start">
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="sm" onClick={() => { signOut(); setIsMobileMenuOpen(false); }} className="gap-2 justify-start">
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <Link to="/auth" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
                 <Button variant="ghost" size="sm" className="gap-2 w-full justify-start">
