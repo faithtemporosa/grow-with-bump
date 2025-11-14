@@ -13,6 +13,7 @@ import { Loader2, Plus, Edit, Trash2, ArrowUpDown, ArrowUp, ArrowDown, ChevronLe
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Automation {
   id: string;
@@ -54,6 +55,7 @@ export default function Admin() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
 
   const [formData, setFormData] = useState({
     id: "",
@@ -367,6 +369,112 @@ export default function Admin() {
     };
   };
 
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      const { users: paginatedUsers } = getSortedAndFilteredUsers();
+      const newSelected = new Set(selectedUsers);
+      paginatedUsers.forEach(user => newSelected.add(user.user_id));
+      setSelectedUsers(newSelected);
+    } else {
+      setSelectedUsers(new Set());
+    }
+  };
+
+  const handleSelectUser = (userId: string, checked: boolean) => {
+    const newSelected = new Set(selectedUsers);
+    if (checked) {
+      newSelected.add(userId);
+    } else {
+      newSelected.delete(userId);
+    }
+    setSelectedUsers(newSelected);
+  };
+
+  const handleBulkPromoteToAdmin = async () => {
+    const usersToPromote = Array.from(selectedUsers).filter(
+      userId => !userRoles[userId]?.includes("admin")
+    );
+
+    if (usersToPromote.length === 0) {
+      toast({
+        title: "No Users to Promote",
+        description: "Selected users are already admins.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to promote ${usersToPromote.length} user(s) to admin?`)) return;
+
+    try {
+      const insertData = usersToPromote.map(userId => ({
+        user_id: userId,
+        role: "admin" as const
+      }));
+
+      const { error } = await supabase
+        .from("user_roles")
+        .insert(insertData);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Successfully promoted ${usersToPromote.length} user(s) to admin!`,
+      });
+      setSelectedUsers(new Set());
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error bulk promoting users:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to promote users.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBulkRevokeAdmin = async () => {
+    const usersToRevoke = Array.from(selectedUsers).filter(
+      userId => userRoles[userId]?.includes("admin") && userId !== user?.id
+    );
+
+    if (usersToRevoke.length === 0) {
+      toast({
+        title: "No Users to Revoke",
+        description: "Selected users are not admins or you cannot revoke your own privileges.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!confirm(`Are you sure you want to revoke admin privileges from ${usersToRevoke.length} user(s)?`)) return;
+
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .delete()
+        .in("user_id", usersToRevoke)
+        .eq("role", "admin");
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Successfully revoked admin privileges from ${usersToRevoke.length} user(s)!`,
+      });
+      setSelectedUsers(new Set());
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error bulk revoking admin:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to revoke admin privileges.",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (authLoading || adminLoading || (user && !isAdmin && adminLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -566,6 +674,37 @@ export default function Admin() {
                 className="max-w-md"
               />
             </div>
+            
+            {selectedUsers.size > 0 && (
+              <div className="mb-4 flex items-center gap-2 p-4 bg-muted rounded-lg">
+                <span className="text-sm font-medium">
+                  {selectedUsers.size} user(s) selected
+                </span>
+                <div className="flex gap-2 ml-auto">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={handleBulkPromoteToAdmin}
+                  >
+                    Promote to Admin
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleBulkRevokeAdmin}
+                  >
+                    Revoke Admin
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedUsers(new Set())}
+                  >
+                    Clear Selection
+                  </Button>
+                </div>
+              </div>
+            )}
             {usersLoading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -579,6 +718,12 @@ export default function Admin() {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={paginatedUsers.length > 0 && paginatedUsers.every(user => selectedUsers.has(user.user_id))}
+                            onCheckedChange={handleSelectAll}
+                          />
+                        </TableHead>
                         <TableHead>
                           <button
                             onClick={() => handleSort("email")}
@@ -640,6 +785,12 @@ export default function Admin() {
                     const isCurrentUser = profile.user_id === user?.id;
                     return (
                       <TableRow key={profile.id}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedUsers.has(profile.user_id)}
+                            onCheckedChange={(checked) => handleSelectUser(profile.user_id, checked as boolean)}
+                          />
+                        </TableCell>
                         <TableCell className="font-medium">{profile.email || "No email"}</TableCell>
                         <TableCell className="font-mono text-sm text-muted-foreground">{profile.user_id}</TableCell>
                         <TableCell>{new Date(profile.created_at).toLocaleDateString()}</TableCell>
