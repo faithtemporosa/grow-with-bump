@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
-import { X, Check } from "lucide-react";
+import { X, Check, Plus, Minus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
@@ -21,7 +21,7 @@ const UPSELLS = [
 ];
 
 export default function Cart() {
-  const { items: cartItems, removeItem } = useCart();
+  const { items: cartItems, removeItem, updateQuantity } = useCart();
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const { toast } = useToast();
@@ -33,19 +33,19 @@ export default function Cart() {
   const [additionalInfo, setAdditionalInfo] = useState("");
 
   const calculatePricing = () => {
-    const count = cartItems.length;
-    const discountRate = Math.min((count - 1) * 0.05, 0.20);
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const discountRate = Math.min((totalQuantity - 1) * 0.05, 0.20);
     const basePrice = 500;
     const effectivePrice = basePrice * (1 - discountRate);
-    const subtotal = count * effectivePrice;
-    const discount = (count * basePrice) - subtotal;
+    const subtotal = totalQuantity * effectivePrice;
+    const discount = (totalQuantity * basePrice) - subtotal;
     
     const upsellsTotal = UPSELLS
       .filter(u => selectedUpsells.includes(u.id))
       .reduce((sum, u) => sum + u.price, 0);
     
     const total = subtotal + upsellsTotal;
-    const totalHoursSaved = cartItems.reduce((sum, item) => sum + item.hoursSaved, 0);
+    const totalHoursSaved = cartItems.reduce((sum, item) => sum + (item.hoursSaved * item.quantity), 0);
 
     return { subtotal, discount, upsellsTotal, total, discountRate, totalHoursSaved };
   };
@@ -221,14 +221,36 @@ export default function Cart() {
                               <span>${item.price}/month</span>
                             </div>
                           </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRemoveItem(item.id)}
-                            className="text-destructive hover:text-destructive"
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              >
+                                <Minus className="h-3 w-3" />
+                              </Button>
+                              <span className="w-8 text-center font-medium">{item.quantity}</span>
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              >
+                                <Plus className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <span className="font-semibold min-w-[80px] text-right">${item.price * item.quantity}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
                       </Card>
                     ))}

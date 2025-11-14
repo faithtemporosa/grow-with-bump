@@ -17,26 +17,22 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
   const isInCart = items.some((item) => item.id === automation.id);
 
   const handleAddToCart = () => {
-    if (isInCart) {
-      toast({
-        title: "Already in Cart",
-        description: `${automation.name} is already in your cart.`,
-        variant: "default",
-      });
-      return;
-    }
-
+    const cartItem = items.find((item) => item.id === automation.id);
+    
     addItem({
       id: automation.id,
       name: automation.name,
       price: 500,
       hoursSaved: automation.hoursSaved,
       thumbnail: automation.thumbnail,
+      quantity: 1,
     });
 
     toast({
-      title: "Added to Cart! 🎉",
-      description: `${automation.name} has been added to your cart.`,
+      title: cartItem ? "Quantity Updated! 🎉" : "Added to Cart! 🎉",
+      description: cartItem 
+        ? `${automation.name} quantity increased to ${cartItem.quantity + 1}.`
+        : `${automation.name} has been added to your cart.`,
     });
   };
 

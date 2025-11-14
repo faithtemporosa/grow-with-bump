@@ -6,12 +6,14 @@ export interface CartItem {
   price: number;
   hoursSaved: number;
   thumbnail?: string;
+  quantity: number;
 }
 
 interface CartContextType {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
   recentlyAddedItem: CartItem | null;
@@ -34,10 +36,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addItem = (item: CartItem) => {
     setItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);
-      if (exists) return prev;
-      setRecentlyAddedItem(item);
-      return [...prev, item];
+      if (exists) {
+        setRecentlyAddedItem({ ...exists, quantity: exists.quantity + 1 });
+        return prev.map((i) => 
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      }
+      const newItem = { ...item, quantity: 1 };
+      setRecentlyAddedItem(newItem);
+      return [...prev, newItem];
     });
+  };
+
+  const updateQuantity = (id: string, quantity: number) => {
+    if (quantity < 1) {
+      removeItem(id);
+      return;
+    }
+    setItems((prev) => prev.map((item) => 
+      item.id === id ? { ...item, quantity } : item
+    ));
   };
 
   const clearRecentlyAdded = () => {
@@ -58,6 +76,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         items,
         addItem,
         removeItem,
+        updateQuantity,
         clearCart,
         itemCount: items.length,
         recentlyAddedItem,
