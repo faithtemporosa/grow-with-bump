@@ -8,6 +8,7 @@ import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [badgeAnimate, setBadgeAnimate] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { itemCount } = useCart();
@@ -18,6 +19,14 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (itemCount > 0) {
+      setBadgeAnimate(true);
+      const timer = setTimeout(() => setBadgeAnimate(false), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [itemCount]);
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -46,7 +55,10 @@ const Header = () => {
               <ShoppingCart className="w-5 h-5" />
               Cart
               {itemCount > 0 && (
-                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 min-w-5 flex items-center justify-center p-0 text-xs">
+                <Badge 
+                  variant="destructive" 
+                  className={`absolute -top-2 -right-2 h-5 min-w-5 flex items-center justify-center p-0 text-xs ${badgeAnimate ? 'animate-bounce' : ''}`}
+                >
                   {itemCount}
                 </Badge>
               )}
@@ -76,7 +88,10 @@ const Header = () => {
               <ShoppingCart className="w-5 h-5" />
               Cart
               {itemCount > 0 && (
-                <Badge variant="destructive" className="h-5 min-w-5 flex items-center justify-center p-0 text-xs">
+                <Badge 
+                  variant="destructive" 
+                  className={`h-5 min-w-5 flex items-center justify-center p-0 text-xs ${badgeAnimate ? 'animate-bounce' : ''}`}
+                >
                   {itemCount}
                 </Badge>
               )}
