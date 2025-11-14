@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User, Settings } from "lucide-react";
+import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User, Settings, Shield } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { useAdmin } from "@/hooks/use-admin";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import { NotificationCenter } from "@/components/NotificationCenter";
 import logo from "@/assets/bump-syndicate-logo.png";
@@ -18,6 +19,7 @@ const Header = () => {
   const { itemCount } = useCart();
   const { user, signOut } = useAuth();
   const { wishlistIds } = useWishlist();
+  const { isAdmin } = useAdmin();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -87,6 +89,14 @@ const Header = () => {
             {user && <NotificationCenter />}
             {user ? (
               <>
+                {isAdmin && (
+                  <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <Shield className="w-4 h-4" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
                 <Link to="/settings" onClick={() => window.scrollTo(0, 0)}>
                   <Button variant="ghost" size="sm" className="gap-2">
                     <Settings className="w-4 h-4" />
@@ -153,6 +163,14 @@ const Header = () => {
             </Link>
             {user ? (
               <>
+                {isAdmin && (
+                  <Link to="/admin" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+                    <Button variant="ghost" size="sm" className="gap-2 w-full justify-start">
+                      <Shield className="w-4 h-4" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
                 <Link to="/settings" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
                   <Button variant="ghost" size="sm" className="gap-2 w-full justify-start">
                     <Settings className="w-4 h-4" />
