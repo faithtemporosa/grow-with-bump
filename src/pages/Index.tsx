@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ROICalculator from "@/components/ROICalculator";
 import { CheckCircle2, Clock, Zap, DollarSign, TrendingUp, Mail, BarChart3, ShoppingBag, FolderKanban } from "lucide-react";
+import { Link } from "react-router-dom";
 import bumpsyndicate from "@/assets/bump-syndicate-logo.png";
 
 const Index = () => {
@@ -106,11 +107,11 @@ const Index = () => {
               Stop doing repetitive work. Let AI handle your email, marketing, analytics, and operations — fully managed for one flat monthly fee.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-fade-in">
-              <Button size="lg" className="gradient-primary shadow-glow text-lg px-8 h-14">
-                Browse Automations
+              <Button size="lg" className="gradient-primary shadow-glow text-lg px-8 h-14" asChild>
+                <Link to="/catalog">Browse Automations</Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 h-14">
-                Book Enterprise Consultation
+              <Button size="lg" variant="outline" className="text-lg px-8 h-14" asChild>
+                <Link to="/get-started">Book Enterprise Consultation</Link>
               </Button>
             </div>
             <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground pt-8 border-t border-border/50">
@@ -195,8 +196,8 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Button size="lg" className="gradient-primary shadow-glow">
-              View All Automations
+            <Button size="lg" className="gradient-primary shadow-glow" asChild>
+              <Link to="/catalog">View All Automations</Link>
             </Button>
           </div>
         </div>
@@ -238,11 +239,11 @@ const Index = () => {
             Join hundreds of founders who've reclaimed their time with AI automation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 h-14">
-              Browse Automations
+            <Button size="lg" variant="secondary" className="text-lg px-8 h-14" asChild>
+              <Link to="/catalog">Browse Automations</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              Book Consultation
+            <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+              <Link to="/get-started">Book Consultation</Link>
             </Button>
           </div>
         </div>

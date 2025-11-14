@@ -33,19 +33,16 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
-              Creator Partnerships
+            <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
+              Automations
             </Link>
-            <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
-              Brand Campaigns
+            <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
+              Build My Stack
             </Link>
-            <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
-              Automation
+            <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
+              Cart
             </Link>
-            <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
-              Growth Strategy
-            </Link>
-            <Link to="/" onClick={() => window.scrollTo(0, 0)}>
+            <Link to="/get-started" onClick={() => window.scrollTo(0, 0)}>
               <Button className="gradient-primary shadow-glow">
                 Get Started
               </Button>
@@ -60,19 +57,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && <nav className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
-            <Link to="/creator-partnerships" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-              Creator Partnerships
+            <Link to="/catalog" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              Automations
             </Link>
-            <Link to="/brand-campaigns" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-              Brand Campaigns
+            <Link to="/build-my-stack" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              Build My Stack
             </Link>
-            <Link to="/automations-support" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-              Automation
+            <Link to="/cart" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              Cart
             </Link>
-            <Link to="/growth-strategy" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-              Growth Strategy
-            </Link>
-            <Link to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+            <Link to="/get-started" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               <Button className="gradient-primary shadow-glow w-full">
                 Get Started
               </Button>

@@ -10,6 +10,10 @@ import BrandCampaigns from "./pages/BrandCampaigns";
 import AutomationsSupport from "./pages/AutomationsSupport";
 import GrowthStrategy from "./pages/GrowthStrategy";
 import GetStarted from "./pages/GetStarted";
+import AutomationsCatalog from "./pages/AutomationsCatalog";
+import AutomationDetail from "./pages/AutomationDetail";
+import BuildMyStack from "./pages/BuildMyStack";
+import Cart from "./pages/Cart";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +30,10 @@ const App = () => (
           <Route path="/automations-support" element={<AutomationsSupport />} />
           <Route path="/growth-strategy" element={<GrowthStrategy />} />
           <Route path="/get-started" element={<GetStarted />} />
+          <Route path="/catalog" element={<AutomationsCatalog />} />
+          <Route path="/automation/:id" element={<AutomationDetail />} />
+          <Route path="/build-my-stack" element={<BuildMyStack />} />
+          <Route path="/cart" element={<Cart />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
