@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import confetti from "canvas-confetti";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ export default function Cart() {
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const { toast } = useToast();
+  const previousTierRef = useRef<number>(0);
 
   // Intake form state
   const [businessName, setBusinessName] = useState("");
@@ -99,6 +101,51 @@ export default function Cart() {
   };
 
   const pricing = calculatePricing();
+
+  // Confetti effect when unlocking new tier
+  useEffect(() => {
+    const currentTierIndex = DISCOUNT_TIERS.findIndex(
+      tier => tier.min === pricing.currentTier?.min
+    );
+    
+    if (currentTierIndex > previousTierRef.current && previousTierRef.current !== 0 && pricing.currentTier) {
+      // Trigger confetti animation
+      const duration = 3000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+      const interval = window.setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          return;
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        });
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        });
+      }, 250);
+
+      toast({
+        title: "🎉 New Tier Unlocked!",
+        description: `You've reached ${pricing.currentTier.label} - ${Math.round(pricing.discountRate * 100)}% off!`
+      });
+    }
+    
+    previousTierRef.current = currentTierIndex;
+  }, [pricing.currentTier, pricing.discountRate, toast]);
 
   if (showCheckout) {
     return (
