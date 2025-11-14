@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { automations, categories, type Automation, type AutomationCategory } from "@/data/automations";
-import { useToast } from "@/hooks/use-toast";
+import { automations, categories, type AutomationCategory } from "@/data/automations";
 
 export default function AutomationsCatalog() {
   const [selectedCategories, setSelectedCategories] = useState<AutomationCategory[]>([]);
   const [selectedRoiLevels, setSelectedRoiLevels] = useState<string[]>([]);
-  const { toast } = useToast();
 
   const filteredAutomations = automations.filter((automation) => {
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(automation.category);
@@ -34,13 +32,6 @@ export default function AutomationsCatalog() {
         ? prev.filter((l) => l !== level)
         : [...prev, level]
     );
-  };
-
-  const handleAddToCart = (automation: Automation) => {
-    toast({
-      title: "Added to Cart",
-      description: `${automation.name} has been added to your cart.`,
-    });
   };
 
   const resetFilters = () => {
@@ -136,7 +127,6 @@ export default function AutomationsCatalog() {
                 <AutomationCard
                   key={automation.id}
                   automation={automation}
-                  onAddToCart={handleAddToCart}
                 />
               ))}
             </div>

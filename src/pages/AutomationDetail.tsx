@@ -38,6 +38,15 @@ export default function AutomationDetail() {
   const handleAddToCart = () => {
     if (!automation) return;
     
+    if (isInCart) {
+      toast({
+        title: "Already in Cart",
+        description: `${automation.name} is already in your cart.`,
+        variant: "default",
+      });
+      return;
+    }
+    
     addItem({
       id: automation.id,
       name: automation.name,
@@ -46,7 +55,7 @@ export default function AutomationDetail() {
     });
     
     toast({
-      title: "Added to Cart",
+      title: "Added to Cart! 🎉",
       description: `${automation.name} has been added to your cart.`,
     });
   };
