@@ -7,6 +7,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
+import { NotificationCenter } from "@/components/NotificationCenter";
 import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,6 +84,7 @@ const Header = () => {
                 </Badge>
               )}
             </Link>
+            {user && <NotificationCenter />}
             {user ? (
               <>
                 <Link to="/settings" onClick={() => window.scrollTo(0, 0)}>
