@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { X, Check, Plus, Minus, TrendingDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -279,6 +280,47 @@ export default function Cart() {
                       </Card>
                     ))}
                   </div>
+
+                   {/* Progress to Next Tier */}
+                  {pricing.nextTier && (
+                    <Card className="p-6 bg-gradient-to-r from-primary/10 via-primary/5 to-background border-primary/20">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-semibold text-sm text-muted-foreground">Current Tier</h4>
+                            <p className="text-lg font-bold text-foreground">{pricing.currentTier?.label}</p>
+                          </div>
+                          <div className="text-right">
+                            <h4 className="font-semibold text-sm text-muted-foreground">Next Tier</h4>
+                            <p className="text-lg font-bold text-primary">{pricing.nextTier.label}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                              {pricing.totalQuantity} of {pricing.nextTier.min} automations
+                            </span>
+                            <span className="font-semibold text-primary">
+                              {pricing.automationsUntilNextTier} more to unlock {Math.round(pricing.nextTier.rate * 100)}% off
+                            </span>
+                          </div>
+                          
+                          <Progress 
+                            value={(pricing.totalQuantity / pricing.nextTier.min) * 100} 
+                            className="h-3 animate-fade-in"
+                          />
+                          
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>Save ${pricing.discount.toFixed(0)} now</span>
+                            <span className="text-primary font-semibold">
+                              Save ${((pricing.totalQuantity + pricing.automationsUntilNextTier) * pricing.basePrice * pricing.nextTier.rate).toFixed(0)} at next tier
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  )}
 
                    {/* Volume Discount Tiers */}
                   <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
