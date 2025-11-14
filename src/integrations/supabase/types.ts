@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      automations: {
+        Row: {
+          category: string
+          description: string | null
+          features: string[]
+          id: string
+          last_updated: string
+          name: string
+          price: number
+        }
+        Insert: {
+          category: string
+          description?: string | null
+          features: string[]
+          id: string
+          last_updated?: string
+          name: string
+          price: number
+        }
+        Update: {
+          category?: string
+          description?: string | null
+          features?: string[]
+          id?: string
+          last_updated?: string
+          name?: string
+          price?: number
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           brand_name: string | null
