@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { MiniCartPanel } from "@/components/MiniCartPanel";
 import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,8 +37,11 @@ const Header = () => {
       setIsMobileMenuOpen(false);
     }
   };
-  return <header className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${isScrolled ? "glass border-b border-primary/10 shadow-neon" : "bg-transparent"}`}>
-      <div className="container mx-auto px-4 py-4">
+  return (
+    <>
+      <MiniCartPanel />
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-smooth ${isScrolled ? "glass border-b border-primary/10 shadow-neon" : "bg-transparent"}`}>
+        <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-3">
             <img src={logo} alt="Bump Syndicate Logo" className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full shadow-neon cursor-pointer transition-transform duration-300 hover:scale-110" />
@@ -102,7 +106,9 @@ const Header = () => {
               </Button>
             </Link>
           </nav>}
-      </div>
-    </header>;
+        </div>
+      </header>
+    </>
+  );
 };
 export default Header;

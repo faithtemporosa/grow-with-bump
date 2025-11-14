@@ -31,6 +31,7 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
       name: automation.name,
       price: 500,
       hoursSaved: automation.hoursSaved,
+      thumbnail: automation.thumbnail,
     });
 
     toast({

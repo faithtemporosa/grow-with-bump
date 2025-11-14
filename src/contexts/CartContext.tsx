@@ -5,6 +5,7 @@ export interface CartItem {
   name: string;
   price: number;
   hoursSaved: number;
+  thumbnail?: string;
 }
 
 interface CartContextType {
@@ -13,6 +14,8 @@ interface CartContextType {
   removeItem: (id: string) => void;
   clearCart: () => void;
   itemCount: number;
+  recentlyAddedItem: CartItem | null;
+  clearRecentlyAdded: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -22,6 +25,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem("cart-items");
     return saved ? JSON.parse(saved) : [];
   });
+  const [recentlyAddedItem, setRecentlyAddedItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
     localStorage.setItem("cart-items", JSON.stringify(items));
@@ -31,8 +35,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);
       if (exists) return prev;
+      setRecentlyAddedItem(item);
       return [...prev, item];
     });
+  };
+
+  const clearRecentlyAdded = () => {
+    setRecentlyAddedItem(null);
   };
 
   const removeItem = (id: string) => {
@@ -51,6 +60,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeItem,
         clearCart,
         itemCount: items.length,
+        recentlyAddedItem,
+        clearRecentlyAdded,
       }}
     >
       {children}

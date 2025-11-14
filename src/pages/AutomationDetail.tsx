@@ -52,6 +52,7 @@ export default function AutomationDetail() {
       name: automation.name,
       price: 500,
       hoursSaved: automation.hoursSaved,
+      thumbnail: automation.thumbnail,
     });
     
     toast({
