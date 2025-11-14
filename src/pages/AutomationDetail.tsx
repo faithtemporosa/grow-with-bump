@@ -8,12 +8,15 @@ import { Separator } from "@/components/ui/separator";
 import { automations } from "@/data/automations";
 import { ArrowLeft, Check, Clock, TrendingUp, Wrench } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 import ROICalculator from "@/components/ROICalculator";
 
 export default function AutomationDetail() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { addItem, items } = useCart();
   const automation = automations.find((a) => a.id === id);
+  const isInCart = automation ? items.some((item) => item.id === automation.id) : false;
 
   if (!automation) {
     return (
@@ -33,6 +36,15 @@ export default function AutomationDetail() {
   }
 
   const handleAddToCart = () => {
+    if (!automation) return;
+    
+    addItem({
+      id: automation.id,
+      name: automation.name,
+      price: 500,
+      hoursSaved: automation.hoursSaved,
+    });
+    
     toast({
       title: "Added to Cart",
       description: `${automation.name} has been added to your cart.`,

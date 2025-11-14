@@ -12,28 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
 import { X, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-// This would normally come from a cart context/state management
-const MOCK_CART_ITEMS = [
-  {
-    id: "email-ai-summarize",
-    name: "AI-Powered Email Summarize + Auto-Reply",
-    price: 500,
-    hoursSaved: 30
-  },
-  {
-    id: "seo-keyword-report",
-    name: "Weekly SEO Keyword Report",
-    price: 500,
-    hoursSaved: 20
-  },
-  {
-    id: "analytics-summary",
-    name: "Umami Analytics → AI Summary",
-    price: 500,
-    hoursSaved: 20
-  }
-];
+import { useCart } from "@/contexts/CartContext";
 
 const UPSELLS = [
   { id: "priority-support", name: "Priority Support", price: 200, description: "24/7 priority response" },
@@ -42,7 +21,7 @@ const UPSELLS = [
 ];
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState(MOCK_CART_ITEMS);
+  const { items: cartItems, removeItem } = useCart();
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const { toast } = useToast();
@@ -71,8 +50,8 @@ export default function Cart() {
     return { subtotal, discount, upsellsTotal, total, discountRate, totalHoursSaved };
   };
 
-  const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+  const handleRemoveItem = (id: string) => {
+    removeItem(id);
     toast({
       title: "Item Removed",
       description: "Automation removed from cart"
@@ -245,7 +224,7 @@ export default function Cart() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => handleRemoveItem(item.id)}
                             className="text-destructive hover:text-destructive"
                           >
                             <X className="w-4 h-4" />

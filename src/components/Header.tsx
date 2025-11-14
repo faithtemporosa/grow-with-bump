@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 import logo from "@/assets/bump-syndicate-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const { itemCount } = useCart();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -39,8 +42,14 @@ const Header = () => {
             <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
               Build My Stack
             </Link>
-            <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth">
+            <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-foreground hover:text-primary transition-smooth relative inline-flex items-center gap-2">
+              <ShoppingCart className="w-5 h-5" />
               Cart
+              {itemCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 min-w-5 flex items-center justify-center p-0 text-xs">
+                  {itemCount}
+                </Badge>
+              )}
             </Link>
             <Link to="/get-started" onClick={() => window.scrollTo(0, 0)}>
               <Button className="gradient-primary shadow-glow">
@@ -63,8 +72,14 @@ const Header = () => {
             <Link to="/build-my-stack" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Build My Stack
             </Link>
-            <Link to="/cart" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+            <Link to="/cart" className="text-foreground hover:text-primary transition-smooth text-left flex items-center gap-2" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              <ShoppingCart className="w-5 h-5" />
               Cart
+              {itemCount > 0 && (
+                <Badge variant="destructive" className="h-5 min-w-5 flex items-center justify-center p-0 text-xs">
+                  {itemCount}
+                </Badge>
+              )}
             </Link>
             <Link to="/get-started" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               <Button className="gradient-primary shadow-glow w-full">
