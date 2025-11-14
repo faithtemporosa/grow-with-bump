@@ -115,6 +115,7 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          email: string | null
           email_digest_enabled: boolean
           id: string
           updated_at: string
@@ -122,6 +123,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email?: string | null
           email_digest_enabled?: boolean
           id?: string
           updated_at?: string
@@ -129,6 +131,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email?: string | null
           email_digest_enabled?: boolean
           id?: string
           updated_at?: string
