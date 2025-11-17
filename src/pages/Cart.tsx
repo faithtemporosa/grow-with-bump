@@ -23,7 +23,7 @@ const UPSELLS = [
 ];
 
 export default function Cart() {
-  const { items: cartItems, removeItem, updateQuantity } = useCart();
+  const { items: cartItems, removeItem, updateQuantity, loading } = useCart();
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const { toast } = useToast();
@@ -271,7 +271,14 @@ export default function Cart() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-6">
-              {cartItems.length === 0 ? (
+              {loading ? (
+                <Card className="p-12 text-center">
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                  </div>
+                  <p className="text-muted-foreground mt-4">Loading your cart...</p>
+                </Card>
+              ) : cartItems.length === 0 ? (
                 <Card className="p-12 text-center">
                   <p className="text-muted-foreground mb-4">Your cart is empty</p>
                   <Button asChild>
