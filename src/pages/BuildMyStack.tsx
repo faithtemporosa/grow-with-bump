@@ -112,7 +112,7 @@ export default function BuildMyStack() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-12">
+      <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">

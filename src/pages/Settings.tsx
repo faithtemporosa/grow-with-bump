@@ -90,7 +90,7 @@ export default function Settings() {
     return (
       <>
         <Header />
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 pt-28 pb-16">
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle>Sign In Required</CardTitle>
@@ -108,7 +108,7 @@ export default function Settings() {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 pt-28 pb-16">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Settings</h1>
 
