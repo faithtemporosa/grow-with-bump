@@ -62,7 +62,7 @@ export default function Wishlist() {
               Start saving automations you're interested in!
             </p>
             <Button asChild>
-              <Link to="/automations">Browse Automations</Link>
+              <Link to="/catalog">Browse Automations</Link>
             </Button>
           </div>
         ) : (
