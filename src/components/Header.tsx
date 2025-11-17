@@ -9,7 +9,7 @@ import { useWishlist } from "@/contexts/WishlistContext";
 import { useAdmin } from "@/hooks/use-admin";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import { NotificationCenter } from "@/components/NotificationCenter";
-import logo from "@/assets/bump-syndicate-logo.png";
+import logo from "@/assets/automate-your-biz-logo.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -51,7 +51,7 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-3">
-            <img src={logo} alt="Bump Syndicate Logo" className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full shadow-neon cursor-pointer transition-transform duration-300 hover:scale-110" />
+            <img src={logo} alt="Automate Your Biz Logo" className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full shadow-glow cursor-pointer transition-all duration-300 hover:scale-110 hover:rotate-12" />
           </Link>
 
           {/* Desktop Navigation */}
