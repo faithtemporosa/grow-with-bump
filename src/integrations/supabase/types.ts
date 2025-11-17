@@ -71,6 +71,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cart_items: {
+        Row: {
+          automation_id: string
+          created_at: string
+          hours_saved: number
+          id: string
+          name: string
+          price: number
+          quantity: number
+          thumbnail: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          automation_id: string
+          created_at?: string
+          hours_saved: number
+          id?: string
+          name: string
+          price: number
+          quantity?: number
+          thumbnail?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          automation_id?: string
+          created_at?: string
+          hours_saved?: number
+          id?: string
+          name?: string
+          price?: number
+          quantity?: number
+          thumbnail?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           brand_name: string | null
