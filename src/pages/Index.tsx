@@ -53,38 +53,38 @@ const Index = () => {
   const popularAutomations = [
     {
       icon: <Mail className="w-6 h-6" />,
-      title: "Email Summarization + Auto-Response",
-      description: "AI processes, summarizes, and replies to emails automatically",
-      hoursSaved: "20-40h/mo",
-      tag: "Most Popular"
+      title: "AI Social Media Content Publisher",
+      description: "Auto-generate and publish content across 6+ platforms with AI",
+      hoursSaved: "80h/mo",
+      tag: "Highest ROI"
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
-      title: "Weekly SEO Insights",
-      description: "Automated SERP tracking with AI-powered improvement suggestions",
-      hoursSaved: "5-10h/week",
-      tag: "Marketing"
+      title: "AI Social Video Generator",
+      description: "Create AI videos with voice-over and auto-post to 9 platforms",
+      hoursSaved: "75h/mo",
+      tag: "Video Automation"
     },
     {
       icon: <ShoppingBag className="w-6 h-6" />,
-      title: "eCommerce Product Video Generator",
-      description: "Auto-generate animated product showcase videos for TikTok and ads",
-      hoursSaved: "40+h/mo",
-      tag: "eCommerce"
+      title: "AI TikTok/Shorts Generator",
+      description: "Auto-generate short-form videos for TikTok, YouTube Shorts & Reels",
+      hoursSaved: "65h/mo",
+      tag: "Content Creation"
     },
     {
       icon: <FolderKanban className="w-6 h-6" />,
-      title: "Folder Organizer AI",
-      description: "Automatically sorts and organizes files using AI categorization",
-      hoursSaved: "10-20h/mo",
-      tag: "Operations"
+      title: "AI Telegram Assistant",
+      description: "Complete AI assistant managing email, calendar, and tasks via Telegram",
+      hoursSaved: "50h/mo",
+      tag: "Productivity"
     }
   ];
 
   const stats = [
-    { value: "47h", label: "Avg Hours Saved/Month" },
-    { value: "$3,400", label: "Avg Cost Savings/Month" },
-    { value: "<48h", label: "Time to Deploy" }
+    { value: "80h", label: "Avg Hours Saved/Month" },
+    { value: "$6,000", label: "Avg Cost Savings/Month" },
+    { value: "<72h", label: "Time to Deploy" }
   ];
 
   return (
