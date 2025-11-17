@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { FuturisticBackground } from "@/components/FuturisticBackground";
 import { AutomationCard } from "@/components/AutomationCard";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,7 +41,8 @@ export default function AutomationsCatalog() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
+      <FuturisticBackground />
       <Header />
       
       <main className="flex-1 container mx-auto px-4 pt-28 pb-12">

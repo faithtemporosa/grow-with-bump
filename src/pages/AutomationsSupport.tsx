@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { FuturisticBackground } from "@/components/FuturisticBackground";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -8,7 +9,8 @@ import { Bot, Cog, Zap, Clock } from "lucide-react";
 const AutomationsSupport = () => {
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <FuturisticBackground />
       <Header />
       
       {/* Hero Section */}
