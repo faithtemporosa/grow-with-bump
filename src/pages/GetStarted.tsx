@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { FuturisticBackground } from "@/components/FuturisticBackground";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -118,7 +119,8 @@ const GetStarted = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <FuturisticBackground />
       <Header />
       
       <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 tech-grid relative overflow-hidden">
