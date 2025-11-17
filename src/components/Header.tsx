@@ -15,6 +15,8 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [badgeAnimate, setBadgeAnimate] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { itemCount } = useCart();
@@ -23,11 +25,23 @@ const Header = () => {
   const { isAdmin } = useAdmin();
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      
+      setIsScrolled(currentScrollY > 20);
+      
+      // Hide header when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
-    window.addEventListener("scroll", handleScroll);
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     if (itemCount > 0) {
@@ -48,7 +62,9 @@ const Header = () => {
   return (
     <>
       <MiniCartPanel />
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "glass border-b border-primary/10 shadow-neon backdrop-blur-xl" : "bg-gradient-to-b from-background/80 to-transparent backdrop-blur-sm"}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isVisible ? 'translate-y-0' : '-translate-y-full'
+      } ${isScrolled ? "glass border-b border-primary/10 shadow-neon backdrop-blur-xl" : "bg-gradient-to-b from-background/80 to-transparent backdrop-blur-sm"}`}>
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <Link 
