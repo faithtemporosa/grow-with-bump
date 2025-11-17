@@ -22,7 +22,7 @@ export default function AutomationDetail() {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-12">
+        <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">Automation Not Found</h1>
             <Button asChild>
@@ -61,7 +61,7 @@ export default function AutomationDetail() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-12">
+      <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
         <Button variant="ghost" asChild className="mb-6">
           <Link to="/catalog">
             <ArrowLeft className="w-4 h-4 mr-2" />

@@ -151,7 +151,7 @@ export default function Cart() {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-12">
+        <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
           <div className="max-w-3xl mx-auto">
             <h1 className="text-4xl font-bold mb-8">Setup Information</h1>
             
@@ -264,7 +264,7 @@ export default function Cart() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-12">
+      <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Your Cart</h1>
 

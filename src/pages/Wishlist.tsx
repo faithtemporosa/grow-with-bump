@@ -26,7 +26,7 @@ export default function Wishlist() {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center px-4">
+        <main className="flex-1 flex items-center justify-center px-4 pt-28 pb-12">
           <div className="text-center space-y-4">
             <Heart className="w-16 h-16 mx-auto text-muted-foreground" />
             <h1 className="text-2xl font-bold">Sign in to view your wishlist</h1>
@@ -46,7 +46,7 @@ export default function Wishlist() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-12">
+      <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">My Wishlist</h1>
           <p className="text-muted-foreground">
