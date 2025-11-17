@@ -15,7 +15,6 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [badgeAnimate, setBadgeAnimate] = useState(false);
-  const [logoRotate, setLogoRotate] = useState(0);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const { itemCount } = useCart();
@@ -25,7 +24,6 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-      setLogoRotate(window.scrollY * 0.1);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -61,8 +59,7 @@ const Header = () => {
             <img 
               src={logo} 
               alt="Bump AI Logo" 
-              className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain cursor-pointer transition-all duration-500 group-hover:scale-110 ${isScrolled ? 'drop-shadow-glow' : 'drop-shadow-lg'}`}
-              style={{ transform: `rotate(${logoRotate % 360}deg)` }}
+              className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain cursor-pointer transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'drop-shadow-glow' : 'drop-shadow-lg'}`}
             />
             <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
               Bump AI
