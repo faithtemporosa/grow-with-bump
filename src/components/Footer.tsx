@@ -1,71 +1,64 @@
 import { Instagram, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+
 const Footer = () => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-  };
-  return <footer className="bg-foreground text-background py-12">
+  return <footer className="bg-card text-card-foreground border-t border-border py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">Bump Syndicate</h3>
-            <p className="text-background/80">Build authentic communities, drive organic growth, and automate the process.</p>
+            <h3 className="text-2xl font-bold mb-4 text-foreground">Bump AI</h3>
+            <p className="text-muted-foreground">Build authentic communities, drive organic growth, and automate the process.</p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-foreground">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => scrollToSection("features")} className="text-background/80 hover:text-background transition-smooth">
-                  Features
-                </button>
+                <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
+                  Automations
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection("services")} className="text-background/80 hover:text-background transition-smooth">
-                  Services
-                </button>
+                <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
+                  Build My Stack
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection("about")} className="text-background/80 hover:text-background transition-smooth">
-                  About Us
-                </button>
+                <Link to="/get-started" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
+                  Get Started
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection("contact")} className="text-background/80 hover:text-background transition-smooth">
-                  Contact
-                </button>
+                <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
+                  Cart
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4">Services</h4>
+            <h4 className="font-semibold mb-4 text-foreground">Services</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
                   Creator Partnerships
                 </Link>
               </li>
               <li>
-                <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
                   Brand Campaigns
                 </Link>
               </li>
               <li>
-                <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
                   Automations Support
                 </Link>
               </li>
               <li>
-                <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-background/80 hover:text-background transition-smooth">
+                <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
                   Growth Strategy
                 </Link>
               </li>
@@ -74,23 +67,23 @@ const Footer = () => {
 
           {/* Social */}
           <div>
-            <h4 className="font-semibold mb-4">Connect With Us</h4>
+            <h4 className="font-semibold mb-4 text-foreground">Connect With Us</h4>
             <div className="flex gap-4">
-              <a href="https://www.instagram.com/bump_syndicate/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="https://www.instagram.com/bump_syndicate/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Instagram size={20} />
               </a>
-              <a href="https://www.linkedin.com/showcase/bump-syndicate/about/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="https://www.linkedin.com/showcase/bump-syndicate/about/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:seth@bumpsearch.com" className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-smooth">
+              <a href="mailto:seth@bumpsearch.com" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Mail size={20} />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-background/20 pt-8 text-center text-background/60">
-          <p>&copy; {new Date().getFullYear()} Bump Syndicate. All rights reserved.</p>
+        <div className="border-t border-border pt-8 text-center text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} Bump AI. All rights reserved.</p>
         </div>
       </div>
     </footer>;

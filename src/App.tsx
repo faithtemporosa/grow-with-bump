@@ -39,6 +39,11 @@ const App = () => (
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/creator-partnerships" element={<CreatorPartnerships />} />
+            <Route path="/brand-campaigns" element={<BrandCampaigns />} />
+            <Route path="/automations-support" element={<AutomationsSupport />} />
+            <Route path="/growth-strategy" element={<GrowthStrategy />} />
+            <Route path="/get-started" element={<GetStarted />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
