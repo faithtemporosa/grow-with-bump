@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserStatistics } from "@/components/admin/UserStatistics";
 import { ActivityLogs } from "@/components/admin/ActivityLogs";
+import { ActiveUsersWidget } from "@/components/admin/ActiveUsersWidget";
 import { exportUsersToCSV } from "@/utils/exportUsers";
 
 interface Automation {
@@ -643,6 +644,8 @@ export default function Admin() {
         </div>
 
         <UserStatistics />
+
+        <ActiveUsersWidget />
 
         <Card className="mt-8">
           <CardHeader>

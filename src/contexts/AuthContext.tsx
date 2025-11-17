@@ -30,8 +30,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    // Track user presence
+    let presenceChannel: ReturnType<typeof supabase.channel> | null = null;
+    
+    if (user) {
+      presenceChannel = supabase.channel("admin-presence");
+      presenceChannel.subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          await presenceChannel?.track({
+            user_id: user.id,
+            online_at: new Date().toISOString(),
+          });
+        }
+      });
+    }
+
+    return () => {
+      subscription.unsubscribe();
+      if (presenceChannel) {
+        supabase.removeChannel(presenceChannel);
+      }
+    };
+  }, [user]);
 
   const signUp = async (email: string, password: string) => {
     const { error } = await supabase.auth.signUp({ email, password });
@@ -39,8 +59,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
+    
+    // Log login activity
+    if (data.user) {
+      try {
+        // Parse user agent
+        const userAgent = navigator.userAgent;
+        let browser = "Unknown";
+        let os = "Unknown";
+
+        // Detect browser
+        if (userAgent.includes("Chrome")) browser = "Chrome";
+        else if (userAgent.includes("Safari")) browser = "Safari";
+        else if (userAgent.includes("Firefox")) browser = "Firefox";
+        else if (userAgent.includes("Edge")) browser = "Edge";
+
+        // Detect OS
+        if (userAgent.includes("Windows")) os = "Windows";
+        else if (userAgent.includes("Mac")) os = "macOS";
+        else if (userAgent.includes("Linux")) os = "Linux";
+        else if (userAgent.includes("Android")) os = "Android";
+        else if (userAgent.includes("iOS")) os = "iOS";
+
+        // Get timezone as a proxy for location
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        await supabase.from("login_activity").insert({
+          user_id: data.user.id,
+          user_agent: userAgent,
+          browser,
+          os,
+          city: timezone, // Using timezone as placeholder for city
+          country: timezone.split("/")[0], // Extract region from timezone
+        });
+      } catch (error) {
+        console.error("Error logging login activity:", error);
+      }
+    }
   };
 
   const signOut = async () => {
