@@ -24,9 +24,9 @@ export function MiniCartPanel() {
 
   return (
     <Sheet open={!!recentlyAddedItem} onOpenChange={(open) => !open && clearRecentlyAdded()}>
-      <SheetContent side="right" className="w-[90vw] sm:w-[400px] glass border-l border-primary/20">
+      <SheetContent side="right" className="w-[90vw] sm:w-[400px] bg-card border-l border-primary/20">
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+          <SheetTitle className="flex items-center gap-2 text-card-foreground">
             <ShoppingCart className="w-5 h-5 text-primary" />
             Added to Cart
           </SheetTitle>
@@ -34,15 +34,15 @@ export function MiniCartPanel() {
         
         {recentlyAddedItem && (
           <div className="mt-6 space-y-4">
-            <div className="glass-card p-4 rounded-lg border border-primary/10">
+            <div className="bg-muted/50 p-4 rounded-2xl border border-primary/10">
               <div className="flex gap-4">
                 <img 
                   src={recentlyAddedItem.thumbnail || "/placeholder.svg"} 
                   alt={recentlyAddedItem.name}
-                  className="w-20 h-20 rounded-lg object-cover"
+                  className="w-20 h-20 rounded-xl object-cover"
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-foreground mb-1">
+                  <h3 className="font-semibold text-card-foreground mb-1">
                     {recentlyAddedItem.name}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
@@ -57,13 +57,13 @@ export function MiniCartPanel() {
 
             <div className="flex flex-col gap-2">
               <Link to="/cart" onClick={clearRecentlyAdded}>
-                <Button className="w-full gradient-primary shadow-glow">
+                <Button variant="retro" className="w-full">
                   View Cart
                 </Button>
               </Link>
               <Button 
                 variant="outline" 
-                className="w-full"
+                className="w-full text-foreground hover:text-primary-foreground"
                 onClick={clearRecentlyAdded}
               >
                 Continue Shopping
