@@ -47,7 +47,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-20 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 animate-fade-in bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            <span className="block mb-2">Automate Your Biz.</span>
+            <span className="block mb-2">Bump AI.</span>
             <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">Save Time. Make Money.</span>
           </h1>
           
