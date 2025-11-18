@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FuturisticBackground } from "@/components/FuturisticBackground";
@@ -8,16 +8,31 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { automations, categories, type AutomationCategory } from "@/data/automations";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const ITEMS_PER_PAGE = 100;
 
 export default function AutomationsCatalog() {
   const [selectedCategories, setSelectedCategories] = useState<AutomationCategory[]>([]);
   const [selectedRoiLevels, setSelectedRoiLevels] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredAutomations = automations.filter((automation) => {
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(automation.category);
     const roiMatch = selectedRoiLevels.length === 0 || selectedRoiLevels.includes(automation.roiLevel);
     return categoryMatch && roiMatch;
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredAutomations.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedAutomations = filteredAutomations.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategories, selectedRoiLevels]);
 
   const handleCategoryToggle = (category: AutomationCategory) => {
     setSelectedCategories((prev) =>
@@ -38,6 +53,7 @@ export default function AutomationsCatalog() {
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedRoiLevels([]);
+    setCurrentPage(1);
   };
 
   return (
@@ -120,12 +136,22 @@ export default function AutomationsCatalog() {
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="mb-4 text-sm text-muted-foreground">
-              Showing {filteredAutomations.length} of {automations.length} automations
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredAutomations.length)} of {filteredAutomations.length} automations
+                {filteredAutomations.length !== automations.length && (
+                  <span> (filtered from {automations.length} total)</span>
+                )}
+              </p>
+              {totalPages > 1 && (
+                <p className="text-sm text-muted-foreground">
+                  Page {currentPage} of {totalPages}
+                </p>
+              )}
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredAutomations.map((automation) => (
+              {paginatedAutomations.map((automation) => (
                 <AutomationCard
                   key={automation.id}
                   automation={automation}
@@ -138,6 +164,58 @@ export default function AutomationsCatalog() {
                 <p className="text-muted-foreground">No automations match your filters.</p>
                 <Button onClick={resetFilters} className="mt-4">
                   Reset Filters
+                </Button>
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex items-center justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Previous
+                </Button>
+                
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+                    
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(pageNum)}
+                        className="w-10"
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </div>
             )}
