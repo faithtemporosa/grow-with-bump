@@ -153,13 +153,22 @@ const Index = () => {
             
             {steps.map((step, index) => (
               <div key={index} className="relative">
-                <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl font-bold text-white mb-6 shadow-glow">
-                  {step.number}
-                </div>
-                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.description}</p>
-                </div>
+                <Card className="p-8 glass hover:shadow-neon transition-all duration-300 h-full">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl font-bold text-white mb-6 shadow-glow relative z-10">
+                      {step.number}
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                    <p className="text-muted-foreground">{step.description}</p>
+                    <div className="mt-6 pt-6 border-t border-border/50 w-full">
+                      <p className="text-sm text-primary font-medium">
+                        {index === 0 && "Choose from 50+ pre-built workflows"}
+                        {index === 1 && "Live in 24-72 hours, fully configured"}
+                        {index === 2 && "Monthly check-ins & improvements"}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
               </div>
             ))}
           </div>
@@ -241,10 +250,10 @@ const Index = () => {
             Join hundreds of founders who've reclaimed their time with AI automation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 h-14" asChild>
+            <Button size="lg" className="text-lg px-8 h-14 bg-white text-primary hover:bg-white/90" asChild>
               <Link to="/catalog">Browse Automations</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+            <Button size="lg" className="text-lg px-8 h-14 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary" asChild>
               <Link to="/get-started">Book Consultation</Link>
             </Button>
           </div>
