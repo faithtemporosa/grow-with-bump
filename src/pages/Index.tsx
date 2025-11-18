@@ -234,10 +234,10 @@ const Index = () => {
       {/* CTA Block */}
       <section className="py-16 sm:py-20 px-4 bg-gradient-primary">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-primary-foreground">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white">
             Ready to Automate Your Business?
           </h2>
-          <p className="text-lg text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
             Join hundreds of founders who've reclaimed their time with AI automation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
