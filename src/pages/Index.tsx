@@ -154,9 +154,9 @@ const Index = () => {
             {steps.map((step, index) => (
               <div key={index} className="relative">
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl font-bold text-primary-foreground mb-6 shadow-glow">
-                    {step.number}
-                  </div>
+                <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl font-bold text-white mb-6 shadow-glow">
+                  {step.number}
+                </div>
                   <h3 className="text-xl font-bold mb-3">{step.title}</h3>
                   <p className="text-muted-foreground">{step.description}</p>
                 </div>
