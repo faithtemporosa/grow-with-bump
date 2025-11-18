@@ -155,7 +155,7 @@ const Index = () => {
               <div key={index} className="relative">
                 <Card className="p-8 glass hover:shadow-neon transition-all duration-300 h-full">
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-2xl font-bold text-white mb-6 shadow-glow relative z-10">
+                    <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-2xl font-bold text-primary-foreground mb-6 shadow-glow relative z-10">
                       {step.number}
                     </div>
                     <h3 className="text-xl font-bold mb-3">{step.title}</h3>
@@ -241,19 +241,19 @@ const Index = () => {
       </section>
 
       {/* CTA Block */}
-      <section className="py-16 sm:py-20 px-4 bg-gradient-primary">
+      <section className="py-16 sm:py-20 px-4 bg-muted/50">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-primary">
             Ready to Automate Your Business?
           </h2>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-foreground mb-8 max-w-2xl mx-auto">
             Join hundreds of founders who've reclaimed their time with AI automation
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 h-14 bg-white text-primary hover:bg-white/90" asChild>
+            <Button size="lg" className="text-lg px-8 h-14 gradient-primary text-white shadow-glow" asChild>
               <Link to="/catalog">Browse Automations</Link>
             </Button>
-            <Button size="lg" className="text-lg px-8 h-14 bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary" asChild>
+            <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
               <Link to="/get-started">Book Consultation</Link>
             </Button>
           </div>
