@@ -14,11 +14,15 @@ export interface N8NWorkflow {
 
 export type AutomationCategory =
   | "Social Media Marketing"
-  | "Email Marketing"
-  | "Operations"
+  | "Email & Communication"
+  | "Operations & Productivity"
   | "Content Creation"
   | "Sales & CRM"
-  | "Research & Analysis";
+  | "Research & Analysis"
+  | "Marketing & SEO"
+  | "Lead Generation & Sales"
+  | "eCommerce & Product"
+  | "Data & Analytics";
 
 export const n8nWorkflows: N8NWorkflow[] = [
   // HIGHEST ROI - Social Media Marketing Workflows
@@ -113,7 +117,7 @@ export const n8nWorkflows: N8NWorkflow[] = [
     id: "telegram-ai-assistant",
     name: "AI-Powered Telegram Assistant",
     description: "Complete AI assistant on Telegram integrating GPT-4, Google Calendar, Gmail, and Baserow. Handles voice/text inputs, email summaries, calendar events, and task management.",
-    category: "Operations",
+    category: "Operations & Productivity",
     price: 649,
     hoursSaved: 50,
     roiLevel: "high",
@@ -189,7 +193,7 @@ export const n8nWorkflows: N8NWorkflow[] = [
     id: "n8n-reference-library",
     name: "n8n AI & App Node Reference Library",
     description: "Comprehensive workflow showcasing various AI nodes (OpenAI, Langchain, Anthropic, Google Gemini) and app integrations. Visual reference for workflow building.",
-    category: "Operations",
+    category: "Operations & Productivity",
     price: 299,
     hoursSaved: 15,
     roiLevel: "standard",
@@ -206,11 +210,15 @@ export const n8nWorkflows: N8NWorkflow[] = [
 
 export const categories: AutomationCategory[] = [
   "Social Media Marketing",
-  "Email Marketing",
-  "Operations",
+  "Email & Communication",
+  "Operations & Productivity",
   "Content Creation",
   "Sales & CRM",
-  "Research & Analysis"
+  "Research & Analysis",
+  "Marketing & SEO",
+  "Lead Generation & Sales",
+  "eCommerce & Product",
+  "Data & Analytics"
 ];
 
 // Get workflows by ROI level (high, medium, standard)
@@ -229,3 +237,9 @@ export function getHighestROIWorkflows(limit: number = 6) {
 export function getWorkflowsByCategory(category: AutomationCategory) {
   return n8nWorkflows.filter(w => w.category === category);
 }
+
+// Import and merge extended workflows from CSV
+import { extendedN8NWorkflows } from "./n8n-workflows-extended";
+
+// Export all workflows (base + extended from CSV)
+export const allN8NWorkflows = [...n8nWorkflows, ...extendedN8NWorkflows];
