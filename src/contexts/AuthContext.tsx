@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           country: timezone.split("/")[0], // Extract region from timezone
         });
       } catch (error) {
-        console.error("Error logging login activity:", error);
+        // Login activity tracking failed silently
       }
     }
   };
