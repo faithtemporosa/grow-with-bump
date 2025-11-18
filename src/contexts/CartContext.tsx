@@ -64,8 +64,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           table: 'cart_items',
           filter: `user_id=eq.${user.id}`
         },
-        (payload) => {
-          console.log('Cart change detected:', payload);
+        () => {
           loadCartFromDatabase();
         }
       )

@@ -29,7 +29,6 @@ const Contact = () => {
       name,
       value
     } = e.target;
-    console.log('Form field changed:', name, value);
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -47,13 +46,9 @@ const Contact = () => {
     setIsSubmitting(true);
     setErrors({});
     
-    console.log('Form submitted with data:', formData);
-    
     try {
       // Validate form data
       contactSchema.parse(formData);
-
-      console.log('Validation passed, saving to database...');
 
       // Submit to database
       const { error: dbError } = await supabase
@@ -66,11 +61,8 @@ const Contact = () => {
         });
 
       if (dbError) {
-        console.error('Database error:', dbError);
         throw new Error('Failed to save submission');
       }
-
-      console.log('Submission saved successfully');
 
       toast({
         title: "Message sent!",
@@ -85,7 +77,6 @@ const Contact = () => {
         message: ""
       });
     } catch (error) {
-      console.error('Form submission error:', error);
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
         error.errors.forEach(err => {
