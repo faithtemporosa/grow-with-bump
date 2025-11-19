@@ -162,7 +162,7 @@ const Index = () => {
                     <p className="text-muted-foreground">{step.description}</p>
                     <div className="mt-6 pt-6 border-t border-border/50 w-full">
                       <p className="text-sm text-primary font-medium">
-                        {index === 0 && "Choose from 50+ pre-built workflows"}
+                        {index === 0 && "Choose from 1000+ pre-built workflows"}
                         {index === 1 && "Live in 24-72 hours, fully configured"}
                         {index === 2 && "Monthly check-ins & improvements"}
                       </p>
