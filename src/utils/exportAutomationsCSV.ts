@@ -1,0 +1,85 @@
+import { automations } from "@/data/automations";
+
+/**
+ * Converts automations data to CSV format
+ */
+export function convertAutomationsToCSV(): string {
+  // CSV Headers
+  const headers = [
+    'ID',
+    'Name',
+    'Description',
+    'Category',
+    'Hours Saved',
+    'Monthly Savings',
+    'Setup Time',
+    'ROI Level',
+    'Price (Estimated)',
+    'Tools',
+    'Features',
+    'Problem Statement',
+    'Solution',
+    'Use Cases',
+    'Requirements',
+    'Workflow URL'
+  ];
+
+  // Create CSV rows
+  const rows = automations.map(automation => {
+    // Calculate estimated price
+    let price = 0;
+    if (automation.workflowUrl) {
+      if (automation.roiLevel === 'high') {
+        price = 799;
+      } else if (automation.roiLevel === 'medium') {
+        price = 499;
+      } else {
+        price = 299;
+      }
+    } else {
+      price = Math.round((automation.monthlySavings || 500) / 3);
+    }
+
+    return [
+      automation.id,
+      `"${automation.name.replace(/"/g, '""')}"`,
+      `"${automation.description.replace(/"/g, '""')}"`,
+      automation.category,
+      automation.hoursSaved,
+      automation.monthlySavings,
+      automation.setupTime,
+      automation.roiLevel,
+      price,
+      `"${automation.tools.join(', ')}"`,
+      `"${automation.features.join('; ')}"`,
+      `"${automation.problemStatement.replace(/"/g, '""')}"`,
+      `"${automation.solution.replace(/"/g, '""')}"`,
+      `"${automation.useCases.join('; ')}"`,
+      `"${automation.requirements.join('; ')}"`,
+      automation.workflowUrl || ''
+    ].join(',');
+  });
+
+  // Combine headers and rows
+  return [headers.join(','), ...rows].join('\n');
+}
+
+/**
+ * Downloads the automations data as a CSV file
+ */
+export function downloadAutomationsCSV(): void {
+  const csv = convertAutomationsToCSV();
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `automations-catalog-${new Date().toISOString().split('T')[0]}.csv`);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  URL.revokeObjectURL(url);
+}

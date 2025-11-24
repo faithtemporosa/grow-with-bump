@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, AlertCircle, Database } from "lucide-react";
+import { CheckCircle, AlertCircle, Database, Download } from "lucide-react";
 import { seedAutomationsDatabase } from "@/utils/seedAutomations";
+import { downloadAutomationsCSV } from "@/utils/exportAutomationsCSV";
 import { automations } from "@/data/automations";
 
 export default function SeedAutomations() {
@@ -57,16 +58,28 @@ export default function SeedAutomations() {
               </AlertDescription>
             </Alert>
 
-            {!result && !error && (
+            <div className="grid grid-cols-1 gap-3">
               <Button 
-                onClick={handleSeed} 
-                disabled={isSeeding}
+                onClick={downloadAutomationsCSV}
+                variant="outline"
                 size="lg"
                 className="w-full"
               >
-                {isSeeding ? 'Seeding Database...' : 'Start Seeding'}
+                <Download className="mr-2 h-4 w-4" />
+                Download CSV Export
               </Button>
-            )}
+
+              {!result && !error && (
+                <Button 
+                  onClick={handleSeed} 
+                  disabled={isSeeding}
+                  size="lg"
+                  className="w-full"
+                >
+                  {isSeeding ? 'Seeding Database...' : 'Start Seeding'}
+                </Button>
+              )}
+            </div>
 
             {isSeeding && (
               <div className="space-y-2">
