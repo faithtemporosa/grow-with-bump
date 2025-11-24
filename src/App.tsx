@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import SeedAutomations from "./pages/SeedAutomations";
 import CreatorPartnerships from "./pages/CreatorPartnerships";
 import BrandCampaigns from "./pages/BrandCampaigns";
 import AutomationsSupport from "./pages/AutomationsSupport";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/seed-automations" element={<SeedAutomations />} />
             <Route path="/creator-partnerships" element={<CreatorPartnerships />} />
             <Route path="/brand-campaigns" element={<BrandCampaigns />} />
             <Route path="/automations-support" element={<AutomationsSupport />} />
