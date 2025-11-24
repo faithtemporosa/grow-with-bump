@@ -6,23 +6,8 @@ function generateInsertStatements() {
   const statements: string[] = [];
   
   automations.forEach((automation) => {
-    // Calculate price if not available (for base automations)
-    let price = 0;
-    
-    // Check if it's an n8n workflow (they have workflowUrl)
-    if (automation.workflowUrl) {
-      // Price based on ROI level for n8n workflows
-      if (automation.roiLevel === 'high') {
-        price = 699 + Math.floor(Math.random() * 300); // 699-999
-      } else if (automation.roiLevel === 'medium') {
-        price = 399 + Math.floor(Math.random() * 200); // 399-599
-      } else {
-        price = 199 + Math.floor(Math.random() * 100); // 199-299
-      }
-    } else {
-      // Price based on monthly savings for base automations
-      price = Math.round((automation.monthlySavings || 0) / 3);
-    }
+    // All automations are $500
+    const price = 500;
     
     const escapedName = automation.name.replace(/'/g, "''");
     const escapedDescription = automation.description.replace(/'/g, "''");

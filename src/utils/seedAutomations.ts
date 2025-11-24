@@ -18,21 +18,8 @@ export async function seedAutomationsDatabase() {
     
     // Map automations to database format
     const dbAutomations = batch.map(automation => {
-      // Calculate price based on ROI level and monthly savings
-      let price = 0;
-      if (automation.workflowUrl) {
-        // n8n workflows - use ROI level
-        if (automation.roiLevel === 'high') {
-          price = 699 + Math.floor(Math.random() * 300); // 699-999
-        } else if (automation.roiLevel === 'medium') {
-          price = 399 + Math.floor(Math.random() * 200); // 399-599
-        } else {
-          price = 199 + Math.floor(Math.random() * 100); // 199-299
-        }
-      } else {
-        // Base automations - use monthly savings
-        price = Math.round((automation.monthlySavings || 500) / 3);
-      }
+      // All automations are $500
+      const price = 500;
       
       return {
         id: automation.id,
