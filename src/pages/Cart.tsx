@@ -17,8 +17,14 @@ import { X, Check, Plus, Minus, TrendingDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
-// QuickBooks Payment Link - Update this URL with your actual QuickBooks payment link
-const QUICKBOOKS_PAYMENT_URL = "https://your-quickbooks-payment-link.com";
+// QuickBooks Payment Links - Update these URLs with your actual QuickBooks payment links
+const QUICKBOOKS_PAYMENT_LINKS = {
+  LINK_FOR_1: "https://your-quickbooks-payment-link-for-1.com",
+  LINK_FOR_2_3: "https://your-quickbooks-payment-link-for-2-3.com",
+  LINK_FOR_4_5: "https://your-quickbooks-payment-link-for-4-5.com",
+  LINK_FOR_6_9: "https://your-quickbooks-payment-link-for-6-9.com",
+  LINK_FOR_10_PLUS: "https://your-quickbooks-payment-link-for-10-plus.com"
+};
 
 const UPSELLS = [
   { id: "priority-support", name: "Priority Support", price: 200, description: "24/7 priority response" },
@@ -129,13 +135,28 @@ export default function Cart() {
       return;
     }
     
+    // Determine which payment link to use based on cart quantity
+    let paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_1;
+    
+    if (pricing.totalQuantity === 1) {
+      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_1;
+    } else if (pricing.totalQuantity >= 2 && pricing.totalQuantity <= 3) {
+      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_2_3;
+    } else if (pricing.totalQuantity >= 4 && pricing.totalQuantity <= 5) {
+      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_4_5;
+    } else if (pricing.totalQuantity >= 6 && pricing.totalQuantity <= 9) {
+      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_6_9;
+    } else if (pricing.totalQuantity >= 10) {
+      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_10_PLUS;
+    }
+    
     toast({
       title: "Order Submitted!",
       description: "Redirecting to payment..."
     });
 
     // Open QuickBooks payment link in new tab
-    window.open(QUICKBOOKS_PAYMENT_URL, '_blank');
+    window.open(paymentUrl, '_blank');
   };
 
   const pricing = calculatePricing();
@@ -285,6 +306,7 @@ export default function Cart() {
             </Card>
 
             <div className="mt-8 text-center text-sm text-muted-foreground">
+              <p className="mb-3 text-xs italic">Your checkout link will adjust automatically based on your total automations.</p>
               <p className="mb-2">After payment, we'll contact you within 24 hours to:</p>
               <ul className="space-y-1">
                 <li>• Connect your accounts and tools</li>
