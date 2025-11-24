@@ -1,59 +1,51 @@
-import { supabase } from "@/integrations/supabase/client";
 import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 
 /**
  * Seeds the automations table with all parsed automations from CSV
- * This function should be called once to populate the database
+ * Uses edge function with service role permissions to bypass RLS
  */
 export async function seedAutomationsDatabase() {
   const automations = await parseAutomationsCatalog();
   
   console.log(`Starting to seed ${automations.length} automations...`);
   
-  // Process in batches of 100 to avoid overwhelming the database
-  const batchSize = 100;
-  let successCount = 0;
-  let errorCount = 0;
+  // Map automations to database format
+  const dbAutomations = automations.map(automation => {
+    // All automations are $500
+    const price = 500;
+    
+    return {
+      id: automation.id,
+      name: automation.name,
+      description: automation.description,
+      category: automation.category,
+      price: price,
+      features: automation.features
+    };
+  });
   
-  for (let i = 0; i < automations.length; i += batchSize) {
-    const batch = automations.slice(i, i + batchSize);
-    
-    // Map automations to database format
-    const dbAutomations = batch.map(automation => {
-      // All automations are $500
-      const price = 500;
-      
-      return {
-        id: automation.id,
-        name: automation.name,
-        description: automation.description,
-        category: automation.category,
-        price: price,
-        features: automation.features
-      };
-    });
-    
-    // Insert batch
-    const { data, error } = await supabase
-      .from('automations')
-      .upsert(dbAutomations, {
-        onConflict: 'id'
-      });
-    
-    if (error) {
-      console.error(`Error inserting batch ${i / batchSize + 1}:`, error);
-      errorCount += batch.length;
-    } else {
-      successCount += batch.length;
-      console.log(`✓ Inserted batch ${i / batchSize + 1} (${successCount} total)`);
-    }
+  // Call edge function with service role permissions
+  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/seed-automations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+    },
+    body: JSON.stringify({ automations: dbAutomations })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to seed automations');
   }
   
-  console.log(`\n✅ Seeding complete!`);
-  console.log(`   Success: ${successCount} automations`);
-  console.log(`   Errors: ${errorCount} automations`);
+  const result = await response.json();
   
-  return { successCount, errorCount };
+  console.log(`\n✅ Seeding complete!`);
+  console.log(`   Success: ${result.successCount} automations`);
+  console.log(`   Errors: ${result.errorCount} automations`);
+  
+  return { successCount: result.successCount, errorCount: result.errorCount };
 }
 
 // Export a function to run from console
