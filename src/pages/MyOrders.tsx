@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Package, Clock, CheckCircle, XCircle } from "lucide-react";
 import { format } from "date-fns";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const MyOrders = () => {
   const [email, setEmail] = useState("");
@@ -68,6 +70,7 @@ const MyOrders = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-4">
@@ -184,6 +187,7 @@ const MyOrders = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
