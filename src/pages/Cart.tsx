@@ -358,17 +358,17 @@ export default function Cart() {
                   {/* Cart Items List */}
                   <div className="space-y-4">
                     {cartItems.map((item) => (
-                      <Card key={item.id} className="p-6">
-                        <div className="flex items-start justify-between gap-4">
+                      <Card key={item.id} className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                           <div className="flex-1">
                             <h3 className="font-semibold text-lg mb-2">{item.name}</h3>
-                            <div className="flex gap-3 text-sm text-muted-foreground">
+                            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                               <span>{item.hoursSaved}h saved/month</span>
-                              <span>•</span>
+                              <span className="hidden sm:inline">•</span>
                               <span>${item.price}/month</span>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
                             <div className="flex items-center gap-2">
                               <Button
                                 variant="outline"
@@ -388,12 +388,12 @@ export default function Cart() {
                                 <Plus className="h-3 w-3" />
                               </Button>
                             </div>
-                            <span className="font-semibold min-w-[80px] text-right">${item.price * item.quantity}</span>
+                            <span className="font-semibold min-w-[60px] sm:min-w-[80px] text-right">${item.price * item.quantity}</span>
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => handleRemoveItem(item.id)}
-                              className="text-destructive hover:text-destructive"
+                              className="text-destructive hover:text-destructive shrink-0"
                             >
                               <X className="w-4 h-4" />
                             </Button>
@@ -530,7 +530,7 @@ export default function Cart() {
 
             {/* Summary Sidebar */}
             <div className="lg:col-span-1">
-              <Card className="p-6 sticky top-24">
+              <Card className="p-4 sm:p-6 lg:sticky lg:top-24">
                 <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
                 
                 <div className="space-y-3 text-sm mb-6">

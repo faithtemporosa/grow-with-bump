@@ -265,28 +265,28 @@ export default function BuildMyStack() {
                   return (
                     <>
                       {/* Summary Card */}
-                      <Card className="p-6 bg-primary/5 border-primary/20">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <Card className="p-4 sm:p-6 bg-primary/5 border-primary/20">
+                        <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-sm text-muted-foreground">Automations</p>
-                            <p className="text-2xl font-bold">{totals.count}</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground">Automations</p>
+                            <p className="text-xl sm:text-2xl font-bold">{totals.count}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Monthly Cost</p>
-                            <p className="text-2xl font-bold">${Math.round(totals.totalCost)}</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground">Monthly Cost</p>
+                            <p className="text-xl sm:text-2xl font-bold">${Math.round(totals.totalCost)}</p>
                             {totals.discountRate > 0 && (
-                              <Badge variant="secondary" className="mt-1">
+                              <Badge variant="secondary" className="mt-1 text-xs">
                                 {Math.round(totals.discountRate * 100)}% off
                               </Badge>
                             )}
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Hours Saved</p>
-                            <p className="text-2xl font-bold">{totals.totalHoursSaved}h/mo</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground">Hours Saved</p>
+                            <p className="text-xl sm:text-2xl font-bold">{totals.totalHoursSaved}h/mo</p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Net Gain</p>
-                            <p className="text-2xl font-bold text-green-600">
+                            <p className="text-xs sm:text-sm text-muted-foreground">Net Gain</p>
+                            <p className="text-xl sm:text-2xl font-bold text-green-600">
                               ${Math.round(totals.netGain)}
                             </p>
                           </div>

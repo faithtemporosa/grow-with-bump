@@ -100,17 +100,19 @@ const ROICalculator = ({
             </div>
           </div>
 
-          {/* Hourly Rate */}
           <div className="space-y-3">
             <Label htmlFor="rate">Value of Your Time ($/hour)</Label>
-            <Input
-              id="rate"
-              type="number"
-              value={hourlyRate}
-              onChange={(e) => setHourlyRate(Math.max(10, parseInt(e.target.value) || 75))}
-              className="h-10"
-              min={10}
-            />
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground">$</span>
+              <Input
+                id="rate"
+                type="number"
+                value={hourlyRate}
+                onChange={(e) => setHourlyRate(Math.max(10, parseInt(e.target.value) || 75))}
+                className="h-10"
+                min={10}
+              />
+            </div>
             <p className="text-xs text-muted-foreground">Typical founder/knowledge worker: $50-$150/hr</p>
           </div>
 
@@ -133,20 +135,20 @@ const ROICalculator = ({
               <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Your Monthly ROI</span>
             </div>
             
-            <div className="mb-6">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+            <div className="mb-4 sm:mb-6">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2">
                 ${netMonthlyGain.toLocaleString()}
               </div>
               <p className="text-sm text-muted-foreground">Net Monthly Gain</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 mb-6">
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <DollarSign className="w-4 h-4" />
                   <span className="text-xs">Monthly Cost</span>
                 </div>
-                <div className="text-lg font-semibold">
+                <div className="text-base sm:text-lg font-semibold">
                   ${monthlyCost.toLocaleString()}
                   {discountRate > 0 && (
                     <span className="ml-2 text-xs text-accent">-{(discountRate * 100).toFixed(0)}%</span>
@@ -159,7 +161,7 @@ const ROICalculator = ({
                   <Clock className="w-4 h-4" />
                   <span className="text-xs">Hours Saved</span>
                 </div>
-                <div className="text-lg font-semibold">{monthlyHoursSaved}h/mo</div>
+                <div className="text-base sm:text-lg font-semibold">{monthlyHoursSaved}h/mo</div>
               </div>
 
               <div className="space-y-1">
@@ -167,7 +169,7 @@ const ROICalculator = ({
                   <TrendingUp className="w-4 h-4" />
                   <span className="text-xs">Monthly Savings</span>
                 </div>
-                <div className="text-lg font-semibold">${monthlyDollarSavings.toLocaleString()}</div>
+                <div className="text-base sm:text-lg font-semibold">${monthlyDollarSavings.toLocaleString()}</div>
               </div>
 
               <div className="space-y-1">
@@ -175,18 +177,16 @@ const ROICalculator = ({
                   <Zap className="w-4 h-4" />
                   <span className="text-xs">ROI Multiple</span>
                 </div>
-                <div className="text-lg font-semibold">{roiMultiple}x</div>
+                <div className="text-base sm:text-lg font-semibold">{roiMultiple}x</div>
               </div>
             </div>
 
-            {showAnnual && (
               <div className="pt-4 border-t border-border/50">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <span className="text-sm text-muted-foreground">Annual Net Gain</span>
-                  <span className="text-2xl font-bold text-primary">${annualNetGain.toLocaleString()}</span>
+                  <span className="text-xl sm:text-2xl font-bold text-primary">${annualNetGain.toLocaleString()}</span>
                 </div>
               </div>
-            )}
 
             <p className="text-xs text-muted-foreground mt-4">
               Estimates based on your inputs. Actual impact varies by workflow.
