@@ -14,9 +14,11 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserStatistics } from "@/components/admin/UserStatistics";
 import { ActivityLogs } from "@/components/admin/ActivityLogs";
 import { ActiveUsersWidget } from "@/components/admin/ActiveUsersWidget";
+import OrderManagement from "@/components/admin/OrderManagement";
 import { exportUsersToCSV } from "@/utils/exportUsers";
 
 interface Automation {
@@ -647,14 +649,22 @@ export default function Admin() {
 
         <ActiveUsersWidget />
 
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Automations</CardTitle>
-            <CardDescription>
-              Manage your automation catalog. Updates to price or features will notify wishlist users.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        <Tabs defaultValue="automations" className="mt-8">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="automations">Automations</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="automations">
+            <Card>
+              <CardHeader>
+                <CardTitle>Automations</CardTitle>
+                <CardDescription>
+                  Manage your automation catalog. Updates to price or features will notify wishlist users.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
             {loading ? (
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -703,20 +713,28 @@ export default function Admin() {
                   ))}
                 </TableBody>
               </Table>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-        <ActivityLogs />
+        <TabsContent value="orders">
+          <Card>
+            <CardContent className="pt-6">
+              <OrderManagement />
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>User Role Management</CardTitle>
-            <CardDescription>
-              Manage admin privileges for users in your application.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        <TabsContent value="users">
+          <Card>
+            <CardHeader>
+              <CardTitle>User Role Management</CardTitle>
+              <CardDescription>
+                Manage admin privileges for users in your application.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
             <div className="flex gap-4 mb-4">
               <div className="flex-1">
                 <Label htmlFor="email-search">Search by Email</Label>
@@ -974,7 +992,11 @@ export default function Admin() {
             })()}
           </CardContent>
         </Card>
-      </div>
-    </div>
+      </TabsContent>
+    </Tabs>
+
+    <ActivityLogs />
+  </div>
+</div>
   );
 }

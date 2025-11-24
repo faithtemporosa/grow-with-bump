@@ -117,6 +117,7 @@ export type Database = {
           cart_items: string | null
           created_at: string
           email: string
+          estimated_completion_date: string | null
           id: string
           message: string
           name: string
@@ -130,6 +131,7 @@ export type Database = {
           cart_items?: string | null
           created_at?: string
           email: string
+          estimated_completion_date?: string | null
           id?: string
           message: string
           name: string
@@ -143,6 +145,7 @@ export type Database = {
           cart_items?: string | null
           created_at?: string
           email?: string
+          estimated_completion_date?: string | null
           id?: string
           message?: string
           name?: string

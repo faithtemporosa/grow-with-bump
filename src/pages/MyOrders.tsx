@@ -144,12 +144,23 @@ const MyOrders = () => {
                       </div>
                     </div>
 
-                    {order.brand_name && (
-                      <div className="border-t pt-4">
-                        <p className="text-sm font-medium">Business Name</p>
-                        <p className="text-sm text-muted-foreground">{order.brand_name}</p>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4">
+                      {order.brand_name && (
+                        <div>
+                          <p className="text-sm font-medium">Business Name</p>
+                          <p className="text-sm text-muted-foreground">{order.brand_name}</p>
+                        </div>
+                      )}
+                      
+                      {order.estimated_completion_date && (
+                        <div>
+                          <p className="text-sm font-medium">Estimated Completion</p>
+                          <p className="text-sm text-muted-foreground">
+                            {format(new Date(order.estimated_completion_date), "PPP")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
 
                     {order.cart_items && order.cart_items !== "No cart items" && (
                       <div className="border-t pt-4">
