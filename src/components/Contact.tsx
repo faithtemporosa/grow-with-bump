@@ -80,7 +80,7 @@ const Contact = () => {
           email: formData.email,
           brand_name: formData.brand,
           message: formData.message + cartItemsText,
-          cart_items: null,
+          cart_items: cartItemsText,
           order_total: orderTotal,
           automation_count: automationCount
         });
