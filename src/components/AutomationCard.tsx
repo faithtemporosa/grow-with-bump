@@ -93,8 +93,8 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
           ROI: {automation.roiLevel}
         </Badge>
 
-        <div className="flex gap-2 pt-2">
-          <Button asChild variant="outline" className="flex-1">
+        <div className="flex flex-col sm:flex-row gap-2 pt-2">
+          <Button asChild variant="outline" className="flex-1 text-sm">
             <Link to={`/automation/${automation.id}`}>View Details</Link>
           </Button>
           <Button 
@@ -103,7 +103,7 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
               (hapticRef as any).current = node;
             }}
             onClick={handleAddToCart}
-            className="flex-1"
+            className="flex-1 text-sm"
             variant={isInCart ? "secondary" : "default"}
           >
             {isInCart ? (

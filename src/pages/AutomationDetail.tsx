@@ -180,7 +180,7 @@ export default function AutomationDetail() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 space-y-6">
+            <div className="lg:sticky lg:top-24 space-y-6">
               {/* Pricing Card */}
               <Card className="p-6">
                 <div className="text-center space-y-4">
@@ -191,10 +191,10 @@ export default function AutomationDetail() {
                   <div className="text-xs text-muted-foreground">
                     5% off each additional automation (up to 20% off)
                   </div>
-                  <Button onClick={handleAddToCart} size="lg" className="w-full">
+                  <Button onClick={handleAddToCart} size="lg" className="w-full text-sm sm:text-base">
                     Add to Cart
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Button variant="outline" size="lg" className="w-full text-sm sm:text-base" asChild>
                     <Link to="/get-started">Book Consultation</Link>
                   </Button>
                 </div>

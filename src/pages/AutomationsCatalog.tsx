@@ -69,10 +69,10 @@ export default function AutomationsCatalog() {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Filters Sidebar */}
           <aside className="lg:w-64 shrink-0">
-            <div className="sticky top-24 space-y-6">
+            <div className="lg:sticky lg:top-24 space-y-6 bg-card p-4 rounded-lg lg:bg-transparent lg:p-0">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold">Filters</h3>
