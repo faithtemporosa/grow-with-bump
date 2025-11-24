@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -5,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { automations } from "@/data/automations";
+import { type Automation } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 import { ArrowLeft, Check, Clock, TrendingUp, Wrench } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
@@ -15,8 +17,32 @@ export default function AutomationDetail() {
   const { id } = useParams();
   const { toast } = useToast();
   const { addItem, items } = useCart();
-  const automation = automations.find((a) => a.id === id);
+  const [automation, setAutomation] = useState<Automation | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    parseAutomationsCatalog().then(automations => {
+      const found = automations.find((a) => a.id === id);
+      setAutomation(found || null);
+      setIsLoading(false);
+    });
+  }, [id]);
+
   const isInCart = automation ? items.some((item) => item.id === automation.id) : false;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
+          <div className="text-center">
+            <p className="text-lg text-muted-foreground">Loading...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!automation) {
     return (

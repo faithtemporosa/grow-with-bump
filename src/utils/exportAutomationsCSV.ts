@@ -1,9 +1,12 @@
-import { automations } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
+import type { Automation } from "@/data/automations";
 
 /**
  * Converts automations data to CSV format
  */
-export function convertAutomationsToCSV(): string {
+export async function convertAutomationsToCSV(): Promise<string> {
+  const automations = await parseAutomationsCatalog();
+  
   // CSV Headers
   const headers = [
     'ID',
@@ -67,8 +70,8 @@ export function convertAutomationsToCSV(): string {
 /**
  * Downloads the automations data as a CSV file
  */
-export function downloadAutomationsCSV(): void {
-  const csv = convertAutomationsToCSV();
+export async function downloadAutomationsCSV(): Promise<void> {
+  const csv = await convertAutomationsToCSV();
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   

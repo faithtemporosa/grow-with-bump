@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import { AutomationCard } from "@/components/AutomationCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { automations } from "@/data/automations";
+import { type Automation } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,14 +13,16 @@ import { Button } from "@/components/ui/button";
 export default function Wishlist() {
   const { user } = useAuth();
   const { wishlistIds } = useWishlist();
-  const [savedAutomations, setSavedAutomations] = useState(
-    automations.filter((automation) => wishlistIds.has(automation.id))
-  );
+  const [automations, setAutomations] = useState<Automation[]>([]);
+  const [savedAutomations, setSavedAutomations] = useState<Automation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setSavedAutomations(
-      automations.filter((automation) => wishlistIds.has(automation.id))
-    );
+    parseAutomationsCatalog().then(data => {
+      setAutomations(data);
+      setSavedAutomations(data.filter((automation) => wishlistIds.has(automation.id)));
+      setIsLoading(false);
+    });
   }, [wishlistIds]);
 
   if (!user) {
@@ -27,6 +30,11 @@ export default function Wishlist() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center px-4 pt-28 pb-12">
+          {isLoading ? (
+            <div className="text-center">
+              <p className="text-lg text-muted-foreground">Loading...</p>
+            </div>
+          ) : (
           <div className="text-center space-y-4">
             <Heart className="w-16 h-16 mx-auto text-muted-foreground" />
             <h1 className="text-2xl font-bold">Sign in to view your wishlist</h1>
@@ -37,6 +45,7 @@ export default function Wishlist() {
               <Link to="/auth">Sign In</Link>
             </Button>
           </div>
+          )}
         </main>
         <Footer />
       </div>
