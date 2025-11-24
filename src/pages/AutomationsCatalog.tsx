@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { categories, type AutomationCategory, type Automation } from "@/data/automations";
 import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 
 const ITEMS_PER_PAGE = 100;
 
@@ -18,6 +19,7 @@ export default function AutomationsCatalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategories, setSelectedCategories] = useState<AutomationCategory[]>([]);
   const [selectedRoiLevels, setSelectedRoiLevels] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   // Load automations on mount
@@ -31,7 +33,15 @@ export default function AutomationsCatalog() {
   const filteredAutomations = automations.filter((automation) => {
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(automation.category);
     const roiMatch = selectedRoiLevels.length === 0 || selectedRoiLevels.includes(automation.roiLevel);
-    return categoryMatch && roiMatch;
+    
+    // Search filter - check name, description, category, and tools
+    const searchMatch = searchQuery === "" || 
+      automation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      automation.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      automation.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      automation.tools.some(tool => tool.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    return categoryMatch && roiMatch && searchMatch;
   });
 
   // Calculate pagination
@@ -43,7 +53,7 @@ export default function AutomationsCatalog() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategories, selectedRoiLevels]);
+  }, [selectedCategories, selectedRoiLevels, searchQuery]);
 
   const handleCategoryToggle = (category: AutomationCategory) => {
     setSelectedCategories((prev) =>
@@ -64,6 +74,7 @@ export default function AutomationsCatalog() {
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedRoiLevels([]);
+    setSearchQuery("");
     setCurrentPage(1);
   };
 
@@ -81,9 +92,21 @@ export default function AutomationsCatalog() {
           <>
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-4">Automation Catalog</h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-lg text-muted-foreground mb-6">
                 Browse our library of AI-powered automations. Each saves you 10-80 hours per month.
               </p>
+              
+              {/* Search Bar */}
+              <div className="relative max-w-xl">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search by name, category, or keywords..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 h-12 text-base"
+                />
+              </div>
             </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
