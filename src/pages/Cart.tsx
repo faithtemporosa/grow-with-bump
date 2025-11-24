@@ -92,13 +92,48 @@ export default function Cart() {
     );
   };
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Prepare cart items data
+    const cartItemsData = cartItems.map(item => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      hoursSaved: item.hoursSaved
+    }));
+    
+    // Import supabase
+    const { supabase } = await import("@/integrations/supabase/client");
+    
+    // Save to contact_submissions
+    const { error } = await supabase
+      .from('contact_submissions')
+      .insert({
+        name: businessName,
+        email: email,
+        brand_name: website || null,
+        message: additionalInfo || 'Cart checkout submission',
+        cart_items: cartItemsData,
+        order_total: pricing.total,
+        automation_count: pricing.totalQuantity
+      });
+    
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit order. Please try again.",
+        variant: "destructive"
+      });
+      console.error('Error submitting order:', error);
+      return;
+    }
+    
     toast({
       title: "Order Submitted!",
       description: "We'll contact you within 24 hours to start your setup."
     });
-    // Would normally process payment and create order
   };
 
   const pricing = calculatePricing();

@@ -112,28 +112,37 @@ export type Database = {
       }
       contact_submissions: {
         Row: {
+          automation_count: number | null
           brand_name: string | null
+          cart_items: Json | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
+          order_total: number | null
         }
         Insert: {
+          automation_count?: number | null
           brand_name?: string | null
+          cart_items?: Json | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
+          order_total?: number | null
         }
         Update: {
+          automation_count?: number | null
           brand_name?: string | null
+          cart_items?: Json | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
+          order_total?: number | null
         }
         Relationships: []
       }
