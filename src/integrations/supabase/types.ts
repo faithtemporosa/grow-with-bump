@@ -114,35 +114,41 @@ export type Database = {
         Row: {
           automation_count: number | null
           brand_name: string | null
-          cart_items: Json | null
+          cart_items: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
+          order_id: string | null
           order_total: number | null
+          status: string
         }
         Insert: {
           automation_count?: number | null
           brand_name?: string | null
-          cart_items?: Json | null
+          cart_items?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
+          order_id?: string | null
           order_total?: number | null
+          status?: string
         }
         Update: {
           automation_count?: number | null
           brand_name?: string | null
-          cart_items?: Json | null
+          cart_items?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
+          order_id?: string | null
           order_total?: number | null
+          status?: string
         }
         Relationships: []
       }
