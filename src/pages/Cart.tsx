@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
 // QuickBooks Payment Links - Update these URLs with your actual QuickBooks payment links
+// The return URL will be automatically appended to redirect users after payment
 const QUICKBOOKS_PAYMENT_LINKS = {
   LINK_FOR_1: "https://your-quickbooks-payment-link-for-1.com",
   LINK_FOR_2_3: "https://your-quickbooks-payment-link-for-2-3.com",
@@ -155,8 +156,12 @@ export default function Cart() {
       description: "Redirecting to payment..."
     });
 
+    // Append return URL to payment link so users are redirected back after payment
+    const returnUrl = `${window.location.origin}/order-success`;
+    const paymentUrlWithReturn = `${paymentUrl}?return=${encodeURIComponent(returnUrl)}`;
+
     // Open QuickBooks payment link in new tab
-    window.open(paymentUrl, '_blank');
+    window.open(paymentUrlWithReturn, '_blank');
   };
 
   const pricing = calculatePricing();

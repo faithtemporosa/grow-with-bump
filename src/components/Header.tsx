@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User, Settings, Shield } from "lucide-react";
+import { Menu, X, ShoppingCart, Heart, LogIn, LogOut, User, Settings, Shield, Package } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -114,6 +114,10 @@ const Header = () => {
                 </Badge>
               )}
             </Link>
+            <Link to="/my-orders" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 relative inline-flex items-center gap-1.5 lg:gap-2 group">
+              <Package className="w-4 h-4 lg:w-5 lg:h-5 group-hover:drop-shadow-glow transition-all duration-300" />
+              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full">My Orders</span>
+            </Link>
             {user && <NotificationCenter />}
             {user ? (
               <>
@@ -188,6 +192,10 @@ const Header = () => {
                   {itemCount}
                 </Badge>
               )}
+            </Link>
+            <Link to="/my-orders" className="text-foreground hover:text-primary transition-smooth text-left flex items-center gap-2" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
+              <Package className="w-5 h-5" />
+              My Orders
             </Link>
             {user ? (
               <>
