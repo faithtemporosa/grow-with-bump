@@ -20,6 +20,8 @@ import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
 import Settings from "./pages/Settings";
 import Admin from "./pages/Admin";
+import OrderSuccess from "./pages/OrderSuccess";
+import MyOrders from "./pages/MyOrders";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/automation/:id" element={<AutomationDetail />} />
             <Route path="/build-my-stack" element={<BuildMyStack />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/settings" element={<Settings />} />
