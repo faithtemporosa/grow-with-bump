@@ -57,22 +57,15 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-video bg-muted flex items-center justify-center relative group">
-        <img 
-          src={automation.thumbnail} 
-          alt={automation.name}
-          className="w-full h-full object-cover"
-        />
+      <div className="p-6 space-y-4 relative">
         <Button
           variant="secondary"
           size="icon"
-          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-2 right-2"
           onClick={() => toggleWishlist(automation.id)}
         >
           <Heart className={`w-4 h-4 ${isSaved ? "fill-current text-red-500" : ""}`} />
         </Button>
-      </div>
-      <div className="p-6 space-y-4">
         <div className="space-y-2">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold text-lg leading-tight">{automation.name}</h3>
