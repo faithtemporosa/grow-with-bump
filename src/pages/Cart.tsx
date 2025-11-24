@@ -111,7 +111,7 @@ export default function Cart() {
         email: email,
         brand_name: website || null,
         message: `${additionalInfo || 'Cart checkout submission'}\n\nORDER DETAILS:\n${cartItemsText}`,
-        cart_items: null,
+        cart_items: cartItemsText,
         order_total: pricing.total,
         automation_count: pricing.totalQuantity
       });
