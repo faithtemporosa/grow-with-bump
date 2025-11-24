@@ -1,11 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
-import { automations } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 
 /**
- * Seeds the automations table with all parsed n8n workflows and base automations
+ * Seeds the automations table with all parsed automations from CSV
  * This function should be called once to populate the database
  */
 export async function seedAutomationsDatabase() {
+  const automations = await parseAutomationsCatalog();
+  
   console.log(`Starting to seed ${automations.length} automations...`);
   
   // Process in batches of 100 to avoid overwhelming the database

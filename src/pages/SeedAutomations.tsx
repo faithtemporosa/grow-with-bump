@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -6,13 +6,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, AlertCircle, Database, Download } from "lucide-react";
 import { seedAutomationsDatabase } from "@/utils/seedAutomations";
 import { downloadAutomationsCSV } from "@/utils/exportAutomationsCSV";
-import { automations } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 
 export default function SeedAutomations() {
   const [isSeeding, setIsSeeding] = useState(false);
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<{ successCount: number; errorCount: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [automationCount, setAutomationCount] = useState<number>(0);
+
+  useEffect(() => {
+    parseAutomationsCatalog().then(automations => {
+      setAutomationCount(automations.length);
+    });
+  }, []);
 
   const handleSeed = async () => {
     setIsSeeding(true);
@@ -47,7 +54,7 @@ export default function SeedAutomations() {
               Seed Automations Database
             </CardTitle>
             <CardDescription>
-              Populate the database with all {automations.length} automation templates
+              Populate the database with all {automationCount} automation templates
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FuturisticBackground } from "@/components/FuturisticBackground";
@@ -8,19 +8,29 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { automations, categories, type Automation, type AutomationCategory } from "@/data/automations";
+import { categories, type Automation, type AutomationCategory } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 type QuizStep = "goals" | "tools" | "role" | "volume" | "results";
 
 export default function BuildMyStack() {
+  const [automations, setAutomations] = useState<Automation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState<QuizStep>("goals");
   const [selectedGoals, setSelectedGoals] = useState<AutomationCategory[]>([]);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
   const [role, setRole] = useState("");
   const [emailVolume, setEmailVolume] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    parseAutomationsCatalog().then(data => {
+      setAutomations(data);
+      setIsLoading(false);
+    });
+  }, []);
 
   const steps: QuizStep[] = ["goals", "tools", "role", "volume", "results"];
   const currentStepIndex = steps.indexOf(currentStep);

@@ -7,15 +7,26 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { automations, categories, type AutomationCategory } from "@/data/automations";
+import { categories, type AutomationCategory, type Automation } from "@/data/automations";
+import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ITEMS_PER_PAGE = 100;
 
 export default function AutomationsCatalog() {
+  const [automations, setAutomations] = useState<Automation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategories, setSelectedCategories] = useState<AutomationCategory[]>([]);
   const [selectedRoiLevels, setSelectedRoiLevels] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Load automations on mount
+  useEffect(() => {
+    parseAutomationsCatalog().then(data => {
+      setAutomations(data);
+      setIsLoading(false);
+    });
+  }, []);
 
   const filteredAutomations = automations.filter((automation) => {
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(automation.category);
@@ -62,12 +73,18 @@ export default function AutomationsCatalog() {
       <Header />
       
       <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">Automation Catalog</h1>
-          <p className="text-lg text-muted-foreground">
-            Browse our library of AI-powered automations. Each saves you 10-80 hours per month.
-          </p>
-        </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <p className="text-lg text-muted-foreground">Loading automations...</p>
+          </div>
+        ) : (
+          <>
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold mb-4">Automation Catalog</h1>
+              <p className="text-lg text-muted-foreground">
+                Browse our library of AI-powered automations. Each saves you 10-80 hours per month.
+              </p>
+            </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Filters Sidebar */}
@@ -221,6 +238,8 @@ export default function AutomationsCatalog() {
             )}
           </div>
         </div>
+        </>
+        )}
       </main>
 
       <Footer />
