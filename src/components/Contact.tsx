@@ -50,6 +50,32 @@ const Contact = () => {
       // Validate form data
       contactSchema.parse(formData);
 
+      // Get cart items if user is logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      let cartItemsData = [];
+      let orderTotal = 0;
+      let automationCount = 0;
+      
+      if (user) {
+        const { data: cartItems } = await supabase
+          .from('cart_items')
+          .select('*')
+          .eq('user_id', user.id);
+        
+        if (cartItems && cartItems.length > 0) {
+          cartItemsData = cartItems.map(item => ({
+            id: item.automation_id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            hoursSaved: item.hours_saved
+          }));
+          orderTotal = cartItems.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+          automationCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        }
+      }
+
       // Submit to database
       const { error: dbError } = await supabase
         .from('contact_submissions')
@@ -58,6 +84,9 @@ const Contact = () => {
           email: formData.email,
           brand_name: formData.brand,
           message: formData.message,
+          cart_items: cartItemsData,
+          order_total: orderTotal,
+          automation_count: automationCount
         });
 
       if (dbError) {
