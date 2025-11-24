@@ -4,8 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Search, Package, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Search, Package, Mail } from "lucide-react";
 import { format } from "date-fns";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -36,37 +35,6 @@ const MyOrders = () => {
     setSearchEmail(email);
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case "in_progress":
-        return <Clock className="w-5 h-5 text-blue-500" />;
-      case "cancelled":
-        return <XCircle className="w-5 h-5 text-red-500" />;
-      default:
-        return <Package className="w-5 h-5 text-yellow-500" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "in_progress":
-        return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "cancelled":
-        return "bg-red-500/10 text-red-500 border-red-500/20";
-      default:
-        return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    return status.split("_").map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(" ");
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,20 +87,9 @@ const MyOrders = () => {
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <div className="flex items-center gap-3">
-                          <h3 className="text-lg font-semibold">
-                            Order #{order.order_id}
-                          </h3>
-                          <Badge 
-                            variant="outline" 
-                            className={getStatusColor(order.status)}
-                          >
-                            <span className="flex items-center gap-1">
-                              {getStatusIcon(order.status)}
-                              {getStatusLabel(order.status)}
-                            </span>
-                          </Badge>
-                        </div>
+                        <h3 className="text-lg font-semibold">
+                          Order #{order.order_id}
+                        </h3>
                         <p className="text-sm text-muted-foreground">
                           {format(new Date(order.created_at), "PPP 'at' p")}
                         </p>
@@ -167,7 +124,20 @@ const MyOrders = () => {
 
                     {order.cart_items && order.cart_items !== "No cart items" && (
                       <div className="border-t pt-4">
-                        <p className="text-sm font-medium mb-2">Items</p>
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-sm font-medium">Items</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            asChild
+                            className="h-8 px-3 gap-2"
+                          >
+                            <a href="mailto:marketing@thebumpteam.com?subject=Order Status Request - Order #">
+                              <Mail className="w-4 h-4" />
+                              Contact for Status
+                            </a>
+                          </Button>
+                        </div>
                         <div className="text-sm text-muted-foreground whitespace-pre-line">
                           {order.cart_items}
                         </div>

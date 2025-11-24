@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return <footer className="bg-card text-card-foreground border-t border-border py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
             <h3 className="text-2xl font-bold mb-4 text-foreground">Bump AI</h3>
@@ -33,33 +33,6 @@ const Footer = () => {
               <li>
                 <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
                   Cart
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="font-semibold mb-4 text-foreground">Services</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/creator-partnerships" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
-                  Creator Partnerships
-                </Link>
-              </li>
-              <li>
-                <Link to="/brand-campaigns" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
-                  Brand Campaigns
-                </Link>
-              </li>
-              <li>
-                <Link to="/automations-support" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
-                  Automations Support
-                </Link>
-              </li>
-              <li>
-                <Link to="/growth-strategy" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-primary transition-smooth">
-                  Growth Strategy
                 </Link>
               </li>
             </ul>
