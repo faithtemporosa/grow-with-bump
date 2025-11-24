@@ -131,8 +131,8 @@ export default function BuildMyStack() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
-            <h1 className="text-4xl font-bold mb-4">Build Your Automation Stack</h1>
-            <p className="text-lg text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Build Your Automation Stack</h1>
+            <p className="text-base sm:text-lg text-muted-foreground">
               Answer a few questions to get personalized automation recommendations
             </p>
             <div className="mt-6">
@@ -143,12 +143,12 @@ export default function BuildMyStack() {
             </div>
           </div>
 
-          <Card className="p-8">
+          <Card className="p-4 sm:p-6 md:p-8">
             {/* Step 1: Goals */}
             {currentStep === "goals" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">What do you want to automate?</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">What do you want to automate?</h2>
                   <p className="text-muted-foreground">Select all that apply</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -178,7 +178,7 @@ export default function BuildMyStack() {
             {currentStep === "tools" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">What tools do you use?</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">What tools do you use?</h2>
                   <p className="text-muted-foreground">Select all that apply (optional)</p>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -202,7 +202,7 @@ export default function BuildMyStack() {
             {currentStep === "role" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">What's your role?</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">What's your role?</h2>
                   <p className="text-muted-foreground">This helps us tailor recommendations</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -232,7 +232,7 @@ export default function BuildMyStack() {
             {currentStep === "volume" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">How many emails do you handle daily?</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">How many emails do you handle daily?</h2>
                   <p className="text-muted-foreground">This helps us estimate time savings</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -262,7 +262,7 @@ export default function BuildMyStack() {
             {currentStep === "results" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Your Recommended Stack</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-4">Your Recommended Stack</h2>
                   <p className="text-muted-foreground mb-6">
                     Based on your answers, here's what we recommend:
                   </p>
@@ -307,18 +307,18 @@ export default function BuildMyStack() {
                       <div className="space-y-4">
                         {recommended.map((automation) => (
                           <Card key={automation.id} className="p-4 hover:shadow-lg transition-shadow">
-                            <div className="flex items-start justify-between gap-4">
+                            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                               <div className="flex-1">
-                                <h3 className="font-semibold text-lg mb-1">{automation.name}</h3>
+                                <h3 className="font-semibold text-base sm:text-lg mb-1">{automation.name}</h3>
                                 <p className="text-sm text-muted-foreground mb-2">
                                   {automation.description}
                                 </p>
-                                <div className="flex gap-3 text-sm">
+                                <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
                                   <Badge variant="outline">{automation.hoursSaved}h saved</Badge>
                                   <Badge variant="outline">${automation.monthlySavings} saved</Badge>
                                 </div>
                               </div>
-                              <Button variant="outline" size="sm" asChild>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto" asChild>
                                 <Link to={`/automation/${automation.id}`}>Details</Link>
                               </Button>
                             </div>
