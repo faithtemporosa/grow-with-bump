@@ -17,6 +17,9 @@ import { X, Check, Plus, Minus, TrendingDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 
+// QuickBooks Payment Link - Update this URL with your actual QuickBooks payment link
+const QUICKBOOKS_PAYMENT_URL = "https://your-quickbooks-payment-link.com";
+
 const UPSELLS = [
   { id: "priority-support", name: "Priority Support", price: 200, description: "24/7 priority response" },
   { id: "custom-automation", name: "Custom Automation Design", price: 1000, description: "One custom workflow" },
@@ -128,8 +131,11 @@ export default function Cart() {
     
     toast({
       title: "Order Submitted!",
-      description: "We'll contact you within 24 hours to start your setup."
+      description: "Redirecting to payment..."
     });
+
+    // Open QuickBooks payment link in new tab
+    window.open(QUICKBOOKS_PAYMENT_URL, '_blank');
   };
 
   const pricing = calculatePricing();
@@ -279,12 +285,13 @@ export default function Cart() {
             </Card>
 
             <div className="mt-8 text-center text-sm text-muted-foreground">
-              <p>After submission, we'll contact you within 24 hours to:</p>
-              <ul className="mt-2 space-y-1">
+              <p className="mb-2">After payment, we'll contact you within 24 hours to:</p>
+              <ul className="space-y-1">
                 <li>• Connect your accounts and tools</li>
                 <li>• Configure your automations</li>
                 <li>• Schedule your go-live date</li>
               </ul>
+              <p className="mt-4">If you have any questions, please contact us at <a href="mailto:marketing@thebumpteam.com" className="text-primary hover:underline">marketing@thebumpteam.com</a></p>
             </div>
           </div>
         </main>
