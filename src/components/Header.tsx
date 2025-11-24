@@ -83,16 +83,16 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-6">
-            <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full">
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-4">
+            <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap">
               Automations
             </Link>
-            <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full">
-              Build My Stack
+            <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap">
+              Build Stack
             </Link>
-            <Link to="/wishlist" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 relative inline-flex items-center gap-1.5 lg:gap-2 group">
-              <Heart className="w-4 h-4 lg:w-5 lg:h-5 group-hover:fill-primary transition-all duration-300" />
-              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full">Wishlist</span>
+            <Link to="/wishlist" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative inline-flex items-center gap-1.5 group whitespace-nowrap">
+              <Heart className="w-4 h-4 group-hover:fill-primary transition-all duration-300" />
+              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full hidden xl:inline">Wishlist</span>
               {wishlistIds.size > 0 && (
                 <Badge 
                   variant="secondary" 
@@ -102,9 +102,9 @@ const Header = () => {
                 </Badge>
               )}
             </Link>
-            <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 relative inline-flex items-center gap-1.5 lg:gap-2 group">
-              <ShoppingCart className="w-4 h-4 lg:w-5 lg:h-5 group-hover:drop-shadow-glow transition-all duration-300" />
-              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full">Cart</span>
+            <Link to="/cart" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative inline-flex items-center gap-1.5 group whitespace-nowrap">
+              <ShoppingCart className="w-4 h-4 group-hover:drop-shadow-glow transition-all duration-300" />
+              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full hidden xl:inline">Cart</span>
               {itemCount > 0 && (
                 <Badge 
                   variant="destructive" 
@@ -114,55 +114,55 @@ const Header = () => {
                 </Badge>
               )}
             </Link>
-            <Link to="/my-orders" onClick={() => window.scrollTo(0, 0)} className="text-sm lg:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-110 relative inline-flex items-center gap-1.5 lg:gap-2 group">
-              <Package className="w-4 h-4 lg:w-5 lg:h-5 group-hover:drop-shadow-glow transition-all duration-300" />
-              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full">My Orders</span>
+            <Link to="/my-orders" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative inline-flex items-center gap-1.5 group whitespace-nowrap">
+              <Package className="w-4 h-4 group-hover:drop-shadow-glow transition-all duration-300" />
+              <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full hidden xl:inline">Orders</span>
             </Link>
             {user && <NotificationCenter />}
             {user ? (
               <>
                 {isAdmin && (
                   <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
-                    <Button variant="ghost" size="sm" className="gap-2">
+                    <Button variant="ghost" size="sm" className="gap-1 xl:gap-2">
                       <Shield className="w-4 h-4" />
-                      Admin
+                      <span className="hidden xl:inline">Admin</span>
                     </Button>
                   </Link>
                 )}
                 <Link to="/settings" onClick={() => window.scrollTo(0, 0)}>
-                  <Button variant="ghost" size="sm" className="gap-2">
+                  <Button variant="ghost" size="sm" className="gap-1 xl:gap-2">
                     <Settings className="w-4 h-4" />
-                    Settings
+                    <span className="hidden xl:inline">Settings</span>
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={() => signOut()} className="gap-2">
+                <Button variant="ghost" size="sm" onClick={() => signOut()} className="gap-1 xl:gap-2">
                   <LogOut className="w-4 h-4" />
-                  Sign Out
+                  <span className="hidden xl:inline">Sign Out</span>
                 </Button>
               </>
             ) : (
               <Link to="/auth" onClick={() => window.scrollTo(0, 0)}>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm" className="gap-1 xl:gap-2">
                   <LogIn className="w-4 h-4" />
-                  Sign In
+                  <span className="hidden xl:inline">Sign In</span>
                 </Button>
               </Link>
             )}
             <Link to="/get-started" onClick={() => window.scrollTo(0, 0)}>
-              <Button className="gradient-primary shadow-glow">
+              <Button size="sm" className="gradient-primary shadow-glow whitespace-nowrap">
                 Get Started
               </Button>
             </Link>
           </nav>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden text-foreground" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button className="lg:hidden text-foreground p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && <nav className="md:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in">
+        {isMobileMenuOpen && <nav className="lg:hidden mt-4 pb-4 flex flex-col gap-4 animate-fade-in border-t border-border/20 pt-4">
             <Link to="/catalog" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
               Automations
             </Link>
