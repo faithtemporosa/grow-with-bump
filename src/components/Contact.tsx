@@ -53,7 +53,7 @@ const Contact = () => {
       // Get cart items if user is logged in
       const { data: { user } } = await supabase.auth.getUser();
       
-      let cartItemsData = [];
+      let cartItemsText = '';
       let orderTotal = 0;
       let automationCount = 0;
       
@@ -64,13 +64,9 @@ const Contact = () => {
           .eq('user_id', user.id);
         
         if (cartItems && cartItems.length > 0) {
-          cartItemsData = cartItems.map(item => ({
-            id: item.automation_id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            hoursSaved: item.hours_saved
-          }));
+          cartItemsText = '\n\nCART ITEMS:\n' + cartItems.map((item, index) => 
+            `${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: $${item.price} each - Hours Saved: ${item.hours_saved}h`
+          ).join('\n');
           orderTotal = cartItems.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
           automationCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
         }
@@ -83,8 +79,8 @@ const Contact = () => {
           name: formData.name,
           email: formData.email,
           brand_name: formData.brand,
-          message: formData.message,
-          cart_items: cartItemsData,
+          message: formData.message + cartItemsText,
+          cart_items: null,
           order_total: orderTotal,
           automation_count: automationCount
         });

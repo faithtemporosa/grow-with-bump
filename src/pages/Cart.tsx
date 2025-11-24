@@ -95,14 +95,10 @@ export default function Cart() {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Prepare cart items data
-    const cartItemsData = cartItems.map(item => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      hoursSaved: item.hoursSaved
-    }));
+    // Format cart items as readable text
+    const cartItemsText = cartItems.map((item, index) => 
+      `${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: $${item.price} each - Hours Saved: ${item.hoursSaved}h`
+    ).join('\n');
     
     // Import supabase
     const { supabase } = await import("@/integrations/supabase/client");
@@ -114,8 +110,8 @@ export default function Cart() {
         name: businessName,
         email: email,
         brand_name: website || null,
-        message: additionalInfo || 'Cart checkout submission',
-        cart_items: cartItemsData,
+        message: `${additionalInfo || 'Cart checkout submission'}\n\nORDER DETAILS:\n${cartItemsText}`,
+        cart_items: null,
         order_total: pricing.total,
         automation_count: pricing.totalQuantity
       });
