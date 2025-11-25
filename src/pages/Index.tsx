@@ -186,24 +186,26 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularAutomations.map((automation, index) => (
-              <Card key={index} className="p-6 glass hover:shadow-neon transition-all duration-300 hover:-translate-y-1 group">
-                <div className="mb-4 p-3 bg-primary/10 rounded-lg w-fit">
-                  {automation.icon}
-                </div>
-                <div className="inline-block px-2 py-1 rounded text-xs font-medium bg-accent/10 text-accent mb-3">
-                  {automation.tag}
-                </div>
-                <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
-                  {automation.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">{automation.description}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <span className="text-sm font-medium text-primary">{automation.hoursSaved}</span>
-                  <Button variant="ghost" size="sm" className="text-xs">
-                    View Details →
-                  </Button>
-                </div>
-              </Card>
+              <Link key={index} to="/catalog">
+                <Card className="p-6 glass hover:shadow-neon transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
+                  <div className="mb-4 p-3 bg-primary/10 rounded-lg w-fit">
+                    {automation.icon}
+                  </div>
+                  <div className="inline-block px-2 py-1 rounded text-xs font-medium bg-accent/10 text-accent mb-3">
+                    {automation.tag}
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                    {automation.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">{automation.description}</p>
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <span className="text-sm font-medium text-primary">{automation.hoursSaved}</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
+                      View Details →
+                    </span>
+                  </div>
+                </Card>
+              </Link>
             ))}
           </div>
           <div className="text-center mt-12">
