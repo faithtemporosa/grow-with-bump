@@ -220,9 +220,6 @@ export default function AutomationDetail() {
                   <Button onClick={handleAddToCart} size="lg" className="w-full text-sm sm:text-base">
                     Add to Cart
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full text-sm sm:text-base" asChild>
-                    <Link to="/get-started">Book Consultation</Link>
-                  </Button>
                 </div>
               </Card>
 

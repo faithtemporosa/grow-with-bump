@@ -116,9 +116,6 @@ const Index = () => {
               <Button size="lg" className="gradient-primary shadow-glow text-lg px-8 h-14" asChild>
                 <Link to="/catalog">Browse Automations</Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 h-14" asChild>
-                <Link to="/get-started">Book Enterprise Consultation</Link>
-              </Button>
             </div>
             <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground pt-8 border-t border-border/50">
               <span>Trusted by founders, creators, and growing teams</span>
@@ -258,9 +255,6 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8 h-14 gradient-primary text-white shadow-glow" asChild>
               <Link to="/catalog">Browse Automations</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
-              <Link to="/get-started">Book Consultation</Link>
             </Button>
           </div>
         </div>

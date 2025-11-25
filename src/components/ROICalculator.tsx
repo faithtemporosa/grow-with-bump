@@ -202,9 +202,6 @@ const ROICalculator = ({
               <Button className="gradient-primary shadow-glow flex-1" asChild>
                 <Link to="/build-my-stack">Build My Stack</Link>
               </Button>
-              <Button variant="outline" className="flex-1" asChild>
-                <Link to="/get-started">Talk to a Specialist</Link>
-              </Button>
             </div>
           </div>
         </div>

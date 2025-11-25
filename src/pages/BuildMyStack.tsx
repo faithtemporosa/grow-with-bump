@@ -331,9 +331,6 @@ export default function BuildMyStack() {
                         <Button size="lg" className="flex-1 gradient-primary shadow-glow">
                           Add Bundle to Cart
                         </Button>
-                        <Button size="lg" variant="outline" className="flex-1" asChild>
-                          <Link to="/get-started">Schedule Consultation</Link>
-                        </Button>
                       </div>
                     </>
                   );
