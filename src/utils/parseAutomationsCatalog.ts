@@ -5,98 +5,89 @@ let cachedAutomations: Automation[] | null = null;
 
 /**
  * Converts technical terms to generalized business-friendly terms
+ * Focus: Show only account/service names without technical jargon
  */
 function generalizeRequirement(requirement: string): string {
-  const technicalToGeneral: Record<string, string> = {
-    // APIs and Authentication
-    'API': 'Account access',
-    'API key': 'Account credentials',
-    'API keys': 'Account credentials',
-    'API access': 'Account access',
-    'API token': 'Access credentials',
-    'API tokens': 'Access credentials',
-    'API credentials': 'Account credentials',
-    'webhook': 'Automated notifications',
-    'webhooks': 'Automated notifications',
-    'OAuth': 'Account connection',
-    'OAuth2': 'Account connection',
-    'authentication': 'Account login',
-    'JWT': 'Access credential',
-    'token': 'Access credential',
-    'tokens': 'Access credentials',
-    'bearer token': 'Access credential',
-    
-    // Development and Technical
-    'database': 'Data storage',
-    'SQL': 'Data management',
-    'REST API': 'Service connection',
-    'GraphQL': 'Service connection',
-    'SDK': 'Integration tools',
-    'SMTP': 'Email service',
-    'IMAP': 'Email service',
-    'POP3': 'Email service',
-    'SSL': 'Secure connection',
-    'TLS': 'Secure connection',
-    'HTTPS': 'Secure connection',
-    'HTTP': 'Connection',
-    'JSON': 'Data format',
-    'XML': 'Data format',
-    'CSV': 'Spreadsheet format',
-    'cron job': 'Scheduled task',
-    'cron': 'Scheduled task',
-    'server': 'Hosting service',
-    'domain': 'Website address',
-    'DNS': 'Website settings',
-    'CDN': 'Content delivery',
-    'S3': 'File storage',
-    'bucket': 'Storage space',
-    'endpoint': 'Connection point',
-    'URL': 'Web address',
-    'URI': 'Web address',
-    
-    // Development Tools
-    'Git': 'Version control',
-    'GitHub': 'Code repository',
-    'npm': 'Package manager',
-    'node.js': 'Runtime environment',
-    'Python': 'Programming language',
-    'JavaScript': 'Programming language',
-    'TypeScript': 'Programming language',
-    
-    // Cloud Services
-    'AWS': 'Cloud service',
-    'Azure': 'Cloud service',
-    'Google Cloud': 'Cloud service',
-    'Heroku': 'Hosting service',
-    
-    // Data and Storage
-    'MySQL': 'Database',
-    'PostgreSQL': 'Database',
-    'MongoDB': 'Database',
-    'Redis': 'Cache storage',
-    
-    // Remove common technical prefixes/suffixes
-    'plugin': 'extension',
-    'extension': 'add-on',
-    'integration': 'connection',
-    'implementation': 'setup'
-  };
-
   let generalized = requirement;
   
-  // Replace technical terms (case-insensitive, whole word matching)
-  Object.entries(technicalToGeneral).forEach(([technical, general]) => {
-    const regex = new RegExp(`\\b${technical}\\b`, 'gi');
-    generalized = generalized.replace(regex, general);
+  // Step 1: Remove all technical suffixes and prefixes
+  generalized = generalized
+    // Remove API-related terms
+    .replace(/\b(API|api)\s*(key|keys|access|token|tokens|credentials?|endpoint|integration|connection)\b/gi, '')
+    .replace(/\b(API|api)\b/gi, '')
+    // Remove authentication terms
+    .replace(/\b(OAuth|OAuth2|authentication|auth|JWT|bearer)\s*(token|access|key)?\b/gi, '')
+    // Remove technical action words
+    .replace(/\b(access|credentials?|token|tokens|key|keys|integration|connection|endpoint|webhook|webhooks)\s*to\b/gi, '')
+    .replace(/\b(with|using|via|through)\s+(API|api|OAuth|authentication|credentials?|token|access)\b/gi, '')
+    // Remove version numbers
+    .replace(/\bv\d+(\.\d+)*\b/g, '')
+    // Remove HTTP methods
+    .replace(/\b(GET|POST|PUT|DELETE|PATCH|REST|RESTful)\b/gi, '')
+    // Remove technical prefixes
+    .replace(/\b(developer|admin|business|enterprise)\s+(API|api|account|access|key|token)\b/gi, '$1')
+    // Remove standalone technical terms
+    .replace(/\b(webhook|webhooks|SDK|SMTP|IMAP|POP3|SSL|TLS|HTTPS?|JSON|XML|CSV|cron|endpoint|URL|URI)\b/gi, '')
+    // Remove database terms
+    .replace(/\b(database|SQL|MySQL|PostgreSQL|MongoDB|Redis)\b/gi, 'data storage')
+    // Remove cloud service technical terms
+    .replace(/\b(server|hosting|domain|DNS|CDN|S3|bucket)\b/gi, '')
+    // Clean up extra spaces and punctuation
+    .replace(/\s+/g, ' ')
+    .replace(/\s*[,;]\s*/g, ', ')
+    .replace(/\s*\.\s*$/g, '')
+    .trim();
+  
+  // Step 2: Convert remaining platform names to simple "Platform account" format
+  const platformPatterns = [
+    { pattern: /\b(TikTok|tiktok)\b/gi, replacement: 'TikTok account' },
+    { pattern: /\b(Instagram|instagram)\b/gi, replacement: 'Instagram account' },
+    { pattern: /\b(Facebook|facebook)\b/gi, replacement: 'Facebook account' },
+    { pattern: /\b(Twitter|twitter|X)\b/gi, replacement: 'Twitter account' },
+    { pattern: /\b(LinkedIn|linkedin)\b/gi, replacement: 'LinkedIn account' },
+    { pattern: /\b(YouTube|youtube)\b/gi, replacement: 'YouTube account' },
+    { pattern: /\b(Google|google)\s*(Cloud|Analytics|Ads|Drive|Sheets|Docs)?\b/gi, replacement: 'Google account' },
+    { pattern: /\b(Slack|slack)\b/gi, replacement: 'Slack account' },
+    { pattern: /\b(Stripe|stripe)\b/gi, replacement: 'Stripe account' },
+    { pattern: /\b(PayPal|paypal)\b/gi, replacement: 'PayPal account' },
+    { pattern: /\b(Shopify|shopify)\b/gi, replacement: 'Shopify account' },
+    { pattern: /\b(HubSpot|hubspot)\b/gi, replacement: 'HubSpot account' },
+    { pattern: /\b(Salesforce|salesforce)\b/gi, replacement: 'Salesforce account' },
+    { pattern: /\b(Mailchimp|mailchimp)\b/gi, replacement: 'Mailchimp account' },
+    { pattern: /\b(Zapier|zapier)\b/gi, replacement: 'Zapier account' },
+    { pattern: /\b(Airtable|airtable)\b/gi, replacement: 'Airtable account' },
+    { pattern: /\b(Notion|notion)\b/gi, replacement: 'Notion account' },
+    { pattern: /\b(Trello|trello)\b/gi, replacement: 'Trello account' },
+    { pattern: /\b(Asana|asana)\b/gi, replacement: 'Asana account' },
+    { pattern: /\b(Discord|discord)\b/gi, replacement: 'Discord account' },
+    { pattern: /\b(Twilio|twilio)\b/gi, replacement: 'Twilio account' },
+    { pattern: /\b(SendGrid|sendgrid)\b/gi, replacement: 'SendGrid account' },
+    { pattern: /\b(AWS|Amazon Web Services)\b/gi, replacement: 'AWS account' },
+    { pattern: /\b(Azure|Microsoft Azure)\b/gi, replacement: 'Azure account' },
+  ];
+  
+  // Only apply platform patterns if the platform name exists in the requirement
+  platformPatterns.forEach(({ pattern, replacement }) => {
+    if (pattern.test(generalized)) {
+      // Remove the pattern and just show it once
+      generalized = generalized.replace(pattern, replacement);
+      // Remove duplicate "account account" if it exists
+      generalized = generalized.replace(/\baccount\s+account\b/gi, 'account');
+    }
   });
   
-  // Remove any remaining common technical patterns
+  // Step 3: Final cleanup
   generalized = generalized
-    .replace(/\bv\d+(\.\d+)*\b/g, '') // Remove version numbers like v1.0
-    .replace(/\b(GET|POST|PUT|DELETE|PATCH)\b/g, 'request') // HTTP methods
-    .replace(/\bREST\b/gi, 'service')
-    .replace(/\bAPI\b/gi, 'account access')
+    .replace(/\s+/g, ' ')
+    .replace(/,\s*,/g, ',')
+    .replace(/^\s*,\s*/, '')
+    .replace(/\s*,\s*$/, '')
     .trim();
+  
+  // If the requirement is now empty or just whitespace, return a generic message
+  if (!generalized || generalized.length < 3) {
+    return 'Account access required';
+  }
   
   return generalized;
 }
