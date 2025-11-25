@@ -8,21 +8,42 @@ let cachedAutomations: Automation[] | null = null;
  */
 function generalizeRequirement(requirement: string): string {
   const technicalToGeneral: Record<string, string> = {
+    // APIs and Authentication
     'API': 'Account access',
     'API key': 'Account credentials',
+    'API keys': 'Account credentials',
     'API access': 'Account access',
+    'API token': 'Access credentials',
+    'API tokens': 'Access credentials',
+    'API credentials': 'Account credentials',
     'webhook': 'Automated notifications',
+    'webhooks': 'Automated notifications',
     'OAuth': 'Account connection',
+    'OAuth2': 'Account connection',
+    'authentication': 'Account login',
+    'JWT': 'Access credential',
+    'token': 'Access credential',
+    'tokens': 'Access credentials',
+    'bearer token': 'Access credential',
+    
+    // Development and Technical
     'database': 'Data storage',
     'SQL': 'Data management',
-    'REST API': 'Service integration',
-    'GraphQL': 'Service integration',
+    'REST API': 'Service connection',
+    'GraphQL': 'Service connection',
     'SDK': 'Integration tools',
     'SMTP': 'Email service',
+    'IMAP': 'Email service',
+    'POP3': 'Email service',
     'SSL': 'Secure connection',
+    'TLS': 'Secure connection',
+    'HTTPS': 'Secure connection',
+    'HTTP': 'Connection',
     'JSON': 'Data format',
     'XML': 'Data format',
-    'cron job': 'Scheduled tasks',
+    'CSV': 'Spreadsheet format',
+    'cron job': 'Scheduled task',
+    'cron': 'Scheduled task',
     'server': 'Hosting service',
     'domain': 'Website address',
     'DNS': 'Website settings',
@@ -30,17 +51,52 @@ function generalizeRequirement(requirement: string): string {
     'S3': 'File storage',
     'bucket': 'Storage space',
     'endpoint': 'Connection point',
-    'JWT': 'Authentication token',
-    'token': 'Access credential'
+    'URL': 'Web address',
+    'URI': 'Web address',
+    
+    // Development Tools
+    'Git': 'Version control',
+    'GitHub': 'Code repository',
+    'npm': 'Package manager',
+    'node.js': 'Runtime environment',
+    'Python': 'Programming language',
+    'JavaScript': 'Programming language',
+    'TypeScript': 'Programming language',
+    
+    // Cloud Services
+    'AWS': 'Cloud service',
+    'Azure': 'Cloud service',
+    'Google Cloud': 'Cloud service',
+    'Heroku': 'Hosting service',
+    
+    // Data and Storage
+    'MySQL': 'Database',
+    'PostgreSQL': 'Database',
+    'MongoDB': 'Database',
+    'Redis': 'Cache storage',
+    
+    // Remove common technical prefixes/suffixes
+    'plugin': 'extension',
+    'extension': 'add-on',
+    'integration': 'connection',
+    'implementation': 'setup'
   };
 
   let generalized = requirement;
   
-  // Replace technical terms (case-insensitive)
+  // Replace technical terms (case-insensitive, whole word matching)
   Object.entries(technicalToGeneral).forEach(([technical, general]) => {
     const regex = new RegExp(`\\b${technical}\\b`, 'gi');
     generalized = generalized.replace(regex, general);
   });
+  
+  // Remove any remaining common technical patterns
+  generalized = generalized
+    .replace(/\bv\d+(\.\d+)*\b/g, '') // Remove version numbers like v1.0
+    .replace(/\b(GET|POST|PUT|DELETE|PATCH)\b/g, 'request') // HTTP methods
+    .replace(/\bREST\b/gi, 'service')
+    .replace(/\bAPI\b/gi, 'account access')
+    .trim();
   
   return generalized;
 }
