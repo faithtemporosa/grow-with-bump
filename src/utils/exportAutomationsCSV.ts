@@ -40,7 +40,7 @@ export async function convertAutomationsToCSV(): Promise<string> {
         price = 299;
       }
     } else {
-      price = Math.round((automation.monthlySavings || 500) / 3);
+      price = Math.round((automation.monthlySavings || 350) / 3);
     }
 
     return [

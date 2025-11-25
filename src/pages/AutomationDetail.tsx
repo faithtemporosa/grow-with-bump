@@ -222,7 +222,7 @@ export default function AutomationDetail() {
                   <Separator />
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Estimated Savings:</span>
-                    <span className="font-bold text-green-600">${automation.monthlySavings - 350}/mo</span>
+                    <span className="font-bold text-green-600">${Math.max(0, automation.monthlySavings - 350)}/mo</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">ROI:</span>

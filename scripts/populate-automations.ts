@@ -6,8 +6,8 @@ function generateInsertStatements() {
   const statements: string[] = [];
   
   automations.forEach((automation) => {
-    // All automations are $500
-    const price = 500;
+    // All automations are $350
+    const price = 350;
     
     const escapedName = automation.name.replace(/'/g, "''");
     const escapedDescription = automation.description.replace(/'/g, "''");

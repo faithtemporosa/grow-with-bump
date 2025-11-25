@@ -22,10 +22,18 @@ const ROICalculator = ({
   const [hourlyRate, setHourlyRate] = useState(75);
   const [showAnnual, setShowAnnual] = useState(false);
 
-  // Pricing logic
-  const basePrice = 500;
-  const discountRate = Math.min((numAutomations - 1) * 0.05, 0.20);
-  const effectivePricePerAutomation = basePrice * (1 - discountRate);
+  // Tiered pricing based on quantity
+  const getTierPrice = (quantity: number) => {
+    if (quantity === 1) return 350;
+    if (quantity >= 2 && quantity <= 3) return 325;
+    if (quantity >= 4 && quantity <= 5) return 300;
+    if (quantity >= 6 && quantity <= 9) return 275;
+    return 250; // 10+
+  };
+  
+  const effectivePricePerAutomation = getTierPrice(numAutomations);
+  const basePrice = 350;
+  const discountRate = (basePrice - effectivePricePerAutomation) / basePrice;
   const monthlyCost = numAutomations * effectivePricePerAutomation;
 
   // Savings calculations

@@ -12,8 +12,8 @@ export async function seedAutomationsDatabase() {
   
   // Map automations to database format
   const dbAutomations = automations.map(automation => {
-    // All automations are $500
-    const price = 500;
+    // All automations are $350
+    const price = 350;
     
     return {
       id: automation.id,
