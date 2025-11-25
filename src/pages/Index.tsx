@@ -112,13 +112,13 @@ const Index = () => {
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in">
               Stop doing repetitive work. Let AI handle your email, marketing, analytics, and operations — fully managed for one flat monthly fee.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-fade-in">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
               <Button size="lg" className="gradient-primary shadow-glow text-lg px-8 h-14" asChild>
                 <Link to="/catalog">Browse Automations</Link>
               </Button>
-            </div>
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground pt-8 border-t border-border/50">
-              <span>Trusted by founders, creators, and growing teams</span>
+              <Button size="lg" variant="outline" className="text-lg px-8 h-14 border-2 border-primary hover:bg-primary/10" asChild>
+                <Link to="/build-my-stack">Build My Stack</Link>
+              </Button>
             </div>
           </div>
         </div>

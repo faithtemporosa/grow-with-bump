@@ -83,9 +83,6 @@ const Header = () => {
             <Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap">
               Automations
             </Link>
-            <Link to="/build-my-stack" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 hover:drop-shadow-glow relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 hover:after:w-full whitespace-nowrap">
-              Build Stack
-            </Link>
             <Link to="/wishlist" onClick={() => window.scrollTo(0, 0)} className="text-sm xl:text-base text-foreground hover:text-primary transition-all duration-300 hover:scale-105 relative inline-flex items-center gap-1.5 group whitespace-nowrap">
               <Heart className="w-4 h-4 group-hover:fill-primary transition-all duration-300" />
               <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-accent after:transition-all after:duration-300 group-hover:after:w-full hidden xl:inline">Wishlist</span>
@@ -143,12 +140,6 @@ const Header = () => {
             window.scrollTo(0, 0);
           }}>
               Automations
-            </Link>
-            <Link to="/build-my-stack" className="text-foreground hover:text-primary transition-smooth text-left" onClick={() => {
-            setIsMobileMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-              Build My Stack
             </Link>
             <Link to="/wishlist" className="text-foreground hover:text-primary transition-smooth text-left flex items-center gap-2" onClick={() => {
             setIsMobileMenuOpen(false);
