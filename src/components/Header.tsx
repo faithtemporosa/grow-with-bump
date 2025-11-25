@@ -10,6 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import { NotificationCenter } from "@/components/NotificationCenter";
 import robotMascot from "@/assets/robot-mascot.svg";
+import bumpAiIcon from "@/assets/bump-ai-icon.png";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -71,8 +72,8 @@ const Header = () => {
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2 sm:gap-3 group">
-            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 flex items-center gap-1">
-              
+            <img src={bumpAiIcon} alt="Bump AI" className="h-8 sm:h-10 md:h-12 w-auto" />
+            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
               Bump AI
             </span>
           </Link>
