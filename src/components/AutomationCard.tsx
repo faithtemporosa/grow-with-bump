@@ -76,20 +76,27 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
           </p>
         </div>
         
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex items-center gap-1 text-primary">
-            <Clock className="w-4 h-4" />
-            <span className="font-medium">{automation.hoursSaved}h saved/mo</span>
+        <div className="space-y-2">
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-1 text-primary">
+              <Clock className="w-4 h-4" />
+              <span className="font-medium">{automation.hoursSaved}h saved/mo</span>
+            </div>
+            <div className="flex items-center gap-1 text-green-600">
+              <TrendingUp className="w-4 h-4" />
+              <span className="font-medium">${automation.monthlySavings} money saved/mo</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1 text-green-600">
-            <TrendingUp className="w-4 h-4" />
-            <span className="font-medium">${automation.monthlySavings}/mo</span>
+
+          <div className="flex items-center justify-between">
+            <Badge variant="outline" className="w-fit">
+              ROI: {automation.roiLevel}
+            </Badge>
+            <div className="text-lg font-bold">
+              $350<span className="text-sm text-muted-foreground font-normal">/mo</span>
+            </div>
           </div>
         </div>
-
-        <Badge variant="outline" className="w-fit">
-          ROI: {automation.roiLevel}
-        </Badge>
 
         <div className="flex flex-col sm:flex-row gap-2 pt-2">
           <Button asChild variant="outline" className="flex-1 text-sm">
