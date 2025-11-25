@@ -4,7 +4,7 @@ import { FuturisticBackground } from "@/components/FuturisticBackground";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ROICalculator from "@/components/ROICalculator";
-import { CheckCircle2, Clock, Zap, DollarSign, TrendingUp, Mail, BarChart3, ShoppingBag, FolderKanban } from "lucide-react";
+import { CheckCircle2, Clock, Zap, DollarSign, TrendingUp, Mail, BarChart3, ShoppingBag, FolderKanban, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import bumpsyndicate from "@/assets/bump-syndicate-logo.png";
 
@@ -59,11 +59,11 @@ const Index = () => {
       tag: "Highest ROI"
     },
     {
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: "AI Social Video Generator",
-      description: "Create AI videos with voice-over and auto-post to 9 platforms",
-      hoursSaved: "75h/mo",
-      tag: "Video Automation"
+      icon: <MessageSquare className="w-6 h-6" />,
+      title: "AI LinkedIn Comments Responder",
+      description: "Automated intelligent responses to LinkedIn comments with AI personalization",
+      hoursSaved: "45h/mo",
+      tag: "Featured"
     },
     {
       icon: <ShoppingBag className="w-6 h-6" />,
