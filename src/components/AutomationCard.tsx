@@ -61,12 +61,12 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
         <Button
           variant="secondary"
           size="icon"
-          className="absolute top-2 right-2"
+          className="absolute top-2 right-2 z-10"
           onClick={() => toggleWishlist(automation.id)}
         >
           <Heart className={`w-4 h-4 ${isSaved ? "fill-current text-red-500" : ""}`} />
         </Button>
-        <div className="space-y-2">
+        <div className="space-y-2 pr-12">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold text-lg leading-tight">{automation.name}</h3>
             <Badge variant="secondary" className="shrink-0">
