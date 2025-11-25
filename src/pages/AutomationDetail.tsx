@@ -227,7 +227,7 @@ export default function AutomationDetail() {
                   </div>
                   <Separator />
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Net Gain:</span>
+                    <span className="text-muted-foreground">Estimated Savings:</span>
                     <span className="font-bold text-green-600">${automation.monthlySavings - 350}/mo</span>
                   </div>
                   <div className="flex justify-between">
