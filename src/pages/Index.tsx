@@ -53,9 +53,9 @@ const Index = () => {
   const popularAutomations = [
     {
       icon: <Mail className="w-6 h-6" />,
-      title: "AI Social Media Content Publisher",
-      description: "Auto-generate and publish content across 6+ platforms with AI",
-      hoursSaved: "80h/mo",
+      title: "Email Marketing Automation",
+      description: "Automated email sequences with lead management and personalized outreach",
+      hoursSaved: "85h/mo",
       tag: "Highest ROI"
     },
     {
