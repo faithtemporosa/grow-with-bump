@@ -12,6 +12,8 @@ import { categories, type Automation, type AutomationCategory } from "@/data/aut
 import { parseAutomationsCatalog } from "@/utils/parseAutomationsCatalog";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 type QuizStep = "goals" | "tools" | "role" | "volume" | "results";
 
@@ -24,6 +26,8 @@ export default function BuildMyStack() {
   const [role, setRole] = useState("");
   const [emailVolume, setEmailVolume] = useState("");
   const navigate = useNavigate();
+  const { addItem } = useCart();
+  const { toast } = useToast();
 
   useEffect(() => {
     parseAutomationsCatalog().then(data => {
@@ -117,6 +121,28 @@ export default function BuildMyStack() {
       default:
         return true;
     }
+  };
+
+  const handleAddBundleToCart = () => {
+    const recommended = getRecommendedAutomations();
+    
+    recommended.forEach((automation) => {
+      addItem({
+        id: automation.id,
+        name: automation.name,
+        price: 350,
+        hoursSaved: automation.hoursSaved,
+        thumbnail: automation.thumbnail,
+        quantity: 1,
+      });
+    });
+
+    toast({
+      title: "Bundle added to cart!",
+      description: `${recommended.length} automation${recommended.length > 1 ? 's' : ''} added to your cart`,
+    });
+
+    navigate("/cart");
   };
 
   return (
@@ -328,7 +354,11 @@ export default function BuildMyStack() {
 
                       {/* CTAs */}
                       <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                        <Button size="lg" className="flex-1 gradient-primary shadow-glow">
+                        <Button 
+                          size="lg" 
+                          className="flex-1 gradient-primary shadow-glow"
+                          onClick={handleAddBundleToCart}
+                        >
                           Add Bundle to Cart
                         </Button>
                       </div>
