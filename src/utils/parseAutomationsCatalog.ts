@@ -10,15 +10,22 @@ let cachedAutomations: Automation[] | null = null;
 function generalizeRequirement(requirement: string): string {
   let generalized = requirement;
   
-  // Step 1: Remove all technical suffixes and prefixes
+  // Step 1: Remove vague and redundant terms first
+  generalized = generalized
+    .replace(/\b(Relevant|relevant|necessary|required)\s*/gi, '')
+    .replace(/\baccount\s+access\s*(required)?\b/gi, '') // Remove generic "account access"
+    .replace(/\bAPI\s+access\s*(required)?\b/gi, '')
+    .replace(/\baccess\s+to\s*/gi, '');
+  
+  // Step 2: Remove all technical suffixes and prefixes
   generalized = generalized
     // Remove API-related terms
-    .replace(/\b(API|api)\s*(key|keys|access|token|tokens|credentials?|endpoint|integration|connection)\b/gi, '')
+    .replace(/\b(API|api)\s*(key|keys|token|tokens|credentials?|endpoint|integration|connection)\b/gi, '')
     .replace(/\b(API|api)\b/gi, '')
     // Remove authentication terms
     .replace(/\b(OAuth|OAuth2|authentication|auth|JWT|bearer)\s*(token|access|key)?\b/gi, '')
-    // Remove technical action words
-    .replace(/\b(access|credentials?|token|tokens|key|keys|integration|connection|endpoint|webhook|webhooks)\s*to\b/gi, '')
+    // Remove technical action words that don't specify platforms
+    .replace(/\b(access|credentials?|token|tokens|key|keys|integration|connection|endpoint|webhook|webhooks)\s*$/gi, '')
     .replace(/\b(with|using|via|through)\s+(API|api|OAuth|authentication|credentials?|token|access)\b/gi, '')
     // Remove version numbers
     .replace(/\bv\d+(\.\d+)*\b/g, '')
@@ -29,7 +36,7 @@ function generalizeRequirement(requirement: string): string {
     // Remove standalone technical terms
     .replace(/\b(webhook|webhooks|SDK|SMTP|IMAP|POP3|SSL|TLS|HTTPS?|JSON|XML|CSV|cron|endpoint|URL|URI)\b/gi, '')
     // Remove database terms
-    .replace(/\b(database|SQL|MySQL|PostgreSQL|MongoDB|Redis)\b/gi, 'data storage')
+    .replace(/\b(database|SQL|MySQL|PostgreSQL|MongoDB|Redis)\b/gi, '')
     // Remove cloud service technical terms
     .replace(/\b(server|hosting|domain|DNS|CDN|S3|bucket)\b/gi, '')
     // Clean up extra spaces and punctuation
@@ -38,55 +45,74 @@ function generalizeRequirement(requirement: string): string {
     .replace(/\s*\.\s*$/g, '')
     .trim();
   
-  // Step 2: Convert remaining platform names to simple "Platform account" format
-  const platformPatterns = [
-    { pattern: /\b(TikTok|tiktok)\b/gi, replacement: 'TikTok account' },
-    { pattern: /\b(Instagram|instagram)\b/gi, replacement: 'Instagram account' },
-    { pattern: /\b(Facebook|facebook)\b/gi, replacement: 'Facebook account' },
-    { pattern: /\b(Twitter|twitter|X)\b/gi, replacement: 'Twitter account' },
-    { pattern: /\b(LinkedIn|linkedin)\b/gi, replacement: 'LinkedIn account' },
-    { pattern: /\b(YouTube|youtube)\b/gi, replacement: 'YouTube account' },
-    { pattern: /\b(Google|google)\s*(Cloud|Analytics|Ads|Drive|Sheets|Docs)?\b/gi, replacement: 'Google account' },
-    { pattern: /\b(Slack|slack)\b/gi, replacement: 'Slack account' },
-    { pattern: /\b(Stripe|stripe)\b/gi, replacement: 'Stripe account' },
-    { pattern: /\b(PayPal|paypal)\b/gi, replacement: 'PayPal account' },
-    { pattern: /\b(Shopify|shopify)\b/gi, replacement: 'Shopify account' },
-    { pattern: /\b(HubSpot|hubspot)\b/gi, replacement: 'HubSpot account' },
-    { pattern: /\b(Salesforce|salesforce)\b/gi, replacement: 'Salesforce account' },
-    { pattern: /\b(Mailchimp|mailchimp)\b/gi, replacement: 'Mailchimp account' },
-    { pattern: /\b(Zapier|zapier)\b/gi, replacement: 'Zapier account' },
-    { pattern: /\b(Airtable|airtable)\b/gi, replacement: 'Airtable account' },
-    { pattern: /\b(Notion|notion)\b/gi, replacement: 'Notion account' },
-    { pattern: /\b(Trello|trello)\b/gi, replacement: 'Trello account' },
-    { pattern: /\b(Asana|asana)\b/gi, replacement: 'Asana account' },
-    { pattern: /\b(Discord|discord)\b/gi, replacement: 'Discord account' },
-    { pattern: /\b(Twilio|twilio)\b/gi, replacement: 'Twilio account' },
-    { pattern: /\b(SendGrid|sendgrid)\b/gi, replacement: 'SendGrid account' },
-    { pattern: /\b(AWS|Amazon Web Services)\b/gi, replacement: 'AWS account' },
-    { pattern: /\b(Azure|Microsoft Azure)\b/gi, replacement: 'Azure account' },
+  // Step 3: Convert platform names to simple "Platform account" format
+  const platformMap = [
+    { pattern: /\b(n8n)\b/gi, replacement: 'n8n account' },
+    { pattern: /\b(OpenAI)\b/gi, replacement: 'OpenAI account' },
+    { pattern: /\b(TikTok)\b/gi, replacement: 'TikTok account' },
+    { pattern: /\b(Instagram)\b/gi, replacement: 'Instagram account' },
+    { pattern: /\b(Facebook)\b/gi, replacement: 'Facebook account' },
+    { pattern: /\b(Twitter|X)\b/gi, replacement: 'Twitter account' },
+    { pattern: /\b(LinkedIn)\b/gi, replacement: 'LinkedIn account' },
+    { pattern: /\b(YouTube)\b/gi, replacement: 'YouTube account' },
+    { pattern: /\b(Google\s*Workspace|Google\s*Suite|Google)\b/gi, replacement: 'Google account' },
+    { pattern: /\b(Slack)\b/gi, replacement: 'Slack account' },
+    { pattern: /\b(Stripe)\b/gi, replacement: 'Stripe account' },
+    { pattern: /\b(PayPal)\b/gi, replacement: 'PayPal account' },
+    { pattern: /\b(Shopify)\b/gi, replacement: 'Shopify account' },
+    { pattern: /\b(HubSpot)\b/gi, replacement: 'HubSpot account' },
+    { pattern: /\b(Salesforce)\b/gi, replacement: 'Salesforce account' },
+    { pattern: /\b(Mailchimp)\b/gi, replacement: 'Mailchimp account' },
+    { pattern: /\b(Zapier)\b/gi, replacement: 'Zapier account' },
+    { pattern: /\b(Airtable)\b/gi, replacement: 'Airtable account' },
+    { pattern: /\b(Notion)\b/gi, replacement: 'Notion account' },
+    { pattern: /\b(Trello)\b/gi, replacement: 'Trello account' },
+    { pattern: /\b(Asana)\b/gi, replacement: 'Asana account' },
+    { pattern: /\b(Discord)\b/gi, replacement: 'Discord account' },
+    { pattern: /\b(Telegram)\b/gi, replacement: 'Telegram account' },
+    { pattern: /\b(Twilio)\b/gi, replacement: 'Twilio account' },
+    { pattern: /\b(SendGrid)\b/gi, replacement: 'SendGrid account' },
+    { pattern: /\b(Gmail)\b/gi, replacement: 'Gmail account' },
+    { pattern: /\b(Google\s*Sheets)\b/gi, replacement: 'Google Sheets account' },
+    { pattern: /\b(Google\s*Calendar)\b/gi, replacement: 'Google Calendar account' },
+    { pattern: /\b(Google\s*Drive)\b/gi, replacement: 'Google Drive account' },
+    { pattern: /\b(Cloudinary)\b/gi, replacement: 'Cloudinary account' },
+    { pattern: /\b(Eleven\s*Labs|ElevenLabs)\b/gi, replacement: 'Eleven Labs account' },
+    { pattern: /\b(AWS|Amazon\s*Web\s*Services)\b/gi, replacement: 'AWS account' },
+    { pattern: /\b(Azure|Microsoft\s*Azure)\b/gi, replacement: 'Azure account' },
   ];
   
-  // Only apply platform patterns if the platform name exists in the requirement
-  platformPatterns.forEach(({ pattern, replacement }) => {
+  // Apply platform patterns - only if the platform exists in the text
+  platformMap.forEach(({ pattern, replacement }) => {
     if (pattern.test(generalized)) {
-      // Remove the pattern and just show it once
       generalized = generalized.replace(pattern, replacement);
       // Remove duplicate "account account" if it exists
       generalized = generalized.replace(/\baccount\s+account\b/gi, 'account');
     }
   });
   
-  // Step 3: Final cleanup
+  // Step 4: Final cleanup
   generalized = generalized
     .replace(/\s+/g, ' ')
-    .replace(/,\s*,/g, ',')
+    .replace(/,\s*,+/g, ',')
     .replace(/^\s*,\s*/, '')
     .replace(/\s*,\s*$/, '')
+    .replace(/^;\s*/, '')
+    .replace(/\s*;\s*$/, '')
     .trim();
   
-  // If the requirement is now empty or just whitespace, return a generic message
-  if (!generalized || generalized.length < 3) {
-    return 'Account access required';
+  // Filter out if the result is too vague or empty
+  const vagueTerms = [
+    'account access',
+    'access',
+    'credentials',
+    'required',
+    'necessary',
+    '',
+  ];
+  
+  if (!generalized || generalized.length < 3 || vagueTerms.includes(generalized.toLowerCase())) {
+    return ''; // Return empty to be filtered out
   }
   
   return generalized;
