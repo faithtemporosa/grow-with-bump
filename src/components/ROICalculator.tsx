@@ -141,7 +141,7 @@ const ROICalculator = ({
 
               <div className="pt-4 border-t border-border/50">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                  <span className="text-sm text-muted-foreground">Annual Net Gain</span>
+                  <span className="text-sm text-muted-foreground">Annual Estimated Savings</span>
                   <span className="text-xl sm:text-2xl font-bold text-primary">${annualNetGain.toLocaleString()}</span>
                 </div>
               </div>
