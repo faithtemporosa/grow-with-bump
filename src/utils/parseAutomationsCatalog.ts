@@ -19,9 +19,9 @@ function generalizeRequirement(requirement: string): string {
   
   // Step 2: Remove all technical suffixes and prefixes
   generalized = generalized
-    // Remove API-related terms
-    .replace(/\b(API|api)\s*(key|keys|token|tokens|credentials?|endpoint|integration|connection)\b/gi, '')
-    .replace(/\b(API|api)\b/gi, '')
+    // Remove API-related terms (including plural forms)
+    .replace(/\bAPIs?\s*(key|keys|token|tokens|credentials?|endpoint|integration|connection|access)\b/gi, '')
+    .replace(/\bAPIs?\b/gi, '')
     // Remove authentication terms
     .replace(/\b(OAuth|OAuth2|authentication|auth|JWT|bearer)\s*(token|access|key)?\b/gi, '')
     // Remove technical action words that don't specify platforms
