@@ -83,10 +83,18 @@ export default function BuildMyStack() {
 
   const calculateTotals = (recommendedAutomations: Automation[]) => {
     const count = recommendedAutomations.length;
-    const basePrice = 500;
-    const discountRate = Math.min((count - 1) * 0.05, 0.20);
-    const effectivePrice = basePrice * (1 - discountRate);
+    const basePrice = 350;
+    
+    // Tiered pricing based on quantity
+    let effectivePrice: number;
+    if (count === 1) effectivePrice = 350;
+    else if (count >= 2 && count <= 3) effectivePrice = 325;
+    else if (count >= 4 && count <= 5) effectivePrice = 300;
+    else if (count >= 6 && count <= 9) effectivePrice = 275;
+    else effectivePrice = 250; // 10+
+    
     const totalCost = count * effectivePrice;
+    const discountRate = (basePrice - effectivePrice) / basePrice;
     const totalHoursSaved = recommendedAutomations.reduce((sum, a) => sum + a.hoursSaved, 0);
     const totalSavings = recommendedAutomations.reduce((sum, a) => sum + a.monthlySavings, 0);
     const netGain = totalSavings - totalCost;
