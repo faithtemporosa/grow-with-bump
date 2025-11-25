@@ -143,6 +143,9 @@ export default function AutomationDetail() {
             {/* Workflow Steps */}
             <div>
               <h2 className="text-2xl font-bold mb-4">How It Works</h2>
+              <p className="text-muted-foreground mb-6">
+                {automation.solution} This automated workflow streamlines your processes and eliminates manual work, allowing you to focus on growing your business while the system handles repetitive tasks efficiently.
+              </p>
               <Card className="p-6">
                 <div className="space-y-4">
                   {automation.workflowSteps.map((step, index) => (
