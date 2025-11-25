@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_usage: {
+        Row: {
+          automation_id: string
+          automation_name: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          automation_id: string
+          automation_name: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          automation_id?: string
+          automation_name?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       automations: {
         Row: {
           category: string
@@ -255,6 +279,54 @@ export type Database = {
           email_digest_enabled?: boolean
           id?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          automation_limit: number
+          automations_used: number
+          cancel_at_period_end: boolean | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_price_id: string
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          automation_limit?: number
+          automations_used?: number
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_price_id: string
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          automation_limit?: number
+          automations_used?: number
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_price_id?: string
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
