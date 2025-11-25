@@ -84,12 +84,12 @@ const Header = () => {
               }}
             />
             <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 flex items-center gap-2">
-              Bump AI
               <img 
                 src={robotMascot} 
                 alt="Robot Mascot" 
                 className="h-[1em] w-auto object-contain"
               />
+              Bump AI
             </span>
           </Link>
 
