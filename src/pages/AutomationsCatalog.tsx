@@ -55,22 +55,6 @@ export default function AutomationsCatalog() {
     setCurrentPage(1);
   }, [selectedCategories, selectedRoiLevels, searchQuery]);
 
-  const handleCategoryToggle = (category: AutomationCategory) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
-
-  const handleRoiToggle = (level: string) => {
-    setSelectedRoiLevels((prev) =>
-      prev.includes(level)
-        ? prev.filter((l) => l !== level)
-        : [...prev, level]
-    );
-  };
-
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedRoiLevels([]);
@@ -136,7 +120,13 @@ export default function AutomationsCatalog() {
                       <Checkbox
                         id={`category-${category}`}
                         checked={selectedCategories.includes(category)}
-                        onCheckedChange={() => handleCategoryToggle(category)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedCategories(prev => [...prev, category]);
+                          } else {
+                            setSelectedCategories(prev => prev.filter(c => c !== category));
+                          }
+                        }}
                       />
                       <Label
                         htmlFor={`category-${category}`}
@@ -159,7 +149,13 @@ export default function AutomationsCatalog() {
                       <Checkbox
                         id={`roi-${level}`}
                         checked={selectedRoiLevels.includes(level)}
-                        onCheckedChange={() => handleRoiToggle(level)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedRoiLevels(prev => [...prev, level]);
+                          } else {
+                            setSelectedRoiLevels(prev => prev.filter(l => l !== level));
+                          }
+                        }}
                       />
                       <Label
                         htmlFor={`roi-${level}`}
