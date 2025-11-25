@@ -10,6 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import { NotificationCenter } from "@/components/NotificationCenter";
 import logo from "@/assets/bump-ai-logo.png";
+import robotMascot from "@/assets/robot-mascot.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -82,8 +83,13 @@ const Header = () => {
                 imageRendering: 'crisp-edges'
               }}
             />
-            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 flex items-center gap-2">
               Bump AI
+              <img 
+                src={robotMascot} 
+                alt="Robot Mascot" 
+                className="h-[1em] w-auto object-contain"
+              />
             </span>
           </Link>
 
