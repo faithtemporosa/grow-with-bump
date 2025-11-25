@@ -45,10 +45,10 @@ const Footer = () => {
               <a href="https://www.instagram.com/bump_syndicate/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Instagram size={20} />
               </a>
-              <a href="https://www.linkedin.com/showcase/bump-syndicate/about/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
+              <a href="https://www.linkedin.com/in/connectingtheworld/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:seth@bumpsearch.com" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
+              <a href="mailto:marketing@thebumpteam.com" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Mail size={20} />
               </a>
             </div>
