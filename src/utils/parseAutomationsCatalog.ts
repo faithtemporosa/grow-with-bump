@@ -4,6 +4,48 @@ import type { Automation, AutomationCategory } from "@/data/automations";
 let cachedAutomations: Automation[] | null = null;
 
 /**
+ * Converts technical terms to generalized business-friendly terms
+ */
+function generalizeRequirement(requirement: string): string {
+  const technicalToGeneral: Record<string, string> = {
+    'API': 'Account access',
+    'API key': 'Account credentials',
+    'API access': 'Account access',
+    'webhook': 'Automated notifications',
+    'OAuth': 'Account connection',
+    'database': 'Data storage',
+    'SQL': 'Data management',
+    'REST API': 'Service integration',
+    'GraphQL': 'Service integration',
+    'SDK': 'Integration tools',
+    'SMTP': 'Email service',
+    'SSL': 'Secure connection',
+    'JSON': 'Data format',
+    'XML': 'Data format',
+    'cron job': 'Scheduled tasks',
+    'server': 'Hosting service',
+    'domain': 'Website address',
+    'DNS': 'Website settings',
+    'CDN': 'Content delivery',
+    'S3': 'File storage',
+    'bucket': 'Storage space',
+    'endpoint': 'Connection point',
+    'JWT': 'Authentication token',
+    'token': 'Access credential'
+  };
+
+  let generalized = requirement;
+  
+  // Replace technical terms (case-insensitive)
+  Object.entries(technicalToGeneral).forEach(([technical, general]) => {
+    const regex = new RegExp(`\\b${technical}\\b`, 'gi');
+    generalized = generalized.replace(regex, general);
+  });
+  
+  return generalized;
+}
+
+/**
  * Parses the automations catalog CSV and converts it to Automation objects
  */
 export async function parseAutomationsCatalog(): Promise<Automation[]> {
@@ -66,7 +108,7 @@ export async function parseAutomationsCatalog(): Promise<Automation[]> {
         problemStatement: problemStatement.trim(),
         solution: solution.trim(),
         useCases: useCases.split(';').map(u => u.trim()).filter(Boolean),
-        requirements: requirements.split(';').map(r => r.trim()).filter(Boolean),
+        requirements: requirements.split(';').map(r => generalizeRequirement(r.trim())).filter(Boolean),
         workflowSteps: [], // We don't have workflow steps in the CSV
         workflowUrl: workflowUrl.trim() || undefined,
         isN8NWorkflow: true

@@ -41,7 +41,7 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
     addItem({
       id: automation.id,
       name: automation.name,
-      price: 500,
+      price: 350,
       hoursSaved: automation.hoursSaved,
       thumbnail: automation.thumbnail,
       quantity: 1,

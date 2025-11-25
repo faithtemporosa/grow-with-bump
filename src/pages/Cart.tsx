@@ -18,14 +18,13 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 
-// QuickBooks Payment Links - Update these URLs with your actual QuickBooks payment links
-// The return URL will be automatically appended to redirect users after payment
+// QuickBooks Payment Links - Tiered pricing based on automation quantity
 const QUICKBOOKS_PAYMENT_LINKS = {
-  LINK_FOR_1: "https://your-quickbooks-payment-link-for-1.com",
-  LINK_FOR_2_3: "https://your-quickbooks-payment-link-for-2-3.com",
-  LINK_FOR_4_5: "https://your-quickbooks-payment-link-for-4-5.com",
-  LINK_FOR_6_9: "https://your-quickbooks-payment-link-for-6-9.com",
-  LINK_FOR_10_PLUS: "https://your-quickbooks-payment-link-for-10-plus.com"
+  LINK_FOR_1: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-3564d7a8e14e4cf1af7aa255010ab6639bccb5a370664079a13a4f2b32ae6ccac036603ab7d34095b802ea92917b3031?locale=EN_US",
+  LINK_FOR_2_3: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-90a3ccb1625c4f5d8e7d75c04f00d06b83cfaf62355c46629c319927b99522ab70441201a0cf4ea08f2b924859558153?locale=EN_US",
+  LINK_FOR_4_5: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-8c3891fa06674528b79b4a33cdf6a6b6f71d26530f744932a935360bacbce7d6c3f5831c72d44523b27e844af412fec8?locale=EN_US",
+  LINK_FOR_6_9: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-502b958a949f4bb9b391fd5ab61e4f63c02d6d6dbddb4d259836af9f751ed3ccf17d6995406f4b918138d51a2e53c05a?locale=EN_US",
+  LINK_FOR_10_PLUS: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-164237453e2042f6a39199678dd7036cb8146091972044d9a626438186e35f7797998f9208bd41199872f7b1355bea0e?locale=EN_US"
 };
 
 const UPSELLS = [
@@ -49,19 +48,19 @@ export default function Cart() {
   const [additionalInfo, setAdditionalInfo] = useState("");
 
   const DISCOUNT_TIERS = [
-    { min: 1, max: 1, rate: 0, label: "Standard" },
-    { min: 2, max: 3, rate: 0.05, label: "Volume Saver" },
-    { min: 4, max: 5, rate: 0.10, label: "Business Bundle" },
-    { min: 6, max: 9, rate: 0.15, label: "Enterprise Pack" },
-    { min: 10, max: Infinity, rate: 0.20, label: "Maximum Savings" }
+    { min: 1, max: 1, rate: 0, label: "Standard", price: 350 },
+    { min: 2, max: 3, rate: 0.071, label: "Volume Saver", price: 325 },
+    { min: 4, max: 5, rate: 0.143, label: "Business Bundle", price: 300 },
+    { min: 6, max: 9, rate: 0.214, label: "Enterprise Pack", price: 275 },
+    { min: 10, max: Infinity, rate: 0.286, label: "Maximum Savings", price: 250 }
   ];
 
   const calculatePricing = () => {
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const currentTier = DISCOUNT_TIERS.find(tier => totalQuantity >= tier.min && totalQuantity <= tier.max);
     const discountRate = currentTier?.rate || 0;
-    const basePrice = 500;
-    const effectivePrice = basePrice * (1 - discountRate);
+    const basePrice = 350;
+    const effectivePrice = currentTier?.price || basePrice;
     const subtotal = totalQuantity * effectivePrice;
     const discount = (totalQuantity * basePrice) - subtotal;
     
