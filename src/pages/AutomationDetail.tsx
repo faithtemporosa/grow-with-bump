@@ -69,7 +69,7 @@ export default function AutomationDetail() {
     addItem({
       id: automation.id,
       name: automation.name,
-      price: 500,
+      price: 350,
       hoursSaved: automation.hoursSaved,
       thumbnail: automation.thumbnail,
       quantity: 1,
@@ -214,11 +214,14 @@ export default function AutomationDetail() {
               <Card className="p-6">
                 <div className="text-center space-y-4">
                   <div>
-                    <div className="text-3xl font-bold">$500</div>
-                    <div className="text-sm text-muted-foreground">per month</div>
+                    <div className="text-3xl font-bold">$350</div>
+                    <div className="text-sm text-muted-foreground">per automation</div>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    5% off each additional automation (up to 20% off)
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div>2-3 automations: $325 each</div>
+                    <div>4-5 automations: $300 each</div>
+                    <div>6-9 automations: $275 each</div>
+                    <div>10+ automations: $250 each</div>
                   </div>
                   <Button onClick={handleAddToCart} size="lg" className="w-full text-sm sm:text-base">
                     Add to Cart
@@ -232,7 +235,7 @@ export default function AutomationDetail() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Monthly Cost:</span>
-                    <span className="font-semibold">$500</span>
+                    <span className="font-semibold">$350</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Hours Saved:</span>
@@ -245,11 +248,11 @@ export default function AutomationDetail() {
                   <Separator />
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Net Gain:</span>
-                    <span className="font-bold text-green-600">${automation.monthlySavings - 500}/mo</span>
+                    <span className="font-bold text-green-600">${automation.monthlySavings - 350}/mo</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">ROI:</span>
-                    <span className="font-bold">{(automation.monthlySavings / 500).toFixed(1)}x</span>
+                    <span className="font-bold">{(automation.monthlySavings / 350).toFixed(1)}x</span>
                   </div>
                 </div>
               </Card>
