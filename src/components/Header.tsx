@@ -148,11 +148,6 @@ const Header = () => {
                 </Button>
               </Link>
             )}
-            <Link to="/get-started" onClick={() => window.scrollTo(0, 0)}>
-              <Button size="sm" className="gradient-primary shadow-glow whitespace-nowrap">
-                Get Started
-              </Button>
-            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -226,11 +221,6 @@ const Header = () => {
                 </Button>
               </Link>
             )}
-            <Link to="/get-started" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}>
-              <Button className="gradient-primary shadow-glow w-full">
-                Get Started
-              </Button>
-            </Link>
           </nav>}
         </div>
       </header>
