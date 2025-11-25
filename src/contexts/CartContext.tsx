@@ -86,7 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const loadCartFromDatabase = async () => {
+  const loadCartFromDatabase = async (retryCount = 0, maxRetries = 3) => {
     if (!user) return;
 
     try {
@@ -118,13 +118,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       console.error("Error loading cart from database:", error);
+      
+      // Retry with exponential backoff
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000;
+        console.log(`Retrying cart load in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`);
+        setTimeout(() => loadCartFromDatabase(retryCount + 1, maxRetries), delay);
+        return;
+      }
+      
+      // Final retry failed
       toast({
-        title: "Error",
-        description: "Failed to load your cart",
+        title: "Connection Issue",
+        description: "Unable to load cart. Please check your connection and refresh.",
         variant: "destructive"
       });
     } finally {
-      setLoading(false);
+      if (retryCount === 0) {
+        setLoading(false);
+      }
     }
   };
 
