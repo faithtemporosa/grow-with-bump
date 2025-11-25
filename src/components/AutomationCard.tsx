@@ -67,12 +67,10 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
           <Heart className={`w-4 h-4 ${isSaved ? "fill-current text-red-500" : ""}`} />
         </Button>
         <div className="space-y-2 pr-12">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="font-semibold text-lg leading-tight">{automation.name}</h3>
-            <Badge variant="secondary" className="shrink-0">
-              {automation.category}
-            </Badge>
-          </div>
+          <Badge variant="secondary" className="w-fit">
+            {automation.category}
+          </Badge>
+          <h3 className="font-semibold text-lg leading-tight">{automation.name}</h3>
           <p className="text-sm text-muted-foreground line-clamp-2">
             {automation.description}
           </p>
