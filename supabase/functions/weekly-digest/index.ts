@@ -21,6 +21,21 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Verify authentication via secret header
+  const authHeader = req.headers.get("x-digest-secret");
+  const expectedSecret = Deno.env.get("DIGEST_SECRET_KEY");
+  
+  if (!authHeader || authHeader !== expectedSecret) {
+    console.error("Unauthorized digest request attempt");
+    return new Response(
+      JSON.stringify({ error: "Unauthorized" }),
+      { 
+        status: 401, 
+        headers: { ...corsHeaders, "Content-Type": "application/json" } 
+      }
+    );
+  }
+
   try {
     console.log("Starting weekly digest job...");
 
