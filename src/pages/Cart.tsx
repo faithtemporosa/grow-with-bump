@@ -526,7 +526,7 @@ export default function Cart() {
                             </div>
                             <div className="text-right">
                               <div className="font-bold text-lg">
-                                {tier.rate === 0 ? '$500' : `$${(500 * (1 - tier.rate)).toFixed(0)}`}
+                                ${tier.price}
                               </div>
                               <div className="text-xs text-muted-foreground">
                                 {tier.rate > 0 ? `${Math.round(tier.rate * 100)}% off` : 'per month'}
