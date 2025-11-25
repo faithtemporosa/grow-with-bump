@@ -295,7 +295,7 @@ export default function BuildMyStack() {
                             <p className="text-xl sm:text-2xl font-bold">{totals.totalHoursSaved}h/mo</p>
                           </div>
                           <div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">Net Gain</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground">Estimated Savings</p>
                             <p className="text-xl sm:text-2xl font-bold text-green-600">
                               ${Math.round(totals.netGain)}
                             </p>
