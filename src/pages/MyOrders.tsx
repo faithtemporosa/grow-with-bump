@@ -132,7 +132,7 @@ const MyOrders = () => {
                             asChild
                             className="h-8 px-3 gap-2"
                           >
-                            <a href="mailto:marketing@thebumpteam.com?subject=Order Status Request - Order #">
+                            <a href="mailto:bumpai@automateyourbizz.com?subject=Order Status Request - Order #">
                               <Mail className="w-4 h-4" />
                               Contact for Status
                             </a>

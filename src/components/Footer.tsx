@@ -48,7 +48,7 @@ const Footer = () => {
               <a href="https://www.linkedin.com/in/connectingtheworld/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:marketing@thebumpteam.com" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
+              <a href="mailto:bumpai@automateyourbizz.com" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
                 <Mail size={20} />
               </a>
             </div>

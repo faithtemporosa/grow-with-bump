@@ -318,7 +318,7 @@ export default function Cart() {
                 <li>• Configure your automations</li>
                 <li>• Schedule your go-live date</li>
               </ul>
-              <p className="mt-4">If you have any questions, please contact us at <a href="mailto:marketing@thebumpteam.com" className="text-primary hover:underline">marketing@thebumpteam.com</a></p>
+              <p className="mt-4">If you have any questions, please contact us at <a href="mailto:bumpai@automateyourbizz.com" className="text-primary hover:underline">bumpai@automateyourbizz.com</a></p>
             </div>
           </div>
         </main>
