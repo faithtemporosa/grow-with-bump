@@ -12,27 +12,29 @@ import { ArrowLeft, Check, Clock, TrendingUp, Wrench } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import ROICalculator from "@/components/ROICalculator";
-
 export default function AutomationDetail() {
-  const { id } = useParams();
-  const { toast } = useToast();
-  const { addItem, items } = useCart();
+  const {
+    id
+  } = useParams();
+  const {
+    toast
+  } = useToast();
+  const {
+    addItem,
+    items
+  } = useCart();
   const [automation, setAutomation] = useState<Automation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     parseAutomationsCatalog().then(automations => {
-      const found = automations.find((a) => a.id === id);
+      const found = automations.find(a => a.id === id);
       setAutomation(found || null);
       setIsLoading(false);
     });
   }, [id]);
-
-  const isInCart = automation ? items.some((item) => item.id === automation.id) : false;
-
+  const isInCart = automation ? items.some(item => item.id === automation.id) : false;
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex flex-col">
+    return <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
           <div className="text-center">
@@ -40,13 +42,10 @@ export default function AutomationDetail() {
           </div>
         </main>
         <Footer />
-      </div>
-    );
+      </div>;
   }
-
   if (!automation) {
-    return (
-      <div className="min-h-screen flex flex-col">
+    return <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
           <div className="text-center">
@@ -57,34 +56,25 @@ export default function AutomationDetail() {
           </div>
         </main>
         <Footer />
-      </div>
-    );
+      </div>;
   }
-
   const handleAddToCart = () => {
     if (!automation) return;
-    
-    const cartItem = items.find((item) => item.id === automation.id);
-    
+    const cartItem = items.find(item => item.id === automation.id);
     addItem({
       id: automation.id,
       name: automation.name,
       price: 350,
       hoursSaved: automation.hoursSaved,
       thumbnail: automation.thumbnail,
-      quantity: 1,
+      quantity: 1
     });
-    
     toast({
       title: cartItem ? "Quantity Updated! 🎉" : "Added to Cart! 🎉",
-      description: cartItem 
-        ? `${automation.name} quantity increased to ${cartItem.quantity + 1}.`
-        : `${automation.name} has been added to your cart.`,
+      description: cartItem ? `${automation.name} quantity increased to ${cartItem.quantity + 1}.` : `${automation.name} has been added to your cart.`
     });
   };
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
@@ -146,32 +136,17 @@ export default function AutomationDetail() {
               <p className="text-muted-foreground mb-6">
                 {automation.solution} This automated workflow streamlines your processes and eliminates manual work, allowing you to focus on growing your business while the system handles repetitive tasks efficiently.
               </p>
-              <Card className="p-6">
-                <div className="space-y-4">
-                  {automation.workflowSteps.map((step, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold shrink-0">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1 pt-1">
-                        <p>{step}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+              
             </div>
 
             {/* Features */}
             <div>
               <h2 className="text-2xl font-bold mb-4">Key Features</h2>
               <div className="grid sm:grid-cols-2 gap-3">
-                {automation.features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-2">
+                {automation.features.map((feature, index) => <div key={index} className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
                     <span>{feature}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
@@ -179,12 +154,10 @@ export default function AutomationDetail() {
             <div>
               <h2 className="text-2xl font-bold mb-4">Perfect For</h2>
               <div className="space-y-2">
-                {automation.useCases.map((useCase, index) => (
-                  <div key={index} className="flex items-start gap-2">
+                {automation.useCases.map((useCase, index) => <div key={index} className="flex items-start gap-2">
                     <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <span>{useCase}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
@@ -193,15 +166,11 @@ export default function AutomationDetail() {
               <h2 className="text-2xl font-bold mb-4">Requirements</h2>
               <Card className="p-6">
                 <div className="flex flex-wrap gap-2">
-                  {automation.tools.map((tool, index) => (
-                    <Badge key={index} variant="outline">{tool}</Badge>
-                  ))}
+                  {automation.tools.map((tool, index) => <Badge key={index} variant="outline">{tool}</Badge>)}
                 </div>
                 <Separator className="my-4" />
                 <ul className="space-y-2">
-                  {automation.requirements.map((req, index) => (
-                    <li key={index} className="text-sm text-muted-foreground">• {req}</li>
-                  ))}
+                  {automation.requirements.map((req, index) => <li key={index} className="text-sm text-muted-foreground">• {req}</li>)}
                 </ul>
               </Card>
             </div>
@@ -290,6 +259,5 @@ export default function AutomationDetail() {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 }
