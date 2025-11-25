@@ -190,19 +190,19 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularAutomations.map((automation, index) => (
-              <Link key={index} to={`/automation/${automation.id}`}>
-                <Card className="p-6 glass hover:shadow-neon transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
+              <Link key={index} to={`/automation/${automation.id}`} className="h-full">
+                <Card className="p-6 glass hover:shadow-neon transition-all duration-300 hover:-translate-y-1 group cursor-pointer h-full flex flex-col">
                   <div className="mb-4 p-3 bg-primary/10 rounded-lg w-fit">
                     {automation.icon}
                   </div>
-                  <div className="inline-block px-2 py-1 rounded text-xs font-medium bg-accent/10 text-accent mb-3">
+                  <div className="inline-block px-2 py-1 rounded text-xs font-medium bg-accent/10 text-accent mb-3 w-fit">
                     {automation.tag}
                   </div>
                   <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
                     {automation.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4">{automation.description}</p>
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                  <p className="text-sm text-muted-foreground mb-4 flex-grow">{automation.description}</p>
+                  <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
                     <span className="text-sm font-medium text-primary">{automation.hoursSaved}</span>
                     <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
                       View Details →
