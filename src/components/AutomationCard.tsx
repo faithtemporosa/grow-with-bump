@@ -82,10 +82,6 @@ export const AutomationCard = ({ automation }: AutomationCardProps) => {
               <Clock className="w-4 h-4" />
               <span className="font-medium">{automation.hoursSaved}h saved/mo</span>
             </div>
-            <div className="flex items-center gap-1 text-green-600">
-              <TrendingUp className="w-4 h-4" />
-              <span className="font-medium">${automation.monthlySavings} money saved/mo</span>
-            </div>
           </div>
 
           <div className="flex items-center justify-between">
