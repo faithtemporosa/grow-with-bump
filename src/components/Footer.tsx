@@ -1,4 +1,4 @@
-import { Instagram, Linkedin, Mail } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
 
 const Footer = () => {
   return <footer className="bg-card text-card-foreground border-t border-border py-12">
@@ -6,9 +6,6 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-8">
           {/* Social */}
           <div className="flex gap-4">
-            <a href="https://www.instagram.com/bump_syndicate/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
-              <Instagram size={20} />
-            </a>
             <a href="https://www.linkedin.com/in/connectingtheworld/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-smooth text-primary">
               <Linkedin size={20} />
             </a>
