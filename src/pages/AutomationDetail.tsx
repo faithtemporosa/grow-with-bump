@@ -165,23 +165,17 @@ export default function AutomationDetail() {
             <div>
               <h2 className="text-2xl font-bold mb-4">Requirements</h2>
               <Card className="p-6">
-                <h3 className="text-sm font-semibold text-muted-foreground mb-3">Tools & Platforms</h3>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {automation.tools.map((tool, index) => <Badge key={index} variant="outline" className="text-sm">{tool}</Badge>)}
-                </div>
-                {automation.requirements.length > 0 && (
-                  <>
-                    <Separator className="my-4" />
-                    <h3 className="text-sm font-semibold text-muted-foreground mb-3">Account Access Needed</h3>
-                    <ul className="space-y-2.5">
-                      {automation.requirements.map((req, index) => (
-                        <li key={index} className="flex items-start gap-2.5 text-sm">
-                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                          <span className="text-foreground">{req}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
+                {automation.requirements.length > 0 ? (
+                  <ul className="space-y-2.5">
+                    {automation.requirements.map((req, index) => (
+                      <li key={index} className="flex items-start gap-2.5 text-sm">
+                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span className="text-foreground">{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No special requirements</p>
                 )}
               </Card>
             </div>
