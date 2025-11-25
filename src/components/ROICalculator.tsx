@@ -7,17 +7,15 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, DollarSign, Clock, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-
 interface ROICalculatorProps {
   variant?: "default" | "compact";
   prefilledAutomations?: number;
   prefilledHours?: number;
 }
-
-const ROICalculator = ({ 
+const ROICalculator = ({
   variant = "default",
   prefilledAutomations,
-  prefilledHours 
+  prefilledHours
 }: ROICalculatorProps) => {
   const [numAutomations, setNumAutomations] = useState(prefilledAutomations || 3);
   const [avgHours, setAvgHours] = useState(prefilledHours || 20);
@@ -36,11 +34,8 @@ const ROICalculator = ({
   const netMonthlyGain = monthlyDollarSavings - monthlyCost;
   const roiMultiple = monthlyCost > 0 ? (monthlyDollarSavings / monthlyCost).toFixed(1) : "0";
   const annualNetGain = netMonthlyGain * 12;
-
   const isCompact = variant === "compact";
-
-  return (
-    <Card className={`${isCompact ? 'p-6' : 'p-8 md:p-12'} glass tech-border-animate shadow-neon`}>
+  return <Card className={`${isCompact ? 'p-6' : 'p-8 md:p-12'} glass tech-border-animate shadow-neon`}>
       <div className={`grid ${isCompact ? 'grid-cols-1 gap-6' : 'grid-cols-1 md:grid-cols-5 gap-8'}`}>
         {/* Inputs Panel */}
         <div className={`space-y-6 ${isCompact ? '' : 'md:col-span-2'}`}>
@@ -53,29 +48,11 @@ const ROICalculator = ({
           <div className="space-y-3">
             <Label htmlFor="automations">Number of Automations</Label>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setNumAutomations(Math.max(1, numAutomations - 1))}
-                className="h-10 w-10"
-              >
+              <Button variant="outline" size="icon" onClick={() => setNumAutomations(Math.max(1, numAutomations - 1))} className="h-10 w-10">
                 -
               </Button>
-              <Input
-                id="automations"
-                type="number"
-                value={numAutomations}
-                onChange={(e) => setNumAutomations(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
-                className="text-center h-10"
-                min={1}
-                max={10}
-              />
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setNumAutomations(Math.min(10, numAutomations + 1))}
-                className="h-10 w-10"
-              >
+              <Input id="automations" type="number" value={numAutomations} onChange={e => setNumAutomations(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))} className="text-center h-10" min={1} max={10} />
+              <Button variant="outline" size="icon" onClick={() => setNumAutomations(Math.min(10, numAutomations + 1))} className="h-10 w-10">
                 +
               </Button>
             </div>
@@ -87,14 +64,7 @@ const ROICalculator = ({
               <Label>Hours Saved Per Automation/Month</Label>
               <span className="text-sm font-medium">{avgHours}h</span>
             </div>
-            <Slider
-              value={[avgHours]}
-              onValueChange={(values) => setAvgHours(values[0])}
-              min={5}
-              max={80}
-              step={5}
-              className="w-full"
-            />
+            <Slider value={[avgHours]} onValueChange={values => setAvgHours(values[0])} min={5} max={80} step={5} className="w-full" />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>5h</span>
               <span>80h</span>
@@ -105,14 +75,7 @@ const ROICalculator = ({
             <Label htmlFor="rate">Value of Your Time ($/hour)</Label>
             <div className="flex items-center gap-3">
               <span className="text-sm text-muted-foreground">$</span>
-              <Input
-                id="rate"
-                type="number"
-                value={hourlyRate}
-                onChange={(e) => setHourlyRate(Math.max(10, parseInt(e.target.value) || 75))}
-                className="h-10"
-                min={10}
-              />
+              <Input id="rate" type="number" value={hourlyRate} onChange={e => setHourlyRate(Math.max(10, parseInt(e.target.value) || 75))} className="h-10" min={10} />
             </div>
             <p className="text-xs text-muted-foreground">Typical founder/knowledge worker: $50-$150/hr</p>
           </div>
@@ -120,11 +83,7 @@ const ROICalculator = ({
           {/* Annual Toggle */}
           <div className="flex items-center justify-between">
             <Label htmlFor="annual">Show Annual ROI</Label>
-            <Switch
-              id="annual"
-              checked={showAnnual}
-              onCheckedChange={setShowAnnual}
-            />
+            <Switch id="annual" checked={showAnnual} onCheckedChange={setShowAnnual} />
           </div>
         </div>
 
@@ -140,7 +99,7 @@ const ROICalculator = ({
               <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2">
                 ${netMonthlyGain.toLocaleString()}
               </div>
-              <p className="text-sm text-muted-foreground">Net Monthly Gain</p>
+              <p className="text-sm text-muted-foreground">Estimated Savings</p>
             </div>
 
             <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 mb-6">
@@ -151,9 +110,7 @@ const ROICalculator = ({
                 </div>
                 <div className="text-base sm:text-lg font-semibold">
                   ${monthlyCost.toLocaleString()}
-                  {discountRate > 0 && (
-                    <span className="ml-2 text-xs text-accent">-{(discountRate * 100).toFixed(0)}%</span>
-                  )}
+                  {discountRate > 0 && <span className="ml-2 text-xs text-accent">-{(discountRate * 100).toFixed(0)}%</span>}
                 </div>
               </div>
 
@@ -206,8 +163,6 @@ const ROICalculator = ({
           </div>
         </div>
       </div>
-    </Card>
-  );
+    </Card>;
 };
-
 export default ROICalculator;
