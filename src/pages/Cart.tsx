@@ -13,9 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import { X, Check, Plus, Minus, TrendingDown } from "lucide-react";
+import { X, Check, Plus, Minus, TrendingDown, ShoppingCart, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 // QuickBooks Payment Links - Update these URLs with your actual QuickBooks payment links
 // The return URL will be automatically appended to redirect users after payment
@@ -34,6 +35,7 @@ const UPSELLS = [
 ];
 
 export default function Cart() {
+  const { user } = useAuth();
   const { items: cartItems, removeItem, updateQuantity, loading } = useCart();
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -320,6 +322,46 @@ export default function Cart() {
               </ul>
               <p className="mt-4">If you have any questions, please contact us at <a href="mailto:marketing@thebumpteam.com" className="text-primary hover:underline">marketing@thebumpteam.com</a></p>
             </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Authentication guard - show sign-in message for non-authenticated users
+  if (!user) {
+    return (
+      <div className="min-h-screen flex flex-col relative">
+        <FuturisticBackground />
+        <Header />
+        
+        <main className="flex-1 container mx-auto px-4 pt-28 pb-12">
+          <div className="max-w-2xl mx-auto">
+            <Card className="p-12 text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="rounded-full bg-primary/10 p-6">
+                  <ShoppingCart className="w-12 h-12 text-primary" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">Please Sign In to View Your Cart</h2>
+                <p className="text-muted-foreground">
+                  Your cart is private and secure. Sign in to access your saved automations and complete your purchase.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                <Button asChild size="lg" className="gap-2">
+                  <Link to="/auth">
+                    <LogIn className="w-4 h-4" />
+                    Sign In
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/catalog">Browse Automations</Link>
+                </Button>
+              </div>
+            </Card>
           </div>
         </main>
         <Footer />
