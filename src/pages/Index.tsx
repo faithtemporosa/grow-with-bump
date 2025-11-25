@@ -52,6 +52,7 @@ const Index = () => {
 
   const popularAutomations = [
     {
+      id: "email-marketing-automation",
       icon: <Mail className="w-6 h-6" />,
       title: "Email Marketing Automation",
       description: "Automated email sequences with lead management and personalized outreach",
@@ -59,6 +60,7 @@ const Index = () => {
       tag: "Highest ROI"
     },
     {
+      id: "ai-linkedin-comments-responder",
       icon: <MessageSquare className="w-6 h-6" />,
       title: "AI LinkedIn Comments Responder",
       description: "Automated intelligent responses to LinkedIn comments with AI personalization",
@@ -66,6 +68,7 @@ const Index = () => {
       tag: "Featured"
     },
     {
+      id: "tiktok-reels-generator",
       icon: <ShoppingBag className="w-6 h-6" />,
       title: "AI TikTok/Shorts Generator",
       description: "Auto-generate short-form videos for TikTok, YouTube Shorts & Reels",
@@ -73,6 +76,7 @@ const Index = () => {
       tag: "Content Creation"
     },
     {
+      id: "telegram-ai-assistant",
       icon: <FolderKanban className="w-6 h-6" />,
       title: "AI Telegram Assistant",
       description: "Complete AI assistant managing email, calendar, and tasks via Telegram",
@@ -186,7 +190,7 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularAutomations.map((automation, index) => (
-              <Link key={index} to="/catalog">
+              <Link key={index} to={`/automation/${automation.id}`}>
                 <Card className="p-6 glass hover:shadow-neon transition-all duration-300 hover:-translate-y-1 group cursor-pointer">
                   <div className="mb-4 p-3 bg-primary/10 rounded-lg w-fit">
                     {automation.icon}

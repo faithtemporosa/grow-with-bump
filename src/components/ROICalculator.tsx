@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, DollarSign, Clock, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface ROICalculatorProps {
   variant?: "default" | "compact";
@@ -198,11 +199,11 @@ const ROICalculator = ({
               With this setup, your automations pay for themselves in the first week — then keep printing ~${netMonthlyGain.toLocaleString()}/month in pure time savings.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button className="gradient-primary shadow-glow flex-1">
-                Build My Stack
+              <Button className="gradient-primary shadow-glow flex-1" asChild>
+                <Link to="/build-my-stack">Build My Stack</Link>
               </Button>
-              <Button variant="outline" className="flex-1">
-                Talk to a Specialist
+              <Button variant="outline" className="flex-1" asChild>
+                <Link to="/get-started">Talk to a Specialist</Link>
               </Button>
             </div>
           </div>
