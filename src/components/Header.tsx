@@ -72,11 +72,11 @@ const Header = () => {
         <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2 sm:gap-3 group">
-            <img src={logo} alt="Bump AI Logo" className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain cursor-pointer transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'drop-shadow-glow' : 'drop-shadow-lg'}`} style={{
-              mixBlendMode: 'normal',
-              isolation: 'isolate',
-              imageRendering: 'crisp-edges'
-            }} />
+            <img
+              src={logo}
+              alt="Bump AI Logo"
+              className="h-10 sm:h-12 md:h-14 w-auto"
+            />
             <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 flex items-center gap-1">
               
               Bump AI
