@@ -10,7 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { MiniCartPanel } from "@/components/MiniCartPanel";
 import { NotificationCenter } from "@/components/NotificationCenter";
 import logo from "@/assets/bump-ai-logo.png";
-import robotMascot from "@/assets/robot-mascot.png";
+import robotMascot from "@/assets/robot-mascot.svg";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
