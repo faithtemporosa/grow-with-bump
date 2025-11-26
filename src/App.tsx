@@ -21,6 +21,7 @@ import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
 import Settings from "./pages/Settings";
 import Admin from "./pages/Admin";
+import AdminSubscriptions from "./pages/AdminSubscriptions";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
             <Route path="/seed-automations" element={<SeedAutomations />} />
             <Route path="/creator-partnerships" element={<CreatorPartnerships />} />
             <Route path="/brand-campaigns" element={<BrandCampaigns />} />
