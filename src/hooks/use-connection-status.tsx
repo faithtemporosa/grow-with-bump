@@ -12,7 +12,7 @@ export const useConnectionStatus = () => {
     try {
       // Simple health check - try to query a small table
       const { error } = await supabase
-        .from('profiles')
+        .from('automations')
         .select('id')
         .limit(1);
       
