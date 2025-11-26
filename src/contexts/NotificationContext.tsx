@@ -52,15 +52,21 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => fetchNotifications(retryCount + 1, maxRetries), delay);
         return;
       }
-      // Only log final failure, don't show toast
-      console.error('Error fetching notifications:', error);
+      // Silent failure after all retries - global banner handles it
     }
   };
 
   useEffect(() => {
     fetchNotifications();
 
-    if (!user) return;
+    // Reload when backend reconnects
+    const handleReconnect = () => fetchNotifications();
+    window.addEventListener('backend-reconnected', handleReconnect);
+
+    if (!user) {
+      window.removeEventListener('backend-reconnected', handleReconnect);
+      return;
+    }
 
     // Subscribe to realtime notifications
     const channel = supabase
@@ -92,6 +98,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       .subscribe();
 
     return () => {
+      window.removeEventListener('backend-reconnected', handleReconnect);
       supabase.removeChannel(channel);
     };
   }, [user]);

@@ -8,7 +8,7 @@ export const useAdmin = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const checkAdminStatus = async (retryCount = 0, maxRetries = 2) => {
       if (!user) {
         setIsAdmin(false);
         setLoading(false);
@@ -23,17 +23,20 @@ export const useAdmin = () => {
           .eq("role", "admin")
           .maybeSingle();
 
-        if (error) {
-          console.error("Error checking admin status:", error);
-          setIsAdmin(false);
-        } else {
-          setIsAdmin(!!data);
-        }
+        if (error) throw error;
+        setIsAdmin(!!data);
       } catch (error) {
-        console.error("Error checking admin status:", error);
+        // Silent retry
+        if (retryCount < maxRetries) {
+          setTimeout(() => checkAdminStatus(retryCount + 1, maxRetries), 1000);
+          return;
+        }
+        // Silent failure - just set false
         setIsAdmin(false);
       } finally {
-        setLoading(false);
+        if (retryCount === 0) {
+          setLoading(false);
+        }
       }
     };
 
