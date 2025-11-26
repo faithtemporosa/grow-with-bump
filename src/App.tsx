@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
+import { ConnectionStatusBanner } from "./components/ConnectionStatusBanner";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SeedAutomations from "./pages/SeedAutomations";
@@ -32,6 +33,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ConnectionStatusBanner />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/catalog" element={<AutomationsCatalog />} />

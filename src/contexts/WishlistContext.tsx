@@ -27,7 +27,7 @@ export const WishlistProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, [user]);
 
-  const loadWishlist = async () => {
+  const loadWishlist = async (retryCount = 0, maxRetries = 3) => {
     try {
       const { data, error } = await supabase
         .from("wishlists")
@@ -38,9 +38,18 @@ export const WishlistProvider = ({ children }: { children: React.ReactNode }) =>
       const ids = new Set(data?.map((item) => item.automation_id) || []);
       setWishlistIds(ids);
     } catch (error) {
+      // Silent retry with exponential backoff
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000;
+        setTimeout(() => loadWishlist(retryCount + 1, maxRetries), delay);
+        return;
+      }
+      // Only log final failure, don't show toast
       console.error("Error loading wishlist:", error);
     } finally {
-      setLoading(false);
+      if (retryCount === 0) {
+        setLoading(false);
+      }
     }
   };
 
