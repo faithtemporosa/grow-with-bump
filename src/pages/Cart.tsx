@@ -17,15 +17,7 @@ import { X, Check, Plus, Minus, TrendingDown, ShoppingCart, LogIn } from "lucide
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-
-// QuickBooks Payment Links - Tiered pricing based on automation quantity
-const QUICKBOOKS_PAYMENT_LINKS = {
-  LINK_FOR_1: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-3564d7a8e14e4cf1af7aa255010ab6639bccb5a370664079a13a4f2b32ae6ccac036603ab7d34095b802ea92917b3031?locale=EN_US",
-  LINK_FOR_2_3: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-90a3ccb1625c4f5d8e7d75c04f00d06b83cfaf62355c46629c319927b99522ab70441201a0cf4ea08f2b924859558153?locale=EN_US",
-  LINK_FOR_4_5: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-8c3891fa06674528b79b4a33cdf6a6b6f71d26530f744932a935360bacbce7d6c3f5831c72d44523b27e844af412fec8?locale=EN_US",
-  LINK_FOR_6_9: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-502b958a949f4bb9b391fd5ab61e4f63c02d6d6dbddb4d259836af9f751ed3ccf17d6995406f4b918138d51a2e53c05a?locale=EN_US",
-  LINK_FOR_10_PLUS: "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-164237453e2042f6a39199678dd7036cb8146091972044d9a626438186e35f7797998f9208bd41199872f7b1355bea0e?locale=EN_US"
-};
+import { supabase } from "@/integrations/supabase/client";
 
 const UPSELLS = [
   { id: "priority-support", name: "Priority Support", price: 200, description: "24/7 priority response" },
@@ -106,63 +98,73 @@ export default function Cart() {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Format cart items as readable text
+    // Format cart items for submission
     const cartItemsText = cartItems.map((item, index) => 
       `${index + 1}. ${item.name} - Quantity: ${item.quantity} - Price: $${item.price} each - Hours Saved: ${item.hoursSaved}h`
     ).join('\n');
     
-    // Import supabase
-    const { supabase } = await import("@/integrations/supabase/client");
-    
-    // Save to contact_submissions
-    const { error } = await supabase
-      .from('contact_submissions')
-      .insert({
-        name: businessName,
-        email: email,
-        brand_name: website || null,
-        message: `${additionalInfo || 'Cart checkout submission'}\n\nORDER DETAILS:\n${cartItemsText}`,
-        cart_items: cartItemsText,
-        order_total: pricing.total,
-        automation_count: pricing.totalQuantity
-      });
-    
-    if (error) {
+    try {
+      // Save to contact_submissions for record keeping
+      const { error: dbError } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: businessName,
+          email: email,
+          brand_name: website || null,
+          message: `${additionalInfo || 'Cart checkout submission'}\n\nORDER DETAILS:\n${cartItemsText}`,
+          cart_items: cartItemsText,
+          order_total: pricing.total,
+          automation_count: pricing.totalQuantity
+        });
+      
+      if (dbError) {
+        console.error('Error saving to contact_submissions:', dbError);
+        // Don't fail checkout if this fails, just log it
+      }
+
       toast({
-        title: "Error",
-        description: "Failed to submit order. Please try again.",
+        title: "Creating checkout session...",
+        description: "Please wait while we prepare your payment"
+      });
+
+      // Call Stripe checkout edge function
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          cartItems: cartItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            hoursSaved: item.hoursSaved
+          })),
+          businessInfo: {
+            businessName,
+            email,
+            website,
+            additionalInfo
+          },
+          upsells: selectedUpsells
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to create checkout session');
+      }
+
+      if (!data?.url) {
+        throw new Error('No checkout URL received');
+      }
+
+      // Redirect to Stripe checkout
+      window.location.href = data.url;
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        title: "Checkout Failed",
+        description: error instanceof Error ? error.message : "Failed to create checkout session. Please try again.",
         variant: "destructive"
       });
-      console.error('Error submitting order:', error);
-      return;
     }
-    
-    // Determine which payment link to use based on cart quantity
-    let paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_1;
-    
-    if (pricing.totalQuantity === 1) {
-      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_1;
-    } else if (pricing.totalQuantity >= 2 && pricing.totalQuantity <= 3) {
-      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_2_3;
-    } else if (pricing.totalQuantity >= 4 && pricing.totalQuantity <= 5) {
-      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_4_5;
-    } else if (pricing.totalQuantity >= 6 && pricing.totalQuantity <= 9) {
-      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_6_9;
-    } else if (pricing.totalQuantity >= 10) {
-      paymentUrl = QUICKBOOKS_PAYMENT_LINKS.LINK_FOR_10_PLUS;
-    }
-    
-    toast({
-      title: "Order Submitted!",
-      description: "Redirecting to payment..."
-    });
-
-    // Append return URL to payment link so users are redirected back after payment
-    const returnUrl = `${window.location.origin}/order-success`;
-    const paymentUrlWithReturn = `${paymentUrl}?return=${encodeURIComponent(returnUrl)}`;
-
-    // Open QuickBooks payment link in new tab
-    window.open(paymentUrlWithReturn, '_blank');
   };
 
   const pricing = calculatePricing();
