@@ -27,7 +27,7 @@ const UPSELLS = [
 
 export default function Cart() {
   const { user } = useAuth();
-  const { items: cartItems, removeItem, updateQuantity, loading } = useCart();
+  const { items: cartItems, removeItem, updateQuantity, loading, error, retryLoad } = useCart();
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const { toast } = useToast();
@@ -382,7 +382,23 @@ export default function Cart() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-6">
-              {loading ? (
+              {error ? (
+                <Card className="p-12 text-center">
+                  <div className="flex justify-center mb-4">
+                    <div className="rounded-full bg-destructive/10 p-4">
+                      <X className="w-8 h-8 text-destructive" />
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">Failed to Load Cart</h3>
+                  <p className="text-muted-foreground mb-6">
+                    We're having trouble connecting to your cart. Please check your connection and try again.
+                  </p>
+                  <Button onClick={retryLoad} className="gap-2">
+                    <ShoppingCart className="w-4 h-4" />
+                    Retry Loading Cart
+                  </Button>
+                </Card>
+              ) : loading ? (
                 <Card className="p-12 text-center">
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>

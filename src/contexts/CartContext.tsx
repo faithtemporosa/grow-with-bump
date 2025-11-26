@@ -22,6 +22,8 @@ interface CartContextType {
   recentlyAddedItem: CartItem | null;
   clearRecentlyAdded: () => void;
   loading: boolean;
+  error: string | null;
+  retryLoad: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -32,6 +34,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [recentlyAddedItem, setRecentlyAddedItem] = useState<CartItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
 
   // Load cart from database for authenticated users or localStorage for guests
@@ -99,6 +102,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const loadCartFromDatabase = async (retryCount = 0, maxRetries = 3) => {
     if (!user) return;
 
+    setError(null);
+    if (retryCount === 0) {
+      setLoading(true);
+    }
+
     try {
       const { data, error } = await supabase
         .from('cart_items')
@@ -118,6 +126,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }));
 
       setItems(cartItems);
+      setError(null);
 
       // Merge localStorage cart on first login
       const localCart = localStorage.getItem("cart-items");
@@ -134,14 +143,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       
-      // Only log final failure after all retries exhausted
-      if (retryCount >= maxRetries) {
-        console.error("Failed to load cart after retries");
-      }
+      // After all retries exhausted, set error state
+      const errorMessage = error instanceof Error ? error.message : "Failed to load cart";
+      setError(errorMessage);
+      console.error("Failed to load cart after retries:", error);
     } finally {
-      if (retryCount === 0) {
-        setLoading(false);
-      }
+      setLoading(false);
+    }
+  };
+
+  const retryLoad = () => {
+    if (user) {
+      loadCartFromDatabase();
+    } else {
+      loadCartFromLocalStorage();
     }
   };
 
@@ -340,6 +355,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         recentlyAddedItem,
         clearRecentlyAdded,
         loading,
+        error,
+        retryLoad,
       }}
     >
       {children}
