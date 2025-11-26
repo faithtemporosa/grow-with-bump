@@ -166,11 +166,10 @@ export default function Admin() {
       setDialogOpen(false);
       resetForm();
       fetchAutomations();
-    } catch (error: any) {
-      console.error("Error saving automation:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to save automation.",
+        description: "Failed to save automation. Please try again.",
         variant: "destructive",
       });
     }
@@ -204,11 +203,10 @@ export default function Admin() {
         description: "Automation deleted successfully!",
       });
       fetchAutomations();
-    } catch (error: any) {
-      console.error("Error deleting automation:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to delete automation.",
+        description: "Failed to delete automation. Please try again.",
         variant: "destructive",
       });
     }
@@ -286,11 +284,10 @@ export default function Admin() {
         description: "User promoted to admin successfully!",
       });
       fetchUsers();
-    } catch (error: any) {
-      console.error("Error promoting user:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to promote user.",
+        description: "Failed to promote user to admin. Please try again.",
         variant: "destructive",
       });
     }
@@ -322,11 +319,10 @@ export default function Admin() {
         description: "Admin privileges revoked successfully!",
       });
       fetchUsers();
-    } catch (error: any) {
-      console.error("Error revoking admin:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to revoke admin privileges.",
+        description: "Failed to revoke admin role. Please try again.",
         variant: "destructive",
       });
     }
@@ -430,11 +426,10 @@ export default function Admin() {
       });
       setSelectedUsers(new Set());
       fetchUsers();
-    } catch (error: any) {
-      console.error("Error bulk promoting users:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to promote users.",
+        description: "Failed to promote selected users. Please try again.",
         variant: "destructive",
       });
     }
@@ -471,11 +466,10 @@ export default function Admin() {
       });
       setSelectedUsers(new Set());
       fetchUsers();
-    } catch (error: any) {
-      console.error("Error bulk revoking admin:", error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to revoke admin privileges.",
+        description: "Failed to revoke admin from selected users. Please try again.",
         variant: "destructive",
       });
     }

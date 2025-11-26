@@ -54,7 +54,7 @@ serve(async (req) => {
     }
 
     // Calculate total quantity and determine price tier
-    const totalQuantity = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
+    const totalQuantity = cartItems.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0);
     
     if (totalQuantity < 1 || totalQuantity > 999) {
       throw new Error("Quantity must be between 1 and 999");
@@ -108,7 +108,7 @@ serve(async (req) => {
         business_name: businessInfo?.businessName || "",
         website: businessInfo?.website || "",
         total_automations: totalQuantity.toString(),
-        cart_items: JSON.stringify(cartItems.map((item: any) => ({
+        cart_items: JSON.stringify(cartItems.map((item: { id: string; name: string; quantity: number; price: number }) => ({
           id: item.id,
           name: item.name,
           quantity: item.quantity

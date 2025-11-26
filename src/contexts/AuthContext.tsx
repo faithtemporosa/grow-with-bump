@@ -30,28 +30,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
     });
 
-    // Track user presence
-    let presenceChannel: ReturnType<typeof supabase.channel> | null = null;
-    
-    if (user) {
-      presenceChannel = supabase.channel("admin-presence");
-      presenceChannel.subscribe(async (status) => {
-        if (status === "SUBSCRIBED") {
-          await presenceChannel?.track({
-            user_id: user.id,
-            online_at: new Date().toISOString(),
-          });
-        }
-      });
-    }
-
     return () => {
       subscription.unsubscribe();
-      if (presenceChannel) {
-        supabase.removeChannel(presenceChannel);
-      }
     };
-  }, [user]);
+  }, []);
+
+  // Separate effect for presence tracking to avoid dependency issues
+  useEffect(() => {
+    if (!user) return;
+
+    const presenceChannel = supabase.channel("admin-presence");
+    presenceChannel.subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        await presenceChannel.track({
+          user_id: user.id,
+          online_at: new Date().toISOString(),
+        });
+      }
+    });
+
+    return () => {
+      supabase.removeChannel(presenceChannel);
+    };
+  }, [user?.id]); // Only re-run when user ID changes
 
   const signUp = async (email: string, password: string) => {
     const { error } = await supabase.auth.signUp({ 
