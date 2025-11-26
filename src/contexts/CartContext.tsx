@@ -127,12 +127,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       
-      // Final retry failed
-      toast({
-        title: "Connection Issue",
-        description: "Unable to load cart. Please check your connection and refresh.",
-        variant: "destructive"
-      });
+      // Suppress toast - global connection banner will handle it
     } finally {
       if (retryCount === 0) {
         setLoading(false);

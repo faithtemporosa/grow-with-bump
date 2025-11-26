@@ -29,24 +29,32 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { user } = useAuth();
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (retryCount = 0, maxRetries = 3) => {
     if (!user) {
       setNotifications([]);
       return;
     }
 
-    const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(50);
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-    if (error) {
+      if (error) throw error;
+
+      setNotifications((data || []) as Notification[]);
+    } catch (error) {
+      // Silent retry with exponential backoff
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000;
+        setTimeout(() => fetchNotifications(retryCount + 1, maxRetries), delay);
+        return;
+      }
+      // Only log final failure, don't show toast
       console.error('Error fetching notifications:', error);
-      return;
     }
-
-    setNotifications((data || []) as Notification[]);
   };
 
   useEffect(() => {
