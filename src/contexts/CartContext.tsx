@@ -41,6 +41,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } else {
       loadCartFromLocalStorage();
     }
+
+    // Reload when backend reconnects
+    const handleReconnect = () => {
+      if (user) {
+        loadCartFromDatabase();
+      }
+    };
+
+    window.addEventListener('backend-reconnected', handleReconnect);
+    return () => window.removeEventListener('backend-reconnected', handleReconnect);
   }, [user]);
 
   // Sync localStorage for guests
@@ -117,17 +127,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem("cart-items");
       }
     } catch (error) {
-      console.error("Error loading cart from database:", error);
-      
-      // Retry with exponential backoff
+      // Retry with exponential backoff - silent until final failure
       if (retryCount < maxRetries) {
         const delay = Math.pow(2, retryCount) * 1000;
-        console.log(`Retrying cart load in ${delay}ms (attempt ${retryCount + 1}/${maxRetries})`);
         setTimeout(() => loadCartFromDatabase(retryCount + 1, maxRetries), delay);
         return;
       }
       
-      // Suppress toast - global connection banner will handle it
+      // Only log final failure after all retries exhausted
+      if (retryCount >= maxRetries) {
+        console.error("Failed to load cart after retries");
+      }
     } finally {
       if (retryCount === 0) {
         setLoading(false);

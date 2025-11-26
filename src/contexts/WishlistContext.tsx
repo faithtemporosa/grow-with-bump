@@ -25,6 +25,16 @@ export const WishlistProvider = ({ children }: { children: React.ReactNode }) =>
       setWishlistIds(new Set());
       setLoading(false);
     }
+
+    // Reload when backend reconnects
+    const handleReconnect = () => {
+      if (user) {
+        loadWishlist();
+      }
+    };
+
+    window.addEventListener('backend-reconnected', handleReconnect);
+    return () => window.removeEventListener('backend-reconnected', handleReconnect);
   }, [user]);
 
   const loadWishlist = async (retryCount = 0, maxRetries = 3) => {
@@ -44,8 +54,7 @@ export const WishlistProvider = ({ children }: { children: React.ReactNode }) =>
         setTimeout(() => loadWishlist(retryCount + 1, maxRetries), delay);
         return;
       }
-      // Only log final failure, don't show toast
-      console.error("Error loading wishlist:", error);
+      // Silent failure after all retries - global banner handles it
     } finally {
       if (retryCount === 0) {
         setLoading(false);

@@ -4,20 +4,35 @@ import { supabase } from "@/integrations/supabase/client";
 export const useConnectionStatus = () => {
   const [isOnline, setIsOnline] = useState(true);
   const [isChecking, setIsChecking] = useState(false);
+  const [wasOffline, setWasOffline] = useState(false);
 
   const checkConnection = async () => {
     if (isChecking) return;
     
     setIsChecking(true);
     try {
-      // Simple health check - try to query a small table
       const { error } = await supabase
         .from('automations')
         .select('id')
         .limit(1);
       
-      setIsOnline(!error);
+      const nowOnline = !error;
+      
+      // If we just reconnected, trigger a page refresh to clear old errors
+      if (wasOffline && nowOnline) {
+        console.clear(); // Clear console logs
+        setWasOffline(false);
+        // Dispatch custom event for contexts to reload
+        window.dispatchEvent(new Event('backend-reconnected'));
+      } else if (!nowOnline && isOnline) {
+        setWasOffline(true);
+      }
+      
+      setIsOnline(nowOnline);
     } catch (error) {
+      if (isOnline) {
+        setWasOffline(true);
+      }
       setIsOnline(false);
     } finally {
       setIsChecking(false);
@@ -27,8 +42,8 @@ export const useConnectionStatus = () => {
   useEffect(() => {
     checkConnection();
 
-    // Check every 30 seconds
-    const interval = setInterval(checkConnection, 30000);
+    // Check every 10 seconds for faster reconnection detection
+    const interval = setInterval(checkConnection, 10000);
 
     // Also check when browser comes back online
     const handleOnline = () => checkConnection();
@@ -38,7 +53,7 @@ export const useConnectionStatus = () => {
       clearInterval(interval);
       window.removeEventListener('online', handleOnline);
     };
-  }, []);
+  }, [isOnline, wasOffline]);
 
   return { isOnline, checkConnection };
 };
