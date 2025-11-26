@@ -12,13 +12,13 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-CHECKOUT] ${step}${detailsStr}`);
 };
 
-// Price IDs for volume tiers (monthly recurring)
-const PRICE_TIERS = {
-  350: "price_1SXS2gFmhb5GR0vFAiIjpu3F", // $350/month per automation
-  325: "price_1SXT4MFmhb5GR0vFLRgiCpwd", // $325/month per automation
-  300: "price_1SXT6FFmhb5GR0vFnSUlpZK5", // $300/month per automation
-  275: "price_1SXT6rFmhb5GR0vF8aFyU5K0", // $275/month per automation
-  250: "price_1SXT7BFmhb5GR0vFbk7YS6Zr", // $250/month per automation (10+ automations)
+// EXACT PRICE TIER SELECTION LOGIC - DO NOT MODIFY
+const pickPriceId = (qty: number): string => {
+  if (qty === 1) return "price_1SXS2gFmhb5GR0vFAiIjpu3F";        // Standard: $350
+  if (qty >= 2 && qty <= 3) return "price_1SXT4MFmhb5GR0vFLRgiCpwd"; // Volume Saver: $325
+  if (qty >= 4 && qty <= 5) return "price_1SXT6FFmhb5GR0vFnSUlpZK5"; // Business Bundle: $300
+  if (qty >= 6 && qty <= 9) return "price_1SXT6rFmhb5GR0vF8aFyU5K0"; // Enterprise Pack: $275
+  return "price_1SXT7BFmhb5GR0vFbk7YS6Zr";                           // Maximum Savings: $250 (10+)
 };
 
 serve(async (req) => {
@@ -55,20 +55,13 @@ serve(async (req) => {
 
     // Calculate total quantity and determine price tier
     const totalQuantity = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
-    let pricePerAutomation = 350;
     
-    if (totalQuantity >= 10) {
-      pricePerAutomation = 250;
-    } else if (totalQuantity >= 6) {
-      pricePerAutomation = 275;
-    } else if (totalQuantity >= 4) {
-      pricePerAutomation = 300;
-    } else if (totalQuantity >= 2) {
-      pricePerAutomation = 325;
+    if (totalQuantity < 1 || totalQuantity > 999) {
+      throw new Error("Quantity must be between 1 and 999");
     }
 
-    const priceId = PRICE_TIERS[pricePerAutomation as keyof typeof PRICE_TIERS];
-    logStep("Price tier determined", { totalQuantity, pricePerAutomation, priceId });
+    const priceId = pickPriceId(totalQuantity);
+    logStep("Price tier determined", { totalQuantity, priceId });
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", { 
       apiVersion: "2025-08-27.basil" 
@@ -99,7 +92,7 @@ serve(async (req) => {
       // For now, we'll just log them
     }
 
-    logStep("Creating checkout session");
+    logStep("Creating checkout session with locked quantity");
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
@@ -107,6 +100,9 @@ serve(async (req) => {
       mode: "subscription",
       success_url: `${req.headers.get("origin")}/order-success`,
       cancel_url: `${req.headers.get("origin")}/cart`,
+      // CRITICAL: Lock quantity - user cannot change it in Stripe Checkout
+      allow_promotion_codes: true,
+      billing_address_collection: "auto",
       metadata: {
         user_id: user.id,
         business_name: businessInfo?.businessName || "",

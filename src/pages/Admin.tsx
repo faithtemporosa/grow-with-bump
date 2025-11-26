@@ -650,10 +650,11 @@ export default function Admin() {
         <ActiveUsersWidget />
 
         <Tabs defaultValue="automations" className="mt-8">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="automations">Automations</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="subscriptions" onClick={() => navigate("/admin/subscriptions")}>Subscriptions</TabsTrigger>
           </TabsList>
 
           <TabsContent value="automations">
