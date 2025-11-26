@@ -6,12 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Shield, ShieldOff } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+import { Json } from "@/integrations/supabase/types";
+
 interface ActivityLog {
   id: string;
   admin_user_id: string;
   action_type: string;
   target_user_id: string | null;
-  details: any;
+  details: Json;
   created_at: string;
 }
 
@@ -146,8 +148,8 @@ export function ActivityLogs() {
                     </TableCell>
                     <TableCell>{log.target_email || "N/A"}</TableCell>
                     <TableCell>
-                      {log.details?.role && (
-                        <Badge variant="secondary">{log.details.role}</Badge>
+                      {log.details && typeof log.details === 'object' && 'role' in log.details && (
+                        <Badge variant="secondary">{String(log.details.role)}</Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">

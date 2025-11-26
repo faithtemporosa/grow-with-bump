@@ -43,7 +43,10 @@ serve(async (req) => {
     console.log(`Updating order ${order_id} to status: ${status || 'completed'}`);
 
     // Update the contact submission status
-    const updateData: any = {
+    const updateData: {
+      status: string;
+      estimated_completion_date?: string;
+    } = {
       status: status || 'completed'
     };
 

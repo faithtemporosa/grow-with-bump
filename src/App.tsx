@@ -4,7 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ConnectionStatusBanner } from "./components/ConnectionStatusBanner";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SeedAutomations from "./pages/SeedAutomations";
@@ -28,38 +32,46 @@ import MyOrders from "./pages/MyOrders";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ConnectionStatusBanner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/catalog" element={<AutomationsCatalog />} />
-            <Route path="/automation/:id" element={<AutomationDetail />} />
-            <Route path="/build-my-stack" element={<BuildMyStack />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/order-success" element={<OrderSuccess />} />
-            <Route path="/my-orders" element={<MyOrders />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
-            <Route path="/seed-automations" element={<SeedAutomations />} />
-            <Route path="/creator-partnerships" element={<CreatorPartnerships />} />
-            <Route path="/brand-campaigns" element={<BrandCampaigns />} />
-            <Route path="/automations-support" element={<AutomationsSupport />} />
-            <Route path="/growth-strategy" element={<GrowthStrategy />} />
-            <Route path="/get-started" element={<GetStarted />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <ConnectionStatusBanner />
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/catalog" element={<AutomationsCatalog />} />
+                    <Route path="/automation/:id" element={<AutomationDetail />} />
+                    <Route path="/build-my-stack" element={<BuildMyStack />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/order-success" element={<OrderSuccess />} />
+                    <Route path="/my-orders" element={<MyOrders />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
+                    <Route path="/seed-automations" element={<SeedAutomations />} />
+                    <Route path="/creator-partnerships" element={<CreatorPartnerships />} />
+                    <Route path="/brand-campaigns" element={<BrandCampaigns />} />
+                    <Route path="/automations-support" element={<AutomationsSupport />} />
+                    <Route path="/growth-strategy" element={<GrowthStrategy />} />
+                    <Route path="/get-started" element={<GetStarted />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </CartProvider>
+            </WishlistProvider>
+          </NotificationProvider>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

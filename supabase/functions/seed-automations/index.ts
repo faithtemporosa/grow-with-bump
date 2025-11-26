@@ -39,7 +39,7 @@ serve(async (req) => {
     const batchSize = 50
     let successCount = 0
     let errorCount = 0
-    const errors: any[] = []
+    const errors: Array<{ batch: number; error: unknown }> = []
 
     for (let i = 0; i < automations.length; i += batchSize) {
       const batch = automations.slice(i, i + batchSize)

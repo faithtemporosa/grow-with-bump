@@ -13,7 +13,7 @@ export const NotificationCenter = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  const handleNotificationClick = async (notification: any) => {
+  const handleNotificationClick = async (notification: { id: string; link?: string | null }) => {
     await markAsRead(notification.id);
     if (notification.link) {
       navigate(notification.link);

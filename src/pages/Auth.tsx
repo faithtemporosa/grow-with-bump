@@ -18,6 +18,7 @@ const authSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character")
 });
 
 export default function Auth() {
@@ -45,17 +46,23 @@ export default function Auth() {
         description: "You've successfully signed in.",
       });
       navigate("/");
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
           title: "Validation Error",
           description: error.errors[0].message,
           variant: "destructive",
         });
+      } else if (error instanceof Error) {
+        toast({
+          title: "Authentication Failed",
+          description: "Invalid email or password. Please try again.",
+          variant: "destructive",
+        });
       } else {
         toast({
           title: "Error",
-          description: error.message,
+          description: "An unexpected error occurred. Please try again.",
           variant: "destructive",
         });
       }
@@ -75,17 +82,23 @@ export default function Auth() {
         description: "You've successfully signed up and are now logged in.",
       });
       navigate("/");
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
           title: "Validation Error",
           description: error.errors[0].message,
           variant: "destructive",
         });
+      } else if (error instanceof Error) {
+        toast({
+          title: "Registration Failed",
+          description: "Unable to create account. Email may already be in use.",
+          variant: "destructive",
+        });
       } else {
         toast({
           title: "Error",
-          description: error.message,
+          description: "An unexpected error occurred. Please try again.",
           variant: "destructive",
         });
       }
@@ -160,7 +173,7 @@ export default function Auth() {
                     minLength={8}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Must be 8+ characters with uppercase, lowercase, and number
+                    Must be 8+ characters with uppercase, lowercase, number, and special character
                   </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
